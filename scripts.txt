@@ -1,0 +1,29 @@
+# RST to MD initial conversion
+rst2myst convert --config content/config.yaml content/docs/desktop-wallet/*.rst
+
+# Cleans up RST leftovers
+python3 conversion-v7.py content/docs/desktop-wallet content/docs/variables.rst
+
+# .MD to .MDX + Title
+python3 add_frontmatter_from_h1.py content/docs/desktop-wallet
+
+
+
+
+
+
+1. RST to MD - to 50%
+2. Clean up RST leftovers - to 80-100%
+    To be actioned:
+    - links to Glossary
+    - link to another pages
+3. .MD to .MDX + title 
+
+
+To do:
+- Glossary
+- Glossary tooltip? not needed for now
+- Images - source and paths 
+- Images - Resizing
+- |bw| |cryptox| - unavailable - script automatically pulls the data from variables.rst and converts it into text
+- Clean up leftover artifacts like (something) = 

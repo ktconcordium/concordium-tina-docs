@@ -1,0 +1,3 @@
+[mdformat.parser_extension]
+myst=mdformat_myst.plugin
+

@@ -1,0 +1,3 @@
+[console_scripts]
+rst2myst=rst_to_myst.cli:main
+

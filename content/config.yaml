@@ -1,0 +1,22 @@
+# config.yaml for rst2myst (Concordium docs → MD/MDX for Tina)
+
+language: en
+sphinx: true
+default_domain: py
+
+# We don't actually need most Sphinx extensions at conversion time.
+# Keep this list minimal to avoid import errors.
+extensions:
+  - sphinx.ext.todo
+  - sphinx.ext.extlinks
+  - sphinx.ext.graphviz
+
+# Numbering of references/figures continues across files
+consecutive_numbering: true
+
+# Enable some MyST niceties; harmless and sometimes helpful
+colon_fences: true   # ::: note syntax etc
+dollar_math: false   # set true only if you really use LaTeX math
+
+# No special conversions for now; we'll post-process in our own script.
+conversions: {}

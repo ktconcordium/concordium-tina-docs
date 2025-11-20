@@ -15,6 +15,7 @@ import HeaderFormat from "./standard-elements/header-format";
 import { ImageComponent } from "./standard-elements/image";
 import MermaidElement from "./standard-elements/mermaid-diagram";
 import Table from "./standard-elements/table";
+import { Var } from "@/components/Var"
 
 type ComponentMapping = {
   youtube: { embedSrc: string; caption?: string; minutes?: string };
@@ -109,6 +110,10 @@ type ComponentMapping = {
       parentId: string | null;
     }[];
   };
+  Var: {
+    name: string;
+    children?: React.ReactNode;
+  };
 };
 
 type CalloutVariant =
@@ -164,7 +169,24 @@ export const MarkdownComponentMapping: Components<ComponentMapping> = {
       {...props}
     />
   ),
-  img: (props) => <ImageComponent {...props} />,
+  img: (props: any) => {
+    const src = props.url || props.src || "";
+    const alt = props.alt || "";
+
+    return (
+      <img
+        src={src}
+        alt={alt}
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+          borderRadius: "0.75rem", // optional
+          display: "block",
+          margin: "1rem 0",
+        }}
+      />
+    );
+  },
   table: (props) => <Table {...props} />,
   code_block: (props) =>
     props?.lang === "mermaid" ? (
@@ -175,6 +197,7 @@ export const MarkdownComponentMapping: Components<ComponentMapping> = {
   accordionBlock: (props) => <AccordionBlock {...props} />,
   typeDefinition: (props) => <TypeDefinition {...props} />,
   fileStructure: (props) => <FileStructure {...props} />,
+  Var: (props) => <Var {...props} />,
 };
 
 export default MarkdownComponentMapping;
