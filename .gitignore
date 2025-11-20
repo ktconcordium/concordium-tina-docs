@@ -35,11 +35,11 @@ yarn-error.log*
 
 # vercel
 .vercel
-.venv
+
 .yarn
 
 .turbo
-.vscode
+
 # exports
 /public/exports
 
@@ -48,3 +48,6 @@ yarn-error.log*
 /public/sitemap-0.xml
 /playwright-report
 /test-results
+
+.venv/
+.vscode/
