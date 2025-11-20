@@ -1,34 +1,6 @@
 {
   "lightModeLogo": "/svg/tina-icon-orange.svg",
   "darkModeLogo": "/svg/tina-icon-orange.svg",
-  "tabs": [
-    {
-      "title": "test",
-      "supermenuGroup": [
-        {
-          "items": [
-            {
-              "slug": "content/docs/desktop-wallet/reset-data.mdx",
-              "_template": "item"
-            },
-            {
-              "slug": "content/docs/browser-wallet/setup-browser-wallet.mdx",
-              "_template": "item"
-            },
-            {
-              "slug": "content/docs/guides/import-export-file.mdx",
-              "_template": "item"
-            },
-            {
-              "slug": "content/docs/guides/deciding-wallet.mdx",
-              "_template": "item"
-            }
-          ]
-        }
-      ],
-      "_template": "docsTab"
-    }
-  ],
   "ctaButtons": {
     "button1": {
       "label": "TinaCMS Docs",
