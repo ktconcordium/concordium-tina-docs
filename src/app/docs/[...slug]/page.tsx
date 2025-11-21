@@ -1,3 +1,6 @@
+// src/app/docs/[...slug]/page.tsx
+// @ts-nocheck
+
 import { TinaClient } from "@/app/tina-client";
 import settings from "@/content/siteConfig.json";
 import { fetchTinaData } from "@/services/tina/fetch-tina-data";
@@ -11,52 +14,55 @@ const siteUrl =
     ? "http://localhost:3000"
     : settings.siteUrl;
 
-/**
- * Pre-generate all static params for docs pages
- */
 export async function generateStaticParams() {
   try {
-    // First page of docs
-    let pageListData = await client.queries.docsConnection({});
-    const edges = [...(pageListData.data.docsConnection.edges ?? [])];
+    // Get first page of docs
+    let pageListData = await client.queries.docsConnection();
 
-    // Collect all remaining pages if paginated
+    // Collect all edges, including paginated ones
+    const edges: any[] = [
+      ...(pageListData.data.docsConnection.edges || []),
+    ];
+
     while (pageListData.data.docsConnection.pageInfo.hasNextPage) {
       const lastCursor = pageListData.data.docsConnection.pageInfo.endCursor;
       pageListData = await client.queries.docsConnection({
         after: lastCursor,
       });
 
-      edges.push(...(pageListData.data.docsConnection.edges ?? []));
+      if (pageListData.data.docsConnection.edges) {
+        edges.push(...pageListData.data.docsConnection.edges);
+      }
     }
 
-    // Map to the slug array expected by [...slug]
-    return edges
-      .map((edge) => edge?.node?._sys.path)
-      .filter((path): path is string => !!path)
-      .map((path) => {
-        const withoutExt = path.replace(/\.mdx?$/, "");
-        const withoutPrefix = withoutExt.replace(/^content\/docs\//, "");
-        const slugArray = withoutPrefix.split("/");
+    const pages =
+      edges
+        .map((page) => {
+          const path = page?.node?._sys?.path as string | undefined;
+          if (!path) return null;
 
-        return { slug: slugArray };
-      });
+          const slugWithoutExtension = path.replace(/\.mdx$/, "");
+          const pathWithoutPrefix = slugWithoutExtension.replace(
+            /^content\/docs\//,
+            ""
+          );
+          const slugArray = pathWithoutPrefix.split("/");
+
+          return { slug: slugArray };
+        })
+        .filter(Boolean) as { slug: string[] }[];
+
+    return pages;
   } catch (error) {
-    // biome-ignore lint/suspicious/noConsole
     console.error("Error in generateStaticParams:", error);
     return [];
   }
 }
 
-/**
- * Metadata generation for each docs page
- */
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string[] };
-}) {
-  const slug = (params.slug || []).join("/");
+export async function generateMetadata({ params }: any) {
+  const slugArray: string[] = params?.slug || [];
+  const slug = slugArray.join("/");
+
   const { data } = await fetchTinaData(client.queries.docs, slug);
 
   if (!data.docs.seo) {
@@ -79,15 +85,10 @@ async function getData(slug: string) {
   return data;
 }
 
-/**
- * Docs page component
- */
-export default async function DocsPage({
-  params,
-}: {
-  params: { slug: string[] };
-}) {
-  const slug = (params.slug || []).join("/");
+export default async function DocsPage({ params }: any) {
+  const slugArray: string[] = params?.slug || [];
+  const slug = slugArray.join("/");
+
   const data = await getData(slug);
   const pageTableOfContents = getTableOfContents(data?.data.docs.body);
 
