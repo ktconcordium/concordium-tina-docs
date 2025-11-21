@@ -1,21 +1,23 @@
 import { defineConfig } from "tinacms";
 import { schema } from "./schema";
 
+const repoName = "concordium-tina-docs";
+
+// Base path used by Tina admin assets (same as Next basePath)
+const tinaBasePath =
+  process.env.NEXT_PUBLIC_BASE_PATH ||
+  (process.env.NODE_ENV === "production" ? `/${repoName}` : "");
+
 export const config = defineConfig({
   schema,
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
   branch:
-    process.env.NEXT_PUBLIC_TINA_BRANCH || // custom branch env override
-    process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF || // Vercel branch env
-    process.env.HEAD, // Netlify branch env
+    process.env.NEXT_PUBLIC_TINA_BRANCH ||
+    process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF ||
+    process.env.HEAD ||
+    "main",
   token: process.env.TINA_TOKEN,
   media: {
-    // If you wanted cloudinary do this
-    // loadCustomStore: async () => {
-    //   const pack = await import("next-tinacms-cloudinary");
-    //   return pack.TinaCloudCloudinaryMediaStore;
-    // },
-    // this is the config for the tina cloud media store
     tina: {
       publicFolder: "public",
       mediaRoot: "",
@@ -24,10 +26,9 @@ export const config = defineConfig({
   },
   build: {
     publicFolder: "public", // The public asset folder for your framework
-    outputFolder: "admin", // within the public folder
+    outputFolder: "admin",  // within the public folder
+    basePath: tinaBasePath, // 🔹 NEW: prefix admin assets with /concordium-tina-docs in prod
   },
 });
 
-console.log("Tina clientId:", process.env.NEXT_PUBLIC_TINA_CLIENT_ID);
-console.log("Tina branch:", process.env.NEXT_PUBLIC_TINA_BRANCH);
 export default config;
