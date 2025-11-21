@@ -39,9 +39,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build TinaCMS (generate types + GraphQL client)
+      - name: Build TinaCMS
         env:
           NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
+          NEXT_PUBLIC_TINA_BRANCH: ${{ github.ref_name }}
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
         run: npx tinacms build
 
