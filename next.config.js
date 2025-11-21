@@ -3,20 +3,18 @@ const redirects = require("./content/settings/config.json")?.redirects || [];
 
 /** @type {import('next').NextConfig} */
 
-// ---- GitHub Pages / basePath setup ----
-const repoName = "concordium-tina-docs";
-const isProd = process.env.NODE_ENV === "production";
-
-// We still keep the EXPORT_MODE flag you already use
 const isStatic = process.env.EXPORT_MODE === "static";
 
-// For local dev: no basePath
-// For GitHub Pages (production): use /concordium-tina-docs
-const basePath = isProd ? `/${repoName}` : "";
-const assetPrefix = isProd ? `/${repoName}` : "";
+// 👇 key part for GitHub Pages
+const basePath =
+  process.env.NEXT_PUBLIC_BASE_PATH ||
+  (process.env.NODE_ENV === "production" ? "/concordium-tina-docs" : "");
 
-// Static export config for GitHub Pages
+const assetPrefix =
+  process.env.NEXT_PUBLIC_ASSET_PREFIX || basePath || undefined;
+
 const extraConfig = {};
+
 if (isStatic) {
   extraConfig.output = "export";
   extraConfig.trailingSlash = true;
@@ -25,13 +23,9 @@ if (isStatic) {
 
 module.exports = {
   ...extraConfig,
-
   basePath,
   assetPrefix,
-
   images: {
-    // Static export on GitHub Pages => disable Next's image optimizer
-    unoptimized: true,
     path: `${assetPrefix}/_next/image`,
     remotePatterns: [
       {
@@ -61,6 +55,8 @@ module.exports = {
   async rewrites() {
     return [
       {
+        // Note: basePath is handled automatically by Next,
+        // so we leave this as "/admin"
         source: "/admin",
         destination: "/admin/index.html",
       },
