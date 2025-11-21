@@ -44,7 +44,6 @@ jobs:
           NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
           NEXT_PUBLIC_TINA_BRANCH: ${{ github.ref_name }}
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
-          NEXT_PUBLIC_BASE_PATH: "/concordium-tina-docs"   # 🔹 add this
         run: npx tinacms build
 
       - name: Build Next.js (static export)
