@@ -1,7 +1,7 @@
 import { TinaClient } from "@/app/tina-client";
 import settings from "@/content/siteConfig.json";
 import { fetchTinaData } from "@/services/tina/fetch-tina-data";
-import client from "@/tina/__generated__/client";
+import { client } from "@/tina/__generated__/client"; // ← use named export
 import { getTableOfContents } from "@/utils/docs";
 import { getSeo } from "@/utils/metadata/getSeo";
 import Document from ".";
@@ -11,40 +11,37 @@ const siteUrl =
     ? "http://localhost:3000"
     : settings.siteUrl;
 
+/**
+ * Required for `output: "export"`: pre-generate all docs routes.
+ */
 export async function generateStaticParams() {
   try {
-    let pageListData = await client.queries.docsConnection();
-    const allPagesListData = pageListData;
+    // First page of docs
+    let pageListData = await client.queries.docsConnection({ first: 100 });
 
+    const edges =
+      [...(pageListData.data.docsConnection.edges || [])];
+
+    // Paginate if there are more
     while (pageListData.data.docsConnection.pageInfo.hasNextPage) {
       const lastCursor = pageListData.data.docsConnection.pageInfo.endCursor;
       pageListData = await client.queries.docsConnection({
+        first: 100,
         after: lastCursor,
       });
 
-      allPagesListData.data.docsConnection.edges?.push(
-        ...(pageListData.data.docsConnection.edges || [])
-      );
+      edges.push(...(pageListData.data.docsConnection.edges || []));
     }
 
-    const pages =
-      allPagesListData.data.docsConnection.edges?.map((page) => {
-        const path = page?.node?._sys.path;
-        const slugWithoutExtension = path?.replace(/\.mdx$/, "");
-        const pathWithoutPrefix = slugWithoutExtension?.replace(
-          /^content\/docs\//,
-          ""
-        );
-        const slugArray = pathWithoutPrefix?.split("/") || [];
-
-        return {
-          slug: slugArray,
-        };
-      }) || [];
-
-    return pages;
+    // Use Tina's breadcrumbs to build [...slug]
+    return edges
+      .map((edge) => edge?.node?._sys?.breadcrumbs)
+      .filter(
+        (crumbs): crumbs is string[] =>
+          Array.isArray(crumbs) && crumbs.length > 0,
+      )
+      .map((slug) => ({ slug }));
   } catch (error) {
-    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.error("Error in generateStaticParams:", error);
     return [];
   }
@@ -53,10 +50,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string[] }>;
+  params: { slug: string[] };
 }) {
-  const dynamicParams = await params;
-  const slug = dynamicParams?.slug?.join("/");
+  const slug = params.slug.join("/");
   const { data } = await fetchTinaData(client.queries.docs, slug);
 
   if (!data.docs.seo) {
@@ -82,10 +78,9 @@ async function getData(slug: string) {
 export default async function DocsPage({
   params,
 }: {
-  params: Promise<{ slug: string[] }>;
+  params: { slug: string[] };
 }) {
-  const dynamicParams = await params;
-  const slug = dynamicParams?.slug?.join("/");
+  const slug = params.slug.join("/");
   const data = await getData(slug);
   const pageTableOfContents = getTableOfContents(data?.data.docs.body);
 
