@@ -41,8 +41,15 @@ jobs:
 
       - name: Build TinaCMS
         env:
+          # Client ID for Tina Cloud
           NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
-          NEXT_PUBLIC_TINA_BRANCH: ${{ github.ref_name }}
+          TINA_PUBLIC_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
+
+          # Branch (must match the Tina Cloud branch, here: main)
+          NEXT_PUBLIC_TINA_BRANCH: main
+          TINA_BRANCH: main
+
+          # Auth token from Tina Cloud
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
         run: npx tinacms build
 
