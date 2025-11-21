@@ -1,0 +1,60 @@
+---
+title: "Reset desktop wallet data"
+---
+
+(reset-data)=
+
+
+All the local data of the desktop wallet is stored in a database in the user's applications data folder.
+
+The desktop wallet does not remove your user data when it is uninstalled; this avoids users losing their data, and simplifies the update process for the application.
+
+Occasionally, it might be necessary to delete the user data. The following steps describe the process of deleting this user data. Make sure that you have a [backup](#backup-import-recover) with your data before starting this process.
+
+<Callout
+  body={<>
+Deleting the user data without a [backup](#backup-import-recover) will mean you can only recover what is recoverable with [account recovery](#backup-import-recover) (under "Recover accounts without a backup file"), which does not include your identities, address book, names or notes.
+  </>}
+  variant="warning"
+/>
+
+
+## Delete the user data
+
+Delete the following folder containing all the user data of the wallet:
+
+<accordion
+  heading="Mainnet"
+  docText={<>
+- macOS: Users/<user>/Library/Application Support/Concordium Wallet
+
+- Linux: ~/.config/Concordium Wallet
+
+- Windows: Users/<user>/AppData/Roaming/Concordium Wallet
+  </>}
+  image=""
+  fullWidth={false}
+/>
+
+<accordion
+  heading="Testnet"
+  docText={<>
+- macOS: Users/<user>/Library/Application Support/Concordium Wallet testnet
+
+- Linux: ~/.config/Concordium Wallet testnet
+
+- Windows: Users/<user>/AppData/Roaming/Concordium Wallet testnet
+  </>}
+  image=""
+  fullWidth={false}
+/>
+
+<Callout
+  body={<>
+To quickly navigate to the roaming folder on Windows, enter {code}`%appdata%` in the file explorer's navigation bar.
+  </>}
+  variant="info"
+/>
+
+
+When you open the wallet for the first time after resetting the user data, it will behave as a fresh installation, and prompt you to accept the terms and conditions and choose a new password.
