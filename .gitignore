@@ -53,3 +53,6 @@ yarn-error.log*
 .vscode/
 
 scripts.txt
+
+# TinaCMS dev admin (do not commit)
+public/admin/
