@@ -1,7 +1,7 @@
 import { TinaClient } from "@/app/tina-client";
 import settings from "@/content/siteConfig.json";
 import { fetchTinaData } from "@/services/tina/fetch-tina-data";
-import { client } from "@/tina/__generated__/client"; // ← use named export
+import client from "@/tina/__generated__/client";
 import { getTableOfContents } from "@/utils/docs";
 import { getSeo } from "@/utils/metadata/getSeo";
 import Document from ".";
@@ -12,47 +12,64 @@ const siteUrl =
     : settings.siteUrl;
 
 /**
- * Required for `output: "export"`: pre-generate all docs routes.
+ * Pre-generate all possible slug params from Tina docs.
  */
 export async function generateStaticParams() {
   try {
-    // First page of docs
-    let pageListData = await client.queries.docsConnection({ first: 100 });
+    let pageListData = await client.queries.docsConnection();
+    const edges: any[] = [];
 
-    const edges =
-      [...(pageListData.data.docsConnection.edges || [])];
-
-    // Paginate if there are more
-    while (pageListData.data.docsConnection.pageInfo.hasNextPage) {
-      const lastCursor = pageListData.data.docsConnection.pageInfo.endCursor;
-      pageListData = await client.queries.docsConnection({
-        first: 100,
-        after: lastCursor,
-      });
-
-      edges.push(...(pageListData.data.docsConnection.edges || []));
+    // Collect first page
+    if (pageListData.data.docsConnection.edges) {
+      edges.push(...pageListData.data.docsConnection.edges);
     }
 
-    // Use Tina's breadcrumbs to build [...slug]
-    return edges
-      .map((edge) => edge?.node?._sys?.breadcrumbs)
-      .filter(
-        (crumbs): crumbs is string[] =>
-          Array.isArray(crumbs) && crumbs.length > 0,
-      )
-      .map((slug) => ({ slug }));
+    // Paginate if needed
+    while (pageListData.data.docsConnection.pageInfo.hasNextPage) {
+      const lastCursor = pageListData.data.docsConnection.pageInfo.endCursor;
+      pageListData = await client.queries.docsConnection({ after: lastCursor });
+
+      if (pageListData.data.docsConnection.edges) {
+        edges.push(...pageListData.data.docsConnection.edges);
+      }
+    }
+
+    const pages =
+      edges.map((edge) => {
+        const path: string = edge?.node?._sys?.path || "";
+        if (!path) return null;
+
+        // content/docs/foo/bar.mdx -> foo/bar
+        const slugWithoutExtension = path.replace(/\.mdx$/, "");
+        const pathWithoutPrefix = slugWithoutExtension.replace(
+          /^content\/docs\//,
+          ""
+        );
+
+        const slugArray = pathWithoutPrefix
+          .split("/")
+          .filter((segment) => segment.length > 0);
+
+        return { slug: slugArray };
+      }).filter(Boolean) || [];
+
+    return pages as { slug: string[] }[];
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error in generateStaticParams:", error);
     return [];
   }
 }
 
+/**
+ * SEO metadata for each docs page.
+ */
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string[] };
 }) {
-  const slug = params.slug.join("/");
+  const slug = params?.slug?.join("/") || "";
   const { data } = await fetchTinaData(client.queries.docs, slug);
 
   if (!data.docs.seo) {
@@ -75,12 +92,15 @@ async function getData(slug: string) {
   return data;
 }
 
+/**
+ * Docs page component.
+ */
 export default async function DocsPage({
   params,
 }: {
   params: { slug: string[] };
 }) {
-  const slug = params.slug.join("/");
+  const slug = params?.slug?.join("/") || "";
   const data = await getData(slug);
   const pageTableOfContents = getTableOfContents(data?.data.docs.body);
 
