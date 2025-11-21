@@ -3,13 +3,20 @@ const redirects = require("./content/settings/config.json")?.redirects || [];
 
 /** @type {import('next').NextConfig} */
 
+// ---- GitHub Pages / basePath setup ----
+const repoName = "concordium-tina-docs";
+const isProd = process.env.NODE_ENV === "production";
+
+// We still keep the EXPORT_MODE flag you already use
 const isStatic = process.env.EXPORT_MODE === "static";
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-const assetPrefix =
-  process.env.NEXT_PUBLIC_ASSET_PREFIX || basePath || undefined;
 
+// For local dev: no basePath
+// For GitHub Pages (production): use /concordium-tina-docs
+const basePath = isProd ? `/${repoName}` : "";
+const assetPrefix = isProd ? `/${repoName}` : "";
+
+// Static export config for GitHub Pages
 const extraConfig = {};
-
 if (isStatic) {
   extraConfig.output = "export";
   extraConfig.trailingSlash = true;
@@ -18,9 +25,13 @@ if (isStatic) {
 
 module.exports = {
   ...extraConfig,
+
   basePath,
   assetPrefix,
+
   images: {
+    // Static export on GitHub Pages => disable Next's image optimizer
+    unoptimized: true,
     path: `${assetPrefix}/_next/image`,
     remotePatterns: [
       {
@@ -66,7 +77,6 @@ module.exports = {
 
   turbopack: {
     resolveExtensions: [".mdx", ".tsx", ".ts", ".jsx", ".js", ".mjs", ".json"],
-    // Add this rule to handle SVG as React components for Local Development
     rules: {
       "*.svg": {
         loaders: ["@svgr/webpack"],
@@ -77,23 +87,20 @@ module.exports = {
 
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      // Configure Monaco Editor for minimal build
       config.plugins.push(
         new MonacoWebpackPlugin({
           languages: ["javascript"],
           filename: "static/[name].worker.js",
-          features: ["!gotoSymbol"], // Disable heavy features
+          features: ["!gotoSymbol"],
         })
       );
     }
 
-    // Add this module rule to handle SVG as React components for Production
     config.module.rules.push({
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
 
-    // Optimize bundle size for serverless functions
     if (isServer) {
       config.externals = [...(config.externals || []), "fs", "path", "os"];
     }
