@@ -26,12 +26,7 @@ export const config = defineConfig({
   build: {
     publicFolder: "public", // where Next serves static assets from
     outputFolder: "admin",  // so we get public/admin/index.html, etc.
-
-    // IMPORTANT: only set basePath in production (GitHub Pages),
-    // NOT in local dev, otherwise localhost:/admin breaks.
-    ...(process.env.NODE_ENV === "production"
-      ? { basePath: "concordium-tina-docs" } // repo name, no leading slash
-      : {}),
+    basePath: "concordium-tina-docs",
   },
 });
 
