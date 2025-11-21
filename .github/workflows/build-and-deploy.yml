@@ -46,17 +46,15 @@ jobs:
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
         run: npx tinacms build
 
-      - name: Build Next.js
+      - name: Build Next.js (static export)
         env:
           NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
           NEXT_PUBLIC_TINA_BRANCH: main
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+          EXPORT_MODE: static        # 👈 this triggers output = "export" in next.config.js
         run: pnpm next build
 
-      - name: Export static site for GitHub Pages
-        run: pnpm next export
-
-      # Upload the static output (in ./out)
+      # Next 15 with output="export" writes the static site to ./out
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
