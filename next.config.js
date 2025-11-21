@@ -3,19 +3,17 @@ const redirects = require("./content/settings/config.json")?.redirects || [];
 
 /** @type {import('next').NextConfig} */
 
-// ---- GitHub Pages / basePath setup ----
+// GitHub Pages repo name
 const repoName = "concordium-tina-docs";
 const isProd = process.env.NODE_ENV === "production";
 
-// We still keep the EXPORT_MODE flag you already use
-const isStatic = process.env.EXPORT_MODE === "static";
-
-// For local dev: no basePath
-// For GitHub Pages (production): use /concordium-tina-docs
+// When building for GitHub Pages:
 const basePath = isProd ? `/${repoName}` : "";
 const assetPrefix = isProd ? `/${repoName}` : "";
 
 // Static export config for GitHub Pages
+const isStatic = process.env.EXPORT_MODE === "static";
+
 const extraConfig = {};
 if (isStatic) {
   extraConfig.output = "export";
@@ -30,39 +28,15 @@ module.exports = {
   assetPrefix,
 
   images: {
-    // Static export on GitHub Pages => disable Next's image optimizer
-    unoptimized: true,
-    path: `${assetPrefix}/_next/image`,
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "assets.tina.io",
-        port: "",
-      },
-    ],
-  },
-
-  outputFileTracingIncludes: {
-    "/api/**/*": [],
-  },
-  outputFileTracingExcludes: {
-    "/api/**/*": [
-      ".next/cache/**/*",
-      "node_modules/@swc/core-linux-x64-gnu",
-      "node_modules/@swc/core-linux-x64-musl",
-      "node_modules/@esbuild/",
-      "node_modules/webpack",
-      "node_modules/terser",
-      ".git/**/*",
-      "public/**/*",
-    ],
+    unoptimized: true, // REQUIRED for GitHub Pages
   },
 
   async rewrites() {
     return [
       {
-        source: "/admin",
-        destination: "/admin/index.html",
+        // Corrected rewrite for GitHub Pages
+        source: `${basePath}/admin`,
+        destination: `${basePath}/admin/index.html`,
       },
     ];
   },
