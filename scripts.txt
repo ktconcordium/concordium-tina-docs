@@ -1,13 +1,21 @@
 # RST to MD initial conversion
-rst2myst convert --config content/config.yaml content/docs/desktop-wallet/*.rst
+rst2myst convert --config content/config.yaml content/docs/browser-wallet/*.rst
 
 # Cleans up RST leftovers
-python3 conversion-v7.py content/docs/desktop-wallet content/docs/variables.rst
+python3 conversion-v7.py content/docs/browser-wallet content/docs/variables.rst
 
 # .MD to .MDX + Title
-python3 add_frontmatter_from_h1.py content/docs/desktop-wallet
+python3 add_frontmatter_from_h1.py content/docs/browser-wallet
 
 
+# Locally run backend connected to TinaCloud
+npx next dev
+
+# Local build
+npx tinacms build
+
+# Local dev
+pnpm run dev
 
 
 

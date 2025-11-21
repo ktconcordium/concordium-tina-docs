@@ -28,4 +28,6 @@ export const config = defineConfig({
   },
 });
 
+console.log("Tina clientId:", process.env.NEXT_PUBLIC_TINA_CLIENT_ID);
+console.log("Tina branch:", process.env.NEXT_PUBLIC_TINA_BRANCH);
 export default config;

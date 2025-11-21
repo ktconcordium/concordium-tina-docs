@@ -51,3 +51,5 @@ yarn-error.log*
 
 .venv/
 .vscode/
+
+scripts.txt
