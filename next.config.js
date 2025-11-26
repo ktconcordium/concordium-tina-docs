@@ -1,15 +1,13 @@
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const redirects = require("./content/settings/config.json")?.redirects || [];
 
-/** @type {import('next').NextConfig} */
-
 // GitHub Pages repo name
 const repoName = "concordium-tina-docs";
 const isProd = process.env.NODE_ENV === "production";
 
 // When building for GitHub Pages:
 const basePath = isProd ? `/${repoName}` : "";
-const assetPrefix = basePath || undefined;
+const assetPrefix = isProd ? `/${repoName}` : "";
 
 // Static export config for GitHub Pages
 const isStatic = process.env.EXPORT_MODE === "static";
@@ -28,16 +26,13 @@ module.exports = {
   assetPrefix,
 
   images: {
-    // REQUIRED for GitHub Pages (no image optimizer)
     unoptimized: true,
-    // (optional) keep Next’s default path in sync:
-    path: `${assetPrefix || ""}/_next/image`,
   },
 
   async rewrites() {
+    // this is only used in dev / non-export – keep it simple
     return [
       {
-        // IMPORTANT: no basePath here – Next handles it automatically
         source: "/admin",
         destination: "/admin/index.html",
       },
