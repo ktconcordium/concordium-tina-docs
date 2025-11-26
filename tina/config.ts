@@ -26,7 +26,7 @@ export const config = defineConfig({
   build: {
     publicFolder: "public", // where Next serves static assets from
     outputFolder: "admin",  // so we get public/admin/index.html, etc.
-    basePath: "concordium-tina-docs",
+    basePath: "",
   },
 });
 

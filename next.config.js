@@ -1,15 +1,9 @@
+// next.config.js
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const redirects = require("./content/settings/config.json")?.redirects || [];
 
-// GitHub Pages repo name
-const repoName = "concordium-tina-docs";
-const isProd = process.env.NODE_ENV === "production";
+/** @type {import('next').NextConfig} */
 
-// When building for GitHub Pages:
-const basePath = isProd ? `/${repoName}` : "";
-const assetPrefix = isProd ? `/${repoName}` : "";
-
-// Static export config for GitHub Pages
 const isStatic = process.env.EXPORT_MODE === "static";
 
 const extraConfig = {};
@@ -19,24 +13,22 @@ if (isStatic) {
   extraConfig.skipTrailingSlashRedirect = true;
 }
 
-module.exports = {
+const nextConfig = {
   ...extraConfig,
 
-  basePath,
-  assetPrefix,
-
+  // We are at root: https://tinacms.concordium.com
+  // so NO basePath / NO assetPrefix
   images: {
+    // Required for GitHub Pages / static export
     unoptimized: true,
   },
 
+  // For static export, rewrites / redirects don’t truly work,
+  // but leaving redirects here is OK if you accept they’re just no-ops on GH Pages.
   async rewrites() {
-    // this is only used in dev / non-export – keep it simple
-    return [
-      {
-        source: "/admin",
-        destination: "/admin/index.html",
-      },
-    ];
+    // no special rewrite for /admin needed:
+    // GitHub Pages serves public/admin/index.html at /admin automatically.
+    return [];
   },
 
   async redirects() {
@@ -80,3 +72,5 @@ module.exports = {
     return config;
   },
 };
+
+module.exports = nextConfig;
