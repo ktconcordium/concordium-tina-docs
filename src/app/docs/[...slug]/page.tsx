@@ -87,7 +87,7 @@ async function getData(slug: string) {
 
 export default async function DocsPage({ params }: any) {
   const slugArray: string[] = params?.slug || [];
-  const slug = slugArray.join("/concordium-tina-docs/");
+  const slug = slugArray.join("/");
 
   const data = await getData(slug);
   const pageTableOfContents = getTableOfContents(data?.data.docs.body);
