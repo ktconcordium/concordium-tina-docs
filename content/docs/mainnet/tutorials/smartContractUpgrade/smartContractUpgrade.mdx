@@ -1,0 +1,278 @@
+---
+title: "Native upgradability"
+---
+
+(smart-contract-upgrade)=
+
+
+The goal of this tutorial is to deploy a `contract-version1`, upgrade its logic, and migrate its state to `contract-version2`.
+
+The [contract-version1](https://github.com/Concordium/concordium-rust-smart-contracts/tree/main/examples/smart-contract-upgrade/contract-version1)
+includes an `upgrade` function and the [contract-version2](https://github.com/Concordium/concordium-rust-smart-contracts/tree/main/examples/smart-contract-upgrade/contract-version2)
+includes a `migration` function. These functions are explored in the next two sections.
+
+## The `migration` function
+
+When deploying `contract-version1`, you might not know the exact logic of the `contract-version2` yet.
+`Contract-version2` might be a smart contract that fixes a security bug in your smart contract code which will be discovered at some point in the future.
+For that reason, it is good to have the option to call a `migration` function in `contract-version2` when executing the upgrade mechanism in `contract-version1`.
+This allows you to add additional execution logic when upgrading the smart contract.
+
+A `migration` function could have a variety of different purposes such as:
+
+- Log some events.
+- Change values in the state.
+- Change the shape of the smart contract state.
+
+<Callout
+  body={<>
+There is no universal `migration` function and it is not necessary for all upgrades to call a `migration` function.
+In the example smart contract, a `migration` function is provided that should be suitable for most use cases.
+In more detail, the example `migration` function
+focuses on how to change the shape of your smart contract state since this bullet point from above is non-trivial.
+  </>}
+  variant="info"
+/>
+
+
+`Contract-version1` allows you to call a `migration` function as part of the upgrade.
+The `migration` function in `contract-version2` changes the shape of the state from `contract-version1` to `contract-version2`.
+
+## The `upgrade` function
+
+A native smart contract upgrade can be triggered on the `host` as seen in the code snippet below:
+
+```rust
+#[receive(
+   ...
+   low_level
+)]
+fn contract_name(
+   ...
+   host: &mut LowLevelHost,
+   ...
+)  ... {
+   ...
+   let result = host.upgrade(moduleReference);
+   ...
+}
+```
+
+The `upgrade` functions in the example smart contracts are marked as `low_level`. This is *necessary* since the default (*high_level*) mutable functions store the state of the contract at the end of
+execution. This conflicts with migration since the shape of the state *might* be changed by the `migration` function. If the state is then written
+by the default (*high_level*) `upgrade` function, it would overwrite the state stored by the `migration` function.
+
+Greater control is given to the smart contract developer when using `low_level` functions (e.g., additional state manipulation
+capabilities are exposed which are unavailable when using *high_level* functions). These additional state manipulation features are necessary to change the
+shape of the state during the `migration` but they bear the risk that the state becomes corrupted if the `migration` function has some coding bugs.
+Make sure you test your upgrade thoroughly (with integration tests as well as manual tests on testnet)
+and ensure your state is migrated as intended before doing
+the same smart contract upgrade on mainnet.
+
+<Callout
+  body={<>
+To write smart contract code safely and to avoid accidentally corrupting your state,
+you shouldn't use `low-level` functions unless strictly necessary (e.g., for `upgrade`/`migration` functions).
+Smart contract functions are by default
+*high_level* (no need to add this attribute explicitly).
+  </>}
+  variant="info"
+/>
+
+
+<Callout
+  body={<>
+You can also write a very simple upgrade mechanism using a *high_level* function with no `migration` function at all. This upgrade
+mechanism requires that the shape of the smart contract state is the same in `contract-version1` and `contract-version2`.
+This means, the `State` struct in `contract-version1` and `contract-version2` has to be identical.
+
+```rust
+#[receive(
+   contract = "contract_name",
+   name = "upgrade",
+   error = "ContractError",
+   mutable
+)]
+fn contract_upgrade(
+   _ctx: &ReceiveContext,
+   host: &mut Host<State>,
+) -> ContractResult<()> {
+   // TODO: Include some authorization checks.
+
+   // Trigger the upgrade.
+   host.upgrade(params.module)?;
+
+   // No `migration` function.
+
+   Ok(())
+}
+```
+  </>}
+  variant="info"
+/>
+
+
+The `upgrade` function in `contract-version1` can be invoked with the following JSON file (input parameter):
+
+```json
+{
+   "migrate": {
+      "Some": [
+         [
+         "<EntryPointNameOfMigrationFunction>",
+         "<InputParametersOfMigrationFunction>"
+         ]
+      ]
+   },
+   "module": "<ModuleReferenceContractVersion2>"
+}
+```
+
+The section [executing an upgrade](/docs/mainnet/tutorials/smartContractUpgrade/smartContractUpgrade#input_parameters) will give examples of how to set the input parameter for the `upgrade` function.
+
+<Callout
+  body={<>
+If the module reference should be upgraded without invoking a `migration` function, use the JSON file (input parameter) below instead:
+
+```json
+{
+   "migrate": {
+      "None": [
+      ]
+   },
+   "module": "<ModuleReferenceContractVersion2>"
+}
+```
+  </>}
+  variant="info"
+/>
+
+
+<Callout
+  body={<>
+Since more responsibility is given to the smart contract developer, smart contract `upgrade`/`migration` functions
+should be coded and executed by experts that know about the underlying risks. You are about to become such an expert.
+  </>}
+  variant="warning"
+/>
+
+
+You now have the required knowledge to execute the upgrade mechanism on testnet in the next section.
+
+## Executing an upgrade
+
+Clone the [smart contract upgrade example](https://github.com/Concordium/concordium-rust-smart-contracts/tree/main/examples/smart-contract-upgrade).
+
+```console
+$git clone --recurse-submodules git@github.com:Concordium/concordium-rust-smart-contracts.git
+```
+
+Navigate to the `contract-version1` example folder:
+
+```console
+$cd ./examples/smart-contract-upgrade/contract-version1
+```
+
+Compile the smart contract to a Wasm module which you will deploy to testnet in the next step.
+
+```console
+$cargo concordium build --out smart_contract_upgrade.wasm.v1
+```
+
+![Compile contract version 1](/../images/compile_contract_version1.png)console
+$concordium-client module deploy ./smart_contract_upgrade.wasm.v1 --sender <YourAccountAddress> --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
+```
+
+![Deploy contract version 1](/../images/deploy_contract_version1.png)console
+$concordium-client contract init <ModuleReference> --contract smart_contract_upgrade --energy 30000 --sender <YourAccountAddress> --grpc-port 20000  --grpc-ip grpc.testnet.concordium.com --secure
+```
+
+For example, when using the module reference from the image above, the command will look as follows:
+
+```console
+$concordium-client contract init 8fc09d2519f516cfbb3d139b1e567753780fbb52854ecbf9a12c447756d18eb0 --contract smart_contract_upgrade --energy 30000 --sender <YourAccountAddress> --grpc-port 20000  --grpc-ip grpc.testnet.concordium.com --secure
+```
+
+![Initialize contract version 1](/../images/initialize_contract.png)console
+$concordium-client contract invoke <YourContractVersion1Index> --entrypoint view --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
+```
+
+For example, when using the smart contract index from the image above, the command will look as follows:
+
+```console
+$concordium-client contract invoke 4462 --entrypoint view --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
+```
+
+You should see the following output.
+
+![View contract version 1](/../images/view_contract_version1.png)console
+$cd ./examples/smart-contract-upgrade/contract-version2
+```
+
+Compile the smart contract to a Wasm module which you will deploy to testnet in the next step.
+
+```console
+$cargo concordium build --out smart_contract_upgrade.wasm.v1
+```
+
+![Compile contract version 2](/../images/compile_contract_version2.png)console
+$concordium-client module deploy ./smart_contract_upgrade.wasm.v1 --sender <YourAccountAddress> --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
+```
+
+![Deploy contract version 2](/../images/deploy_contract_version2.png)json
+{
+   "migrate": {
+      "Some": [
+         [
+         "migration",
+         ""
+         ]
+      ]
+   },
+   "module": "<ModuleReferenceContractVersion2>"
+}
+```
+
+For example, when using the module reference from the image above, the file will look as follows:
+
+```json
+{
+   "migrate": {
+      "Some": [
+         [
+         "migration",
+         ""
+         ]
+      ]
+   },
+   "module": "31539c983f2ee56822041230d7fd20a3516da9271837e23bb77111bb8c4c7dcd"
+}
+```
+
+When invoking the `upgrade` function with the file above, it specifies that the smart contract
+code should be upgraded to the module `31539c983f2ee56822041230d7fd20a3516da9271837e23bb77111bb8c4c7dcd`
+and the `migration` function should be invoked
+with no input parameters (empty string: `""`) as part of the upgrade.
+
+Upgrade the smart contract as follows:
+
+```console
+$concordium-client contract update <YourContractVersion1Index> --entrypoint upgrade --parameter-json upgrade.json --energy 5000 --sender <YourAccountAddress> --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
+```
+
+For example, when using the smart contract index from the image above, the command will look as follows:
+
+```console
+$concordium-client contract update 4462 --entrypoint upgrade --parameter-json upgrade.json --energy 5000 --sender <YourAccountAddress> --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
+```
+
+You should see the following output.
+
+![Upgrade contract version 1](/../images/upgrade.png)console
+$concordium-client contract invoke <YourContractVersion1Index> --entrypoint view --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
+```
+
+![View contract version 2](/../images/view_contract_version2.png){image} ./images/corrupted_state.png
+:align: center
+:alt: Corrupted state
+```

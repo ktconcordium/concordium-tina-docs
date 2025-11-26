@@ -1,0 +1,29 @@
+---
+title: "Build, deploy, and initialize the fractionalizer smart contract"
+---
+
+(fractionalized-nft-sc-actions)=
+
+
+So far so good! You have implemented your smart contract and now you are ready to build, deploy, and create an instance of it.
+
+## Build smart contract
+
+First, build the smart contract into Wasm format. Use the following command to do it. You can extract the **schema** and Wasm-compiled file into a new folder called *dist* as shown in this example.
+
+```console
+cargo concordium build --out dist/module.wasm.v1 --schema-out dist/schema.bin
+```
+
+![](/../images/mid-fractnft-scactions1.png)console
+concordium-client module deploy dist/module.wasm.v1 --sender <YOUR-ADDRESS> --name CIS2-Fractionalizer --grpc-port 20000 --grpc-ip node.testnet.concordium.com
+```
+
+![](/../images/mid-fractnft-scactions2.png)console
+concordium-client contract init <YOUR-MODULE-HASH> --sender <YOUR-ADDRESS> --energy 30000 --contract CIS2-Fractionalizer --grpc-port 20000 --grpc-ip node.testnet.concordium.com
+```
+
+```{image} ../../images/mid-fractnft-scactions3.png
+```
+
+Excellent. Now you can continue to the [following section](/docs/academy/tutorials/fractionalized-nft/mint#mint-fractionalized-nft).

@@ -1,0 +1,219 @@
+---
+title: "Interacting with the wCCD token protocol"
+---
+
+(wccd-interacting)=
+
+
+<Callout
+  body={<>
+Before you start with part 2 of this tutorial, make sure you have:
+
+- access to a testnet node
+- the `concordium-client` version 5.0.1 or greater installed
+- an account created in the wallet that is funded with some CCD
+- the keys from the wallet imported into the `concordium-client` configuration
+
+If you haven't completed any of the above steps,
+[Setup the development environment](#setup-env)
+will guide you through these setup steps.
+If you haven't completed any of the above steps, you can continue
+with [part 3](/docs/mainnet/tutorials/wCCD/wCCD-frontend-set-up#wCCD-frontend-set-up) of this tutorial. However, it is recommended
+to complete every part of this tutorial in the given order.
+You need an up-to-date `concordium-client` version because the wCCD smart contract uses the newest `schema_V3`.
+  </>}
+  variant="info"
+/>
+
+
+## Query (non-state-mutative) functions
+
+The protocol has four query functions (`balanceOf`, `operatorOf`, `tokenMetadata`, and `supports`)
+that you can invoke on the wCCD contract. Because the `schema` is already embedded,
+the input parameters can be provided with the `--parameter-json` flag.
+
+<Callout
+  body={<>
+The wCCD smart contract has its schemas embedded and you will not have to provide any schemas with the `--schema` flag.
+You can read more about schemas in this [section](/docs/mainnet/docs/smart-contracts/contract-schema#contract-schema).
+  </>}
+  variant="info"
+/>
+
+
+(balanceccd)=
+
+### Getting the CCD balance of an address
+
+<accordion
+  heading="Checking the CCD balance of an account (click here)"
+  docText={<>
+You can check the CCD balance of an account on [CCDScan](https://testnet.ccdscan.io/).
+
+![](/../images/wCCD_tutorial_1.png)
+You can check the CCD balance of an account with this command:
+
+.. code-block:: console
+
+    $ concordium-client account show ACCOUNT --grpc-port 20001
+
+![](/../images/wCCD_tutorial_10.png)
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+<accordion
+  heading="Checking the CCD balance of a smart contract (click here)"
+  docText={<>
+You can check the CCD balance of a smart contract with this command:
+
+.. code-block:: console
+
+    $ concordium-client contract show INDEX --grpc-port 20001
+
+![](/../images/wCCD_tutorial_3.png)
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+<Callout
+  body={<>
+The smallest unit of CCD is 1 micro CCD and equals 10{sup}`−6` (one millionth) of a CCD.
+CCD has 6 decimal places. 1 CCD is represented by the balance
+value of 1,000,000 micro CCD on the blockchain and is worth the equivalent of a balance value of 1,000,000 micro wCCD.
+  </>}
+  variant="info"
+/>
+
+
+(balanceof)=
+
+### The `balanceOf` function
+
+<accordion
+  heading="Input parameters for the ``balanceOf`` function (click here)"
+  docText={<>
+Create a ``balanceOf.json`` file and insert the following JSON array.
+
+.. code-block:: json
+    :force:
+
+    [
+        {
+            "address": {
+                "Enum": [
+                    {
+                        "Account": [
+                            ACCOUNT_ADDRESS
+                        ]
+                    },
+                    {
+                        "Contract": [
+                            {
+                                "index": INDEX,
+                                "subindex": SUBINDEX
+                            }
+                        ]
+                    }
+                ]
+            },
+            "token_id": TOKEN_ID
+        }
+    ]
+
+.. note::
+
+    You can query the balance of several addresses in the above array.
+
+If you insert an account address correctly, the JSON array should look similar to the below JSON array.
+
+.. code-block:: json
+
+    [
+        {
+            "address": {
+                "Account": [
+                    "4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j"
+                ]
+            },
+            "token_id": ""
+        }
+    ]
+
+If you insert a smart contract address correctly, the JSON array should look similar to the below JSON array.
+
+.. code-block:: json
+
+    [
+        {
+            "address": {
+                "Contract": [
+                    {
+                        "index": 844,
+                        "subindex": 0
+                    }
+                ]
+            },
+            "token_id": ""
+        }
+    ]
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+You are ready now to invoke the `balanceOf` function with the following command.
+
+```console
+$ concordium-client contract invoke WCCD_CONTRACT_INDEX --entrypoint balanceOf --parameter-json balanceOf.json --grpc-port 20001
+```
+
+![](/../images/wCCD_tutorial_4.png)console
+$ concordium-client contract invoke WCCD_CONTRACT_INDEX --entrypoint operatorOf --parameter-json operatorOf.json --grpc-port 20001
+```
+
+![](/../images/wCCD_tutorial_7.png)console
+$ concordium-client contract invoke WCCD_CONTRACT_INDEX --entrypoint tokenMetadata --parameter-json tokenMetadata.json --grpc-port 20001
+```
+
+![](/../images/wCCD_tutorial_8.png)console
+$ concordium-client contract invoke WCCD_CONTRACT_INDEX --entrypoint supports --parameter-json supports.json --grpc-port 20001
+```
+
+The below screenshot shows the response of querying if the wCCD
+token contract supports the following standards
+`["12345","CIS-0","CIS-2"]`. Its response is that it does
+not support the standard `12345` but it supports the `CIS-0` and the `CIS-1` standards.
+
+![](/../images/wCCD_tutorial_9.png)console
+$ concordium-client contract update WCCD_CONTRACT_INDEX --entrypoint wrap --parameter-json wrap.json --amount AMOUNT --sender SENDER_ACCOUNT --energy 25000 --grpc-port 20001
+```
+
+The below screenshot shows the wrapping of 1 CCD (1,000,000 micro CCDs) into 1,000,000 micro wCCD.
+
+![](/../images/wCCD_tutorial_2.png)console
+$ concordium-client contract update WCCD_CONTRACT_INDEX --entrypoint unwrap --parameter-json unwrap.json --sender SENDER_ACCOUNT --energy 25000 --grpc-port 20001
+```
+
+The below screenshot shows the execution of the `unwrap` function.
+
+![](/../images/wCCD_tutorial_11.png)console
+$ concordium-client contract update WCCD_CONTRACT_INDEX --entrypoint transfer --parameter-json transfer.json --sender SENDER_ACCOUNT --energy 25000 --grpc-port 20001
+```
+
+The below screenshot shows the execution of the `transfer` function.
+
+![](/../images/wCCD_tutorial_5.png)console
+$ concordium-client contract update WCCD_CONTRACT_INDEX --entrypoint updateOperator --parameter-json updateOperator.json --sender SENDER_ACCOUNT --energy 25000 --grpc-port 20001
+```
+
+The below screenshot shows the execution of the `updateOperator` function.
+
+![](/../images/wCCD_tutorial_6.png)
+
+Confirm that the `updateOperator` function has added/removed operator addresses by checking
+with the `operatorOf` function the state of the smart contract again.
+
+To continue with the tutorial click [here](/docs/mainnet/tutorials/wCCD/wCCD-frontend-set-up#wCCD-frontend-set-up).

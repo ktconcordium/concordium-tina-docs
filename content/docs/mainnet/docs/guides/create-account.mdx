@@ -1,0 +1,117 @@
+---
+title: "Create an account"
+---
+
+(create-account)=
+
+
+Desktop Wallet users: When you created your [identity](/docs/mainnet/docs/resources/glossary#identity), it came with an [initial account](/docs/mainnet/docs/resources/glossary#initial-account). The initial account is a special account that the [identity provider](/docs/mainnet/docs/resources/glossary#identity-provider) submits
+to the chain. When you already have an identity, you can create more [accounts](/docs/mainnet/docs/resources/glossary#account) with that identity yourself.
+
+Concordium Wallet for Web and Concordium Wallet users: No initial account was created when you created your [identity](/docs/mainnet/docs/resources/glossary#identity). You create all [accounts](/docs/mainnet/docs/resources/glossary#account) related to your identities.
+
+To learn more about identities and accounts, see [Identity framework on Concordium](/docs/mainnet/docs/protocol/identity#reference-identity) and [Accounts](/docs/mainnet/docs/protocol/manage-accounts#managing_accounts).
+
+<accordion
+  heading="Concordium Wallet"
+  docText={<>
+1. Go to the Your Accounts screen (tap the account identifier on the main screen).
+
+2. Tap **Create new account**.
+
+3. Enter the name of the account and tap **Continue**.
+
+![](/../images/cryptoX/create-account.png)
+4. Tap the identity you want to use for the new account.
+
+![](/../images/cryptoX/cryptox-create-account-identity.png)
+5. Tap **Create account**.
+
+It might take a few seconds for your new account to finalize on the chain. After that, it will be visible in the account list on the Your Accounts screen .
+
+You can access settings for your new account by tapping the gear icon in the upper right corner.
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+<accordion
+  heading="Desktop Wallet"
+  docText={<>
+.. note::
+    You can't import accounts that were created on Concordium Wallet for Web.
+
+Before you create more accounts, you need a LEDGER device with the Concordium LEDGER App installed. See [Set up the LEDGER device and install the Concordium LEDGER App](/docs/mainnet/docs/guides/overview-desktop#install-ledger).
+
+1. Go to **Accounts**. You can now see all the accounts that you're the custodian of.
+
+2. Select the plus sign in the upper right corner to create a new account.
+
+![](/../images/desktop-wallet/dw-add-account-plus.png)
+3. Enter a name for your new account, and then select **Continue**.
+
+![](/../images/desktop-wallet/dw-new-account-name.png)
+4. Select the identity you want to create the new account from. All available identities are listed in the right pane.
+
+![](/../images/desktop-wallet/dw-new-account-identity.png)
+5. Select whether you want to reveal any attributes on the account or not. The available attributes depend on the identity provider.
+
+![](/../images/desktop-wallet/dw-new-account-attributes.png)
+.. note::
+    If you select **Reveal attributes**, the selected attributes will be public on the blockchain. Concordium recommends that you do not reveal any attributes.
+
+6. Select **Submit without revealing attributes**.
+
+7. Connect your LEDGER device if you haven't done so already, and enter your PIN code. Press the up and down arrows to choose a digit, and then press both buttons to select the digit. The LEDGER device says **Concordium is ready**.
+
+8. Wait for the message in the Desktop Wallet saying **Ledger device is ready** and select **Submit**.
+
+9. You now have to confirm the following on the LEDGER device:
+
+    - Create credential (each credential is assigned a number): Press the right button and then both buttons to confirm **Accept**.
+    - Public key: Press both buttons to accept.
+
+10. Verify that the public key on the LEDGER device corresponds to the public key in the Desktop Wallet. Use the right button to navigate through the key.
+
+11. Press both buttons to confirm, and then in the Desktop Wallet, select **Continue**.
+
+12. The LEDGER device says **Review details**. Press both buttons, and then press the right button to navigate through the public key and verify that it corresponds to the information in the Desktop Wallet. Press both buttons to confirm.
+
+13. Verify that the signature threshold on the LEDGER device corresponds to the threshold in the Desktop Wallet.
+
+14.  Press the right button to verify that the identity disclosure threshold on the LEDGER device corresponds to the threshold in the Desktop Wallet, and then press both buttons.
+
+15. The LEDGER device says **Sign details**. Press both buttons to sign the transaction. In the Desktop Wallet you can now see the that the account has been submitted to the blockchain.
+
+16. Select **Finished**. Your new account is now listed along with the other accounts you're the custodian of.
+
+.. Note::
+
+    To set the currently selected account the default account, click the star icon. Setting this means that this will be the account initially visible when opening the account page.
+
+![dark account balance area with favorite button highlighted](/../images/desktop-wallet/dw-favorite-account.png)
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+<accordion
+  heading="Concordium Wallet for Web"
+  docText={<>
+Go to the Accounts page ( select **Accounts** in the menu).
+
+If you do not have any accounts, click **Create account**.
+
+If you do not have an identity, click **Create new identity**.
+
+If you already have an account and want to create more accounts:
+
+1. Click on the **+**.
+2. Click on the identity you want to use to create the account.
+3. Click **Create account**.
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+

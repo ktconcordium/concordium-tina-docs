@@ -1,0 +1,50 @@
+---
+title: "Proofs and revealing information"
+---
+
+(secret-proofs)=
+
+
+Some dApps or services may require you to prove that you are over a certain age, that you reside in a specific range of countries or area without revealing your exact age or country of residence, or that you have a certain type of education. You can choose whether you want to prove these [attributes](/docs/mainnet/docs/resources/glossary#attributes) to the dApp or service using your [account credentials](/docs/mainnet/docs/resources/glossary#account-credential) or [verifiable credentials](/docs/mainnet/docs/resources/glossary#verifiable-credential). The dApp or service uses a [zero-knowledge proof](/docs/mainnet/docs/resources/glossary#zero-knowledge-proof) to request the attributes necessary for their service. This means that the dApp or service does not get any exact attributes, only proof that you live up to their requirements. You can choose which account (and thus identity) to use to fulfill the proof request for [account credentials](/docs/mainnet/docs/resources/glossary#account-credential) using the drop-down above the proof.
+
+<Callout
+  body={<>
+Accounts created with the legacy backup file system (no longer possible to create) cannot generate or use zero-knowledge (zk) ID proofs. These existing accounts remain on the network but cannot be used to perform zk proof checks in dApps, including verifications such as age, nationality, or similar attributes.
+  </>}
+  variant="info"
+/>
+
+
+![](/../images/browser-wallet/zkp-one-attribute-ok.png){image} ../images/browser-wallet/zkp-two-attributes-not-ok.png
+:width: 50%
+```
+
+In this situation you must reject the proof because you cannot prove that you meet the requirements in the statement.
+
+Other times the dApp or service may request that you **reveal** the information to them, such as your exact nationality or exact age. This is called **Information to reveal** and it appears as shown below in the wallet.
+
+![](/../images/browser-wallet/reveal-proof.png){image} ../images/browser-wallet/mixed-statement-proof.png
+:width: 50%
+```
+
+Another example of a mixed proof includes a request to prove information from your [verifiable credential](/docs/mainnet/docs/resources/glossary#verifiable-credential) and from your identity. The first screen is requesting you prove information from your verifiable credential. Click **Continue**.
+
+![window with verifiable credential proof and continue button](/../images/browser-wallet/vc-mixed-proof-1.png)
+
+![window with account credential proof and approve button](/../images/browser-wallet/vc-mixed-proof-2.png)
+
+## Example dApp
+
+Concordium provides the following example demo app on testnet for you to see how the functionality works:
+
+- [Demo dApp](https://gallery.testnet.concordium.com/)
+
+The app is a gallery that requires the user to be over a certain minimum age and an EU resident to view some content.
+
+## Concordium Wallet for Web
+
+When the wallet receives a request, a screen similiar to below appears.
+
+![](/../images/browser-wallet/zkp-one-attribute-ok.png)
+
+Click **Accept** to allow the dApp or service to complete the proof or click **Reject** if you do not want to share this information. For more information about verifiable credentials and proofs, see [Web3 ID in the Concordium Wallet for Web](/docs/mainnet/docs/guides/wallet#web3id-wallet).

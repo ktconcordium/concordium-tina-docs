@@ -1,6 +1,30 @@
 {
   "lightModeLogo": "/svg/tina-icon-orange.svg",
   "darkModeLogo": "/svg/tina-icon-orange.svg",
+  "tabs": [
+    {
+      "supermenuGroup": [
+        {
+          "title": "Glossary test",
+          "items": [
+            {
+              "slug": "content/docs/mainnet/docs/resources/glossary.mdx",
+              "_template": "item"
+            },
+            {
+              "slug": "content/docs/mainnet/docs/browser-wallet/browser-wallet-faq.mdx",
+              "_template": "item"
+            },
+            {
+              "slug": "content/docs/glossary-test.mdx",
+              "_template": "item"
+            }
+          ]
+        }
+      ],
+      "_template": "docsTab"
+    }
+  ],
   "ctaButtons": {
     "button1": {
       "label": "TinaCMS Docs",

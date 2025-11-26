@@ -64,6 +64,7 @@ conversion-v5.py
 conversion-v6.py
 conversion-v7.py
 convert-v7.py
+convert-v8.py
 add_frontmatter_from_h1.py
 conversion.py
 scripts.txt

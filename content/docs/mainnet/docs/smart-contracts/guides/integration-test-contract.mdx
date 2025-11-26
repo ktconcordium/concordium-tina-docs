@@ -1,0 +1,569 @@
+---
+title: "Integration tests"
+---
+
+(integration-test-contract)=
+
+
+This guide describes how to write *integration tests* in Rust for your smart contracts using the [Concordium smart contract testing library](https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/).
+
+<Callout
+  body={<>
+Unit testing your contracts with the [test_infrastructure] has been deprecated in favor of [concordium-smart-contract-testing].
+To migrate your contracts and tests see [migrate-contracts-for-std-8.1](#migrate-contracts-for-std-8.1).
+You can read the [old documentation for unit testing here](/docs/mainnet/docs/smart-contracts/guides/unit-test-contract#unit-test-contract) if you are not ready to migrate your contracts.
+  </>}
+  variant="info"
+/>
+
+
+The library allows you to test individual contracts in isolation, but, notably, also interactions between multiple contracts.
+When running the tests, they are executed locally on the exact contract code that is deployed on the chain, and using the same execution engine that the nodes use.
+V0 smart contracts are not supported, but all V1 smart contract features are, including upgrades, and it is also possible to see the energy usage of your contracts.
+This allows you to refactor and optimize your contracts for speed and efficiency with greater ease and confidence.
+
+The high-level process of adding integration tests to your existing smart contract project is as follows:
+
+1. Add the testing library to your `Cargo.toml` file and use Rust edition `2021`:
+
+   ```yaml
+   [package]
+   # ...
+   edition = "2021"
+
+   [dev-dependencies]
+   concordium-smart-contract-testing = "1.0"
+   ```
+
+   By putting it under `dev-dependencies`, it is only included for tests.
+   You must use edition `2021` or greater as that is a requirement for the testing library.
+
+2. Write tests in files residing in `my-project/tests/`.
+   Example content:
+
+   ```rust
+   use concordium_smart_contract_testing::*;
+
+   #[test]
+   fn my_test() {
+     ...
+     let module = module_load_v1("concordium-out/module.wasm.v1").unwrap();
+     ...
+   }
+   ```
+
+   where you specify the path to the Wasm file built in the next step.
+
+3. Run your tests with `cargo concordium test --out concordium-out/module.wasm.v1`
+   This command also builds the Wasm module and outputs the Wasm module to the specified path.
+
+With a high-level understanding of the workflow, you are ready to write the actual tests.
+Each section below covers part of a typical integration test.
+
+## Creating a chain
+
+The primary construct used for testing is the [Chain] type, which you should only create one of per test.
+It represents the blockchain and has methods for creating accounts and deploying and working with contracts.
+
+Use the [Chain_new] method to create a chain with default settings.
+
+```rust
+#[test]
+fn my_test() {
+    let mut chain = Chain::new();
+}
+```
+
+You can also create a [Chain] with custom values for exchange rates and the block time using a builder pattern where you configure a number of options and finish off by calling the [ChainBuilder_build] method.
+
+```rust
+#[test]
+fn my_test() {
+    let mut chain = Chain::builder()
+        // Specify a block time.
+        .block_time(Timestamp::from_timestamp_millis(10000))
+        // Specify the Euro to energy exchange rate.
+        .euro_per_energy(ExchangeRate::new_unchecked(1, 50000))
+        // Specify the microCCD to Euro exchange rate.
+        .micro_ccd_per_euro(ExchangeRate::new_unchecked(50000, 1))
+        // Try to build the Chain using the configured parameters.
+        .build()
+        // The parameters might be invalid, so it returns a `Result` which is unwrapped.
+        .unwrap();
+}
+```
+
+It is even possible to connect to an external Concordium node and get the exchange rates or block time from it.
+
+```rust
+#[test]
+fn my_test() {
+    let mut chain = Chain::builder()
+        // Connect to the public testnet node on its gRPCv2 port 20000.
+        .external_node_connection(Endpoint::from_static(
+            "http://grpc.testnet.concordium.com:20000",
+        ))
+        // Specify which block to use for queries. If omitted, the last final block will be used.
+        .external_query_block(
+            "b22466d87a273be64df283f8db0435aab945b2dd54f4df07b82fd02418be0c96"
+                .parse()
+                .unwrap(),
+        )
+        // Specify that the exchange rates and block time should
+        // be set to match the queried values from the node.
+        .euro_per_energy_from_external()
+        .micro_ccd_per_euro_from_external()
+        .block_time_from_external()
+        // Try to build the Chain using the configured parameters.
+        .build()
+        // The parameters might be invalid, so it returns a `Result` which is unwrapped.
+        .unwrap();
+}
+```
+
+When getting values from an external node, it will use the same block for all the queries.
+The block will either be the one you specify with [ChainBuilder_external_query_block] or the last final block at the time.
+Also note that you can mix and match configuration options, for example by specifying your own block time while using the microCCD to Euro exchange rate from an external node.
+You can find all the configuration options including examples in the documentation for [ChainBuilder].
+
+## Creating accounts
+
+The next step is to create one or more [Account] entities and add them to the chain.
+
+Accounts have multiple constructors that allow you to specify more details.
+The simplest one is [Account_new], which takes an [AccountAddress] and a total balance of the account.
+Once constructed, use the [Chain_create_account] method to add it to the chain.
+This step is important, as simply constructing an `Account` does not make the chain aware of it.
+
+```rust
+#[test]
+fn my_test() {
+    let mut chain = Chain::new();
+    let account_address = AccountAddress([0u8;32]);
+    let account = Account::new(account_address, Amount::from_ccd(123));
+    chain.create_account(account);
+}
+```
+
+The account address is `[0u8;32]`, which is a Rust shorthand for creating a byte array with all zeroes.
+Also note that account addresses are aliases of one another if they match on the first 29 bytes.
+Creating accounts `[0u8;32]`, `[1u8;32]`, `[3u8;32]`, etc. will ensure that they aren't aliases, which is what you want in most cases.
+It is important to set an appropriate balance for the account, as executing transactions, for example deploying modules, on the chain deducts CCD from the account's balance, and running out of CCD gives you an error.
+You can check the account balance with [Chain_account_balance_available] after each of the transactions you execute in the following sections to see that the transaction fees are subtracted from the balance.
+
+<Callout
+  body={<>
+It is also possible to use real account addresses from the chain, which are shown in base58 encoding, but still represent 32 bytes.
+For example:
+
+```rust
+let my_chain_account: AccountAddress =
+    "3kBx2h5Y2veb4hZgAJWPrr8RyQESKm5TjzF3ti1QQ4VSYLwK1G".parse().unwrap();
+```
+  </>}
+  variant="info"
+/>
+
+
+## Deploy modules
+
+Deploying smart contract modules is a two-step process.
+First, you load the module with the function [module_load_v1], then you deploy it to the chain with the method [Chain_module_deploy_v1].
+Loading as a separate step allows you to reuse the loaded module across multiple tests for efficiency.
+
+The module to load must be a `wasm` module compiled with `cargo concordium build` or, if using cargo concordium version 2.9.0+, `cargo concordium test --out path/to/wasm/module`.
+Using the test command is ideal, as that will both compile the module *and* run the tests.
+By compiling the module every time, you ensure that the tests run on the newest version of your code.
+For example, for `cargo concordium test --embed-schema --out my_module.wasm.v1`, you write:
+
+```rust
+#[test]
+fn my_test() {
+    // .. Lines omitted for brevity
+    let module = module_load_v1("my_module.wasm.v1").unwrap();
+}
+```
+
+Loading a module can fail in multiple ways, for example because it is missing or corrupt, so the function returns `Result`, which you `unwrap` here because you know it will succeed.
+If it doesn't succeed, the test will fail and you can fix your mistake.
+You can also use `.expect("Loading module should succeed")` instead to provide better error messages on failures, but the remainder of this guide will use `unwrap` for brevity.
+
+With the module loaded, you are ready to deploy it.
+Since this is a transaction, it involves an account that pays for the cost.
+Additionally, you must specify a [Signer] with a number of keys.
+This mimics the behavior on the real chain, where one or more keys must sign a transaction.
+The only observable difference between using one or more keys is the cost of the transaction, where each extra key increases the cost slightly.
+
+```rust
+#[test]
+fn my_test() {
+    let mut chain = Chain::new();
+    let account_address = AccountAddress([0u8;32]);
+    // .. Lines omitted for brevity
+    let module = module_load_v1("my_module.wasm.v1").unwrap();
+    let deployment = chain
+        .module_deploy_v1(
+            Signer::with_one_key(),
+            account_address,
+            module)
+        .unwrap();
+}
+```
+
+Since deployment can fail, for example if the account doesn't have sufficient CCD to cover the cost, the method returns `Result`, which is unwrapped.
+The struct returned has information about the energy used, transaction fee, and a [ModuleReference] that you use for initializing contracts.
+
+<Callout
+  body={<>
+If you are familiar with the [anyhow crate](https://docs.rs/anyhow/latest/anyhow/), you can use it to replace `unwrap` / `expect` with the more ergonomic `?` operator.
+For example:
+
+```{code-block} rust
+:emphasize-lines: 2, 6, 11, 12
+
+#[test]
+fn my_test() -> anyhow::Result<()> {
+    let mut chain = Chain::new();
+    let account_address = AccountAddress([0u8;32]);
+    // .. Lines omitted for brevity
+    let module = module_load_v1("my_module.wasm.v1")?;
+    let deployment = chain
+        .module_deploy_v1(
+            Signer::with_one_key(),
+            account_address,
+            module)?;
+    Ok(())
+ }
+```
+  </>}
+  variant="info"
+/>
+
+
+## Initialize contracts
+
+With the module deployed, you are ready to initialize a contract with the chain method [Chain_contract_init].
+The method has the following parameters:
+
+- A [Signer] to sign the transaction.
+
+- An [AccountAddress], which pays for the transaction.
+
+- A maximum [Energy] that the contract initialization can use.
+
+- A [ModuleReference], which you got from the deployment section above.
+
+- An [OwnedContractName] that specifies which contract in the module you want to initialize.
+  Contract names are prefixed with `init_` on the chain to distinguish them from receive functions (entrypoints).
+  You constuct it with either [OwnedContractName_new], which checks the validity and returns a `Result`, or [OwnedContractName_new_unchecked], which performs no checking.
+
+- An [OwnedParameter], which is a wrapper over a byte array that you construct with one of the following methods:
+
+  - [OwnedParameter_from_serial], which serializes the input and checks that the parameter size is valid,
+  - `TryFrom::<Vec<u8>>::try_from(..)`, which also checks the parameter size,
+  - or [OwnedParameter_empty], which always succeeds.
+
+- An [Amount] to send to the contract.
+
+```rust
+#[test]
+fn my_test() {
+    // .. Lines omitted for brevity
+    let initialization = chain
+        .contract_init(
+            Signer::with_one_key(),
+            account_address,
+            Energy::from(10000),
+            InitContractPayload {
+                mod_ref: deployment.module_reference,
+                init_name: OwnedContractName::new_unchecked("init_my_contract".to_string()),
+                param: OwnedParameter::from_serial(&"my_param").unwrap(),
+                amount: Amount::zero(),
+            }
+        )
+        .unwrap();
+}
+```
+
+Initialization can fail for several different reasons, and thus returns a `Result`, which is unwrapped.
+The struct returned contains information about the energy used, transaction fee, contract events (logs) produced, and a [ContractAddress] that you use for updating the contract in the next section.
+
+## Update contract entrypoints
+
+With the contract initialized, you are ready to update it with the chain method [Chain_contract_update], which has the following parameters:
+
+- A [Signer] to sign the transaction.
+
+- An `invoker` of type [AccountAddress], which pays for the transaction.
+
+- An `sender` of type [Address], which can either be an [AccountAddress] or a [ContractAddress].
+
+  - The main utility of the parameter is that it allows you to test internal calls in your contracts directly.
+
+  - For example, if you have a more complex scenario where an account calls contract `A` which internally calls contract `B`.
+
+    - In this case you can test the complete integration by calling `A`.
+    - But you can also test `B` as its own unit by calling it directly and specifying `A` as the `sender`.
+
+- A maximum [Energy] that the contract update can use.
+
+- A [ContractAddress], which you got from the initialization section above.
+
+- An [OwnedReceiveName] that specifies which receive name in the module you want to initialize.
+
+  - A "receive name" is the contract name concatenated with the entrypoint name and a dot in between.
+  - In this example, the contract `my_contract` and the entrypoint `my_entrypoint` combine to become the receive name `my_contract.my_entrypoint`.
+  - You construct it with either [OwnedReceiveName_new], which checks the format and returns a `Result`, or [OwnedReceiveName_new_unchecked], which performs no checks.
+
+- An [OwnedParameter], which is a wrapper over a byte array that you construct with one of the following methods:
+
+  - [OwnedParameter_from_serial], which serializes the input and checks that the parameter size is valid,
+  - `TryFrom::<Vec<u8>>::try_from(..)`, which also checks the parameter size,
+  - or [OwnedParameter_empty], which always succeeds.
+
+- An [Amount] to send to the contract.
+
+```rust
+#[test]
+fn my_test(){
+    // .. Lines omitted for brevity.
+    let update = chain
+        .contract_update(
+            Signer::with_one_key(),
+            account_address,
+            Address::Account(account_address),
+            Energy::from(10000),
+            UpdateContractPayload {
+                address: initialization.contract_address,
+                receive_name: OwnedReceiveName::new_unchecked("my_contract.my_entrypoint".to_string()),
+                message: OwnedParameter::from_serial(&42u8).unwrap(),
+                amount: Amount::from_ccd(100),
+            }
+        )
+        .unwrap();
+}
+```
+
+Updates can also fail, and thus return a `Result`, which is unwrapped here.
+The struct returned on success contains information about the energy used, the transaction fee, the return value from the entrypoint, a vector of [ContractTraceElement], whether the contract state has changed, and the contract's new balance.
+The trace elements describe calls to other contracts, transfers to accounts, module upgrades, and whether each of these actions succeeded or not.
+
+A method related to [Chain_contract_update] is [Chain_contract_invoke], which also executes an entrypoint, but without it being a transaction.
+
+## Invoke contract entrypoints
+
+The method [Chain_contract_invoke] is similar to [Chain_contract_update] in that it allows you to execute contract entrypoints.
+The difference is that an invoke is *not a transaction and is not persisted*, so contract states, account balances, etc. remain unchanged after the call.
+For seasoned Rust programmers, that is easily seen by its function signature, which takes an immutable reference to the chain (`&self`), as opposed to the mutable reference (`&mut self`) used in the update method.
+The primary purpose of [Chain_contract_invoke] is to get the return value of an entrypoint.
+
+It has all the same parameters as a contract update, except for the `signer`, which is only needed for transactions.
+While the result of the invocation isn't saved on the chain, all the entities referred, e.g. contracts and accounts, must still exist in the `chain`.
+
+In this example, you get the result of calling the entrypoint called `my_view` with the contract itself as the `sender`.
+
+```rust
+#[test]
+fn my_test(){
+    // .. Lines omitted for brevity.
+    let invoke = chain
+        .contract_invoke(
+            account_address,
+            Address::Contract(initialization.contract_address),
+            Energy::from(10000),
+            UpdateContractPayload {
+                address: initialization.contract_address,
+                receive_name: OwnedReceiveName::new_unchecked("my_contract.my_view".to_string()),
+                message: OwnedParameter::empty(),
+                amount: Amount::zero(),
+            }
+        )
+        .unwrap();
+}
+```
+
+This concludes the introduction to the primary methods on the [Chain] type.
+Next section covers how to access the common data needed for assertions in smart contract integration tests.
+
+## Data for assertions
+
+This section covers how to get the data most commonly used for assertions in smart contract integration tests.
+
+### Return values
+
+Both [Chain_contract_update] and [Chain_contract_invoke] have return values when they succeed, or if they fail in a specific way.
+On success, you can access the return value directly, for example `update.return_value`, which is a byte array, `Vec<u8>`.
+But the methods can fail in multiple ways, for example if the contract runs out of energy or it panics, and the return value is only available when the contract rejects on its own.
+The helper method [return_value] on the [ContractInvokeError] struct tries to extract the return value and returns an `Option<Vec<u8>>`.
+It is common to deserialize the return values into structered data and thus both the [success] and [error] types have helper methods called `parse_return_value`, which returns a `Result<T, ParseError>`, where `T` is the type you want to parse.
+For example:
+
+```rust
+let chain = Chain::new();
+// .. Creation of accounts and contracts omitted for brevity.
+
+// On success:
+let update = chain.contract_update(..).unwrap();
+let returned_string: String = update.parse_return_value().unwrap();
+assert_eq!(returned_string, "My expected string");
+
+// On error:
+let update_error = chain.contract_update(..).unwrap_err();
+let returned_contract_error: MyContractError = update_error.parse_return_value().unwrap();
+assert_eq!(returned_contract_error, MyContractError::NotOwner);
+```
+
+### Balances
+
+You can query the balance of accounts and contracts with the [Chain].
+Since accounts can stake part of their balance and also receive transfers with a schedule, their balance has three parts.
+
+- The total balance, part of which might be staked or locked.
+- The staked amount of CCD.
+- The locked amount which is unreleased, but can be used for staking.
+
+The method [Chain_account_balance] returns all three elements, and the method [Chain_account_balance_available] returns only the amount of CCD available for making transactions and transfers, i.e. the part which isn't staked and/or locked.
+
+Contracts only have one balance which you can query with [Chain_contract_balance].
+
+All the balance methods return an `Option` as the account or contract might not exist.
+
+Example:
+
+```rust
+let chain = Chain::new();
+// .. Creation of accounts and contracts omitted for brevity.
+let account_balance = chain.account_balance_available(account_address);
+let contract_balance = chain.contract_balance(initialization.contract_address);
+
+assert_eq!(account_balance, Some(Amount::from_ccd(111)));
+assert_eq!(contract_balance, Some(Amount::from_ccd(22)));
+```
+
+### Contract trace elements
+
+The contract trace elements describe the contract calls, transfers to accounts, module upgrades, and the success of these during a [Chain_contract_update] or [Chain_contract_invoke].
+
+The struct returned on success from these calls has an [effective_trace_elements] method which returns a list of all the *effective* elements in the order that they occurred.
+To understand what *effective* refers to, an example is useful:
+
+- Contract `A` calls contract `B`
+
+  - `B` then calls contract `C`
+  - Then `B` fails
+
+- `A` returns successfully
+
+In this case, the internal call from `B` to `C` is not *effective* as it has no effect; the only thing that matters for the outcome is that `B` failed and everything `B` did is rolled back as if it never occurred.
+However, in a testing and debugging scenario, it can be useful to see *all* the calls, effective or not.
+To do this, the returned struct has a field called `trace_elements`, which is a list of [DebugTraceElement].
+Debug trace elements include information about the failed traces, e.g. the call from `B` to `C` in the example above, along with additional information such as the energy used when each element was produced.
+
+Multiple helper methods exist for extracting information from the debug trace elements. To view the effective trace elements grouped per contract address, use the method [trace_elements].
+
+Example:
+
+```rust
+let chain = Chain::new();
+// .. Creation of accounts and contracts omitted for brevity.
+let update = chain.contract_update(..).unwrap();
+let elements_per_contract = update.trace_elements();
+
+// No events occured for contract <123, 0>.
+assert_eq!(elements_per_contract.get(&ContractAddress(123,0))), None);
+// Check that the contract was updated.
+assert_eq!(elements_per_contract[&initialization.contract_address], [
+     ContractTraceElement::Updated {
+         data: InstanceUpdatedEvent {
+             address:          contract_address,
+             amount:           Amount::zero(),
+             receive_name:     OwnedReceiveName::new_unchecked("my_contract.my_entrypoint".to_string()),
+             contract_version: concordium_base::smart_contracts::WasmVersion::V1,
+             instigator:       Address::Account(account_address),
+             message:          OwnedParameter::empty(),
+             events:           Vec::new(),
+         },
+     }
+])
+```
+
+Writing out all the fields in the trace elements can be cumbersome, so using a `matches!` macro can be beneficial, as it allows you to use the pattern matching syntax for extracting only that parts you need.
+
+This example checks that the correct types of trace elements are there (`Interrupted`, `Upgraded`, `Resumed`, `Updated`), and that the module references of the upgrade are correct.
+
+```rust
+assert!(matches!(update.trace_elements[..], [
+            ContractTraceElement::Interrupted { .. },
+            ContractTraceElement::Upgraded { from, to, .. },
+            ContractTraceElement::Resumed { .. },
+            ContractTraceElement::Updated { .. },
+        ] if from == old_module_reference && to == new_module_reference));
+```
+
+### Transfers to accounts
+
+One of the trace elements from the previous section, `Transferred`, describes a transfer from an contract to an account.
+With the helper method [account_transfers], you can get an iterator over all transfers to accounts in the order that they occured in a single call of [Chain_contract_update] or [Chain_contract_invoke].
+
+Example:
+
+```rust
+let chain = Chain::new();
+// .. Creation of accounts and contracts omitted for brevity.
+let update = chain.contract_update(..).unwrap();
+// Collect the iterator into a vector.
+let account_transfers: Vec<Transfer> = update.account_transfers().collect();
+
+// Check that a single transfer of 10 CCD occurred.
+assert_eq!(
+    account_transfers, [Transfer {
+    from: ContractAddress::new(1, 0),
+    amount: Amount::from_ccd(10),
+    to: AccountAddress([0u8;32]),
+}]);
+```
+
+[account]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Account.html
+[account_new]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Account.html#method.new
+[account_transfers]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ContractInvokeSuccess.html#method.account_transfers
+[accountaddress]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.AccountAddress.html
+[address]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/enum.Address.html
+[amount]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Amount.html
+[chain]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Chain.html
+[chain_account_balance]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Chain.html#method.account_balance
+[chain_account_balance_available]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Chain.html#method.account_balance_available
+[chain_contract_balance]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Chain.html#method.contract_balance
+[chain_contract_init]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Chain.html#method.contract_init
+[chain_contract_invoke]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Chain.html#method.contract_invoke
+[chain_contract_update]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Chain.html#method.contract_update
+[chain_create_account]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Chain.html#method.create_account
+[chain_module_deploy_v1]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Chain.html#method.module_deploy_v1
+[chain_new]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Chain.html#method.new
+[chainbuilder]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ChainBuilder.html
+[chainbuilder_build]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ChainBuilder.html#method.build
+[chainbuilder_external_query_block]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ChainBuilder.html#method.external_query_block
+[concordium-smart-contract-testing]: https://docs.rs/concordium-std-derive/latest/concordium_smart-contract-testing
+[contractaddress]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ContractAddress.html
+[contractinvokeerror]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ContractInvokeError.html
+[contracttraceelement]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/enum.ContractTraceElement.html
+[debugtraceelement]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/enum.DebugTraceElement.html
+[effective_trace_elements]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ContractInvokeSuccess.html#method.effective_trace_elements
+[energy]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Energy.html
+[error]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ContractInvokeError.html#method.parse_return_value
+[from_bytes]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/fn.from_bytes.html
+[module_load_v1]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/fn.module_load_v1.html
+[modulereference]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/type.ModuleReference.html
+[ownedcontractname]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.OwnedContractName.html
+[ownedcontractname_new]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.OwnedContractName.html#method.new
+[ownedcontractname_new_unchecked]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.OwnedContractName.html#method.new_unchecked
+[ownedparameter]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.OwnedParameter.html
+[ownedparameter_empty]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.OwnedParameter.html#method.empty
+[ownedparameter_from_serial]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.OwnedParameter.html#method.from_serial
+[ownedreceivename]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.OwnedReceiveName.html
+[ownedreceivename_new]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.OwnedReceiveName.html#method.new
+[ownedreceivename_new_unchecked]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.OwnedReceiveName.html#method.new_unchecked
+[return_value]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ContractInvokeError.html#method.return_value
+[signer]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.Signer.html
+[success]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ContractInvokeSuccess.html#method.parse_return_value
+[test_infrastructure]: https://docs.rs/concordium-std/latest/concordium_std/test_infrastructure
+[trace_elements]: https://docs.rs/concordium-smart-contract-testing/latest/concordium_smart_contract_testing/struct.ContractInvokeSuccess.html#method.trace_elements
