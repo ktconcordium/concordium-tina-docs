@@ -56,3 +56,13 @@ scripts.txt
 
 # TinaCMS dev admin (do not commit)
 public/admin/
+
+conversion-v2.py
+conversion-v3.py
+conversion-v4.py
+conversion-v5.py
+conversion-v6.py
+conversion-v7.py
+add_frontmatter_from_h1.py
+conversion.py
+scripts.txt

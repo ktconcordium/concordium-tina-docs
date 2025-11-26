@@ -35,3 +35,8 @@ To do:
 - Images - Resizing
 - |bw| |cryptox| - unavailable - script automatically pulls the data from variables.rst and converts it into text
 - Clean up leftover artifacts like (something) = 
+
+
+
+https://ktconcordium.github.io/docs/browser-wallet/browser-wallet-faq
+
