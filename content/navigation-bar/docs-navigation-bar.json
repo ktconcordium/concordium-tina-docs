@@ -1,21 +1,6 @@
 {
   "lightModeLogo": "/svg/tina-icon-orange.svg",
   "darkModeLogo": "/svg/tina-icon-orange.svg",
-  "tabs": [
-    {
-      "supermenuGroup": [
-        {
-          "items": [
-            {
-              "slug": "content/docs/browser-wallet/browser-wallet-faq.mdx",
-              "_template": "item"
-            }
-          ]
-        }
-      ],
-      "_template": "docsTab"
-    }
-  ],
   "ctaButtons": {
     "button1": {
       "label": "TinaCMS Docs",
