@@ -39,10 +39,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Show tina config for debug
-        run: |
-          node -e "console.log(require('./tina/config').build)"
-          
       - name: Build TinaCMS
         env:
           NODE_ENV: production
