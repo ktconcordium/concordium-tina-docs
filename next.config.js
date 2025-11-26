@@ -9,7 +9,7 @@ const isProd = process.env.NODE_ENV === "production";
 
 // When building for GitHub Pages:
 const basePath = isProd ? `/${repoName}` : "";
-const assetPrefix = isProd ? `/${repoName}` : "";
+const assetPrefix = basePath || undefined;
 
 // Static export config for GitHub Pages
 const isStatic = process.env.EXPORT_MODE === "static";
@@ -28,15 +28,18 @@ module.exports = {
   assetPrefix,
 
   images: {
-    unoptimized: true, // REQUIRED for GitHub Pages
+    // REQUIRED for GitHub Pages (no image optimizer)
+    unoptimized: true,
+    // (optional) keep Next’s default path in sync:
+    path: `${assetPrefix || ""}/_next/image`,
   },
 
   async rewrites() {
     return [
       {
-        // Corrected rewrite for GitHub Pages
-        source: `${basePath}/admin`,
-        destination: `${basePath}/admin/index.html`,
+        // IMPORTANT: no basePath here – Next handles it automatically
+        source: "/admin",
+        destination: "/admin/index.html",
       },
     ];
   },
