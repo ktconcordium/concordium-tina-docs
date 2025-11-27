@@ -1,0 +1,111 @@
+---
+title: "Web3 ID in the Concordium Wallet for Web"
+---
+
+(web3id-wallet)=
+
+
+
+<!-- dropped unknown eval-rst block -->
+
+
+Web3 [verifiable credentials](/docs/mainnet/docs/resources/glossary#verifiable-credential) are available in the Concordium Wallet for Web. They might have any of the following states:
+
+- Pending: the verifiable credential is in the process of being issued
+- Active: the verifiable credential is issued and valid
+- Revoked: the verifiable credential is no longer valid because the holder or issuer has canceled it
+- Not activated: the verifiable credential is issued but is not yet active because its *valid from date* has not passed, e.g. a concert ticket
+- Expired: the verifiable credential is past the *valid until date*, e.g. a concert ticket
+
+## Add verifiable credentials to the wallet
+
+When choosing to add verifiable credentials from an issuer, make sure that you *trust* the issuer to whom you are revealing information about yourself.
+
+1. Contact the issuer of the verifiable credentials using the dApp the issuer provides and provide the information requested by the issuer.
+
+2. The issuer sends a request to your Concordium Wallet for Web to issue a verifiable credential. Click **Cancel** to stop the process or click **Add credential** to continue. You will see the verifiable credential as **Pending**.
+
+   > ```{image} ../../docs/images/browser-wallet/add-web3id-credential.png
+   > :alt: window with pending credential and option buttons
+   > :width: 50%
+   > ```
+
+To see the details of the verifiable credential:
+
+1. Click ![three horizontal lines](/../docs/images/browser-wallet/hamburger-menu.png) and select **Verifiable credentials**.
+
+2. Click on the verifiable credential card.
+
+3. Click ![three horizontal lines](/../docs/images/browser-wallet/page-actions.png) and select **Details**.
+
+   > ```{image} ../../docs/images/browser-wallet/vc-details.png
+   > :alt: window with card showing details of the verifiable credential
+   > :width: 50%
+   > ```
+
+## Backup verifiable credentials
+
+1. Click ![three horizontal lines](/../docs/images/browser-wallet/hamburger-menu.png) and select **Verifiable credentials**.
+2. Click ![three horizontal lines](/../docs/images/browser-wallet/page-actions.png) and select **Download export file**. This saves the verifiable credentials in a file called *web3IdCredentials.export* in your downloads folder by default.
+
+## Revoke verifiable credentials
+
+In some cases, the issuer of the verifiable credential may allow you to revoke a credential yourself in your Concordium Wallet for Web if you no longer need it.
+
+1. Click ![three horizontal lines](/../docs/images/browser-wallet/hamburger-menu.png) and select **Verifiable credentials**.
+2. Click on the verifiable credential card to revoke.
+3. Click ![three horizontal lines](/../docs/images/browser-wallet/page-actions.png) and select **Revoke**.
+4. Review the transaction information and click **Send**.
+
+## Recover verifiable credentials
+
+1. Click ![three horizontal lines](/../docs/images/browser-wallet/hamburger-menu.png) and select **Verifiable credentials**.
+
+2. Click ![three horizontal lines](/../docs/images/browser-wallet/page-actions.png) and select **Open import window**.
+
+3. Click **Select file to import**. Navigate to the location that the *web3IdCredentials.export* file is located and select the file.
+
+   > ```{image} ../../docs/images/browser-wallet/vc-import.png
+   > :alt: window with button to navigate to import file location
+   > :width: 50%
+   > ```
+
+4. The verifiable credentials that could be imported from the file are added to the wallet.
+
+## Use verifiable credentials
+
+In cases where a verifier asks to prove your verifiable credentials, you are asked to generate a [verifiable presentation](/docs/mainnet/docs/resources/glossary#verifiable-presentation) in the Concordium Wallet for Web to prove or reveal information. Proofs or revealing information can be:
+
+- Only verifiable credentials
+- Only account credentials
+- A mix of verifiable and account credentials
+
+You can choose which account (and thus identity) and/or verifiable credential to use to prove/reveal the requested attributes.
+
+It is important to understand the difference between a proof request and a reveal request. For more information, see [Proofs and revealing information](/docs/mainnet/docs/guides/proofs#secret-proofs).
+
+In the case below, the proof from the verifier is a mixed proof that requests you reveal the degree name and you prove that were born within a date range. This is a mixed proof because it asks you to reveal and prove information, and also because it asks to prove/reveal information from your verifiable credential and your account credential. Because your date of birth is not in the date range that statement cannot be proven and your only option is to reject the request. You never see the reveal request because you do not meet the requirement from the other part of the proof.
+
+![window with button to reject proof request](/../docs/images/browser-wallet/proof-not-proved.png)
+
+![window with verifiable credential proof and continue button](/../docs/images/browser-wallet/vc-mixed-proof-1.png)
+
+The second screen is requesting you prove information from your account credential. You can choose which account (and thus identity) you want to use for the proof. Click **Approve** if you agree to prove the information. Click ![white x on red background](/../docs/images/browser-wallet/vc-reject-proof-button.png) to reject the proof request.
+
+![window with account credential proof and approve button](/../docs/images/browser-wallet/vc-mixed-proof-2.png)
+
+These are just a few examples of how you might see proof requests in the Concordium Wallet for Web, but the possibilities for what a verifier might request are limitless for verifiable credentials. The identity provider issued attributes that can be revealed from [account credentials](/docs/mainnet/docs/resources/glossary#account-credential) are:
+
+- First name
+- Last name
+- Sex
+- Date of birth
+- Country of residence
+- Country of nationality
+- ID document type
+- ID document number
+- ID document issuer
+- ID valid from
+- ID valid to
+- National ID number
+- Tax ID number

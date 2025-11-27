@@ -1,0 +1,61 @@
+---
+title: "Connect dApps to wallets"
+---
+
+(connect-app-bw)=
+
+
+You can connect Concordium Wallet and Concordium Wallet for Web to a [dApp](https://en.wikipedia.org/wiki/Decentralized_application) that has a frontend interface so that you can pay for services.
+Connection can be made by either scanning a QR code or from a link to the dApp service.
+Then, the dApp can initiate a request that you can confirm from within the wallet.
+
+<accordion
+  heading="Concordium Wallet"
+  docText={<>
+To connect your Concordium Wallet to a dApp:
+
+1. Tap the scan QR code button in the upper right of the main screen.
+2. When prompted to connect, tap **Allow** to continue using your account with the dApp.
+
+![screen with text boxes for each account](/../images/cryptoX/cryptox-connect-dapps1a.png)
+3. After making your purchase in a dApp, confirm the purchase in the Concordium Wallet. On the sign transaction screen, review the transaction details. Tap **Sign** if you approve the transaction.
+
+![screen with information about session and options to accept or decline](/../images/cryptoX/cryptox-connect-dapps2a.png)
+4. When the transaction is submitted, tap **Finish** to return to the main screen.
+
+![screen with information about session and options to accept or decline](/../images/cryptoX/cryptox-connect-dapps3a.png)
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+<accordion
+  heading="Concordium Wallet for Web"
+  docText={<>
+To initiate a request to connect to a dApp within the Concordium Wallet for Web:
+
+1. In the browser, navigate to your dApp's frontend interface and make a connection request to your wallet.
+
+2. A connection request window opens in your wallet. Review the details and click **Connect** to approve acess for the dApp.
+
+![window with a site and Connect text](/../images/browser-wallet/new/connect_dApp.png)
+   To view or manage the connection status of your account, click **See list** under *Connected accounts* on the account card.
+
+![account card](/../images/browser-wallet/new/see_list.png)
+   To disconnect a dApp, find it in the *Connected sites* list and click **Disconnect**.
+
+![account card](/../images/browser-wallet/new/disconnect_dApp.png)
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+<Callout
+  body={<>
+If you want to try to connect to a dApp to see how the functionality works, go to <https://wccd.testnet.concordium.com/> and connect to it following the steps above. You can then use the dApp to connect to your account and see the behavior.
+  </>}
+  variant="info"
+/>
+
+
+

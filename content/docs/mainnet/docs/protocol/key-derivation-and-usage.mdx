@@ -1,0 +1,23 @@
+---
+title: "Key derivation and usage"
+---
+
+(key-derivation)=
+
+
+Concordium employs a [SLIP-10/BIP32](https://github.com/satoshilabs/slips/blob/master/slip-0010.md) hierarchial key derivation scheme to generate all cryptographic key material required for account creation and operation on the blockchain.
+
+Each account is associated with an Identity Credential issued to the user by an [Identity Provider (IDP)](/docs/mainnet/docs/resources/glossary#identity-provider).
+This structure is reflected in the key derivation tree structure:
+
+- Each Identity Provider has its own subtree
+- Within each IDP subtree, there are individual subtrees for each Identity Credential issued to the user
+
+The subtree of a single Identity Credential consists of:
+
+- A subtree dedicated to account signature keys used to sign transfers
+- Multiple subtrees that generate cryptographic material for the ID object itself
+
+![diagram of key derivation](/../protocol/images/key-derivation-linking-key.png)
+
+![diagram of key derivation](/../protocol/images/legacy-key-derivation-linking-key.png)
