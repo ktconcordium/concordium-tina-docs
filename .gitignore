@@ -69,3 +69,4 @@ add_frontmatter_from_h1.py
 conversion.py
 scripts.txt
 run_rst_in_md.py
+*.py

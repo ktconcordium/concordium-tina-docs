@@ -38,8 +38,12 @@ You can access settings for your new account by tapping the gear icon in the upp
 <accordion
   heading="Desktop Wallet"
   docText={<>
-.. note::
-    You can't import accounts that were created on Concordium Wallet for Web.
+<Callout
+  body={<>
+You can't import accounts that were created on Concordium Wallet for Web.
+  </>}
+  variant="info"
+/>
 
 Before you create more accounts, you need a LEDGER device with the Concordium LEDGER App installed. See [Set up the LEDGER device and install the Concordium LEDGER App](/docs/mainnet/docs/guides/overview-desktop#install-ledger).
 
@@ -57,8 +61,12 @@ Before you create more accounts, you need a LEDGER device with the Concordium LE
 5. Select whether you want to reveal any attributes on the account or not. The available attributes depend on the identity provider.
 
 ![](/../images/desktop-wallet/dw-new-account-attributes.png)
-.. note::
-    If you select **Reveal attributes**, the selected attributes will be public on the blockchain. Concordium recommends that you do not reveal any attributes.
+<Callout
+  body={<>
+If you select **Reveal attributes**, the selected attributes will be public on the blockchain. Concordium recommends that you do not reveal any attributes.
+  </>}
+  variant="info"
+/>
 
 6. Select **Submit without revealing attributes**.
 
@@ -84,10 +92,12 @@ Before you create more accounts, you need a LEDGER device with the Concordium LE
 15. The LEDGER device says **Sign details**. Press both buttons to sign the transaction. In the Desktop Wallet you can now see the that the account has been submitted to the blockchain.
 
 16. Select **Finished**. Your new account is now listed along with the other accounts you're the custodian of.
-
-.. Note::
-
-    To set the currently selected account the default account, click the star icon. Setting this means that this will be the account initially visible when opening the account page.
+<Callout
+  body={<>
+To set the currently selected account the default account, click the star icon. Setting this means that this will be the account initially visible when opening the account page.
+  </>}
+  variant="info"
+/>
 
 ![dark account balance area with favorite button highlighted](/../images/desktop-wallet/dw-favorite-account.png)
   </>}
@@ -113,5 +123,4 @@ If you already have an account and want to create more accounts:
   image=""
   fullWidth={true}
 />
-
 
