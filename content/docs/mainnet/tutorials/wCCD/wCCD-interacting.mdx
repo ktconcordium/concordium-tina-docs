@@ -15,7 +15,7 @@ Before you start with part 2 of this tutorial, make sure you have:
 - the keys from the wallet imported into the `concordium-client` configuration
 
 If you haven't completed any of the above steps,
-[Setup the development environment](#setup-env)
+[Setup the development environment](/docs/shared/setup-env#setup-env)
 will guide you through these setup steps.
 If you haven't completed any of the above steps, you can continue
 with [part 3](/docs/mainnet/tutorials/wCCD/wCCD-frontend-set-up#wCCD-frontend-set-up) of this tutorial. However, it is recommended
@@ -50,14 +50,15 @@ You can read more about schemas in this [section](/docs/mainnet/docs/smart-contr
   docText={<>
 You can check the CCD balance of an account on [CCDScan](https://testnet.ccdscan.io/).
 
-![](/../images/wCCD_tutorial_1.png)
+![](./images/wCCD_tutorial_1.png)
 You can check the CCD balance of an account with this command:
 
-.. code-block:: console
+```console
 
-    $ concordium-client account show ACCOUNT --grpc-port 20001
+$ concordium-client account show ACCOUNT --grpc-port 20001
 
-![](/../images/wCCD_tutorial_10.png)
+```
+![](./images/wCCD_tutorial_10.png)
   </>}
   image=""
   fullWidth={true}
@@ -68,11 +69,12 @@ You can check the CCD balance of an account with this command:
   docText={<>
 You can check the CCD balance of a smart contract with this command:
 
-.. code-block:: console
+```console
 
-    $ concordium-client contract show INDEX --grpc-port 20001
+$ concordium-client contract show INDEX --grpc-port 20001
 
-![](/../images/wCCD_tutorial_3.png)
+```
+![](./images/wCCD_tutorial_3.png)
   </>}
   image=""
   fullWidth={true}
@@ -97,68 +99,72 @@ value of 1,000,000 micro CCD on the blockchain and is worth the equivalent of a 
   docText={<>
 Create a ``balanceOf.json`` file and insert the following JSON array.
 
-.. code-block:: json
-    :force:
+```json
 
-    [
-        {
-            "address": {
-                "Enum": [
-                    {
-                        "Account": [
-                            ACCOUNT_ADDRESS
-                        ]
-                    },
-                    {
-                        "Contract": [
-                            {
-                                "index": INDEX,
-                                "subindex": SUBINDEX
-                            }
-                        ]
-                    }
-                ]
-            },
-            "token_id": TOKEN_ID
-        }
-    ]
+[
+    {
+        "address": {
+            "Enum": [
+                {
+                    "Account": [
+                        ACCOUNT_ADDRESS
+                    ]
+                },
+                {
+                    "Contract": [
+                        {
+                            "index": INDEX,
+                            "subindex": SUBINDEX
+                        }
+                    ]
+                }
+            ]
+        },
+        "token_id": TOKEN_ID
+    }
+]
 
-.. note::
-
-    You can query the balance of several addresses in the above array.
-
+```
+<Callout
+  body={<>
+You can query the balance of several addresses in the above array.
+  </>}
+  variant="info"
+/>
 If you insert an account address correctly, the JSON array should look similar to the below JSON array.
 
-.. code-block:: json
+```json
 
-    [
-        {
-            "address": {
-                "Account": [
-                    "4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j"
-                ]
-            },
-            "token_id": ""
-        }
-    ]
+[
+    {
+        "address": {
+            "Account": [
+                "4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j"
+            ]
+        },
+        "token_id": ""
+    }
+]
 
+```
 If you insert a smart contract address correctly, the JSON array should look similar to the below JSON array.
 
-.. code-block:: json
+```json
 
-    [
-        {
-            "address": {
-                "Contract": [
-                    {
-                        "index": 844,
-                        "subindex": 0
-                    }
-                ]
-            },
-            "token_id": ""
-        }
-    ]
+[
+    {
+        "address": {
+            "Contract": [
+                {
+                    "index": 844,
+                    "subindex": 0
+                }
+            ]
+        },
+        "token_id": ""
+    }
+]
+```
   </>}
   image=""
   fullWidth={true}
@@ -170,15 +176,128 @@ You are ready now to invoke the `balanceOf` function with the following command.
 $ concordium-client contract invoke WCCD_CONTRACT_INDEX --entrypoint balanceOf --parameter-json balanceOf.json --grpc-port 20001
 ```
 
-![](/../images/wCCD_tutorial_4.png)console
+![](./images/wCCD_tutorial_4.png)json
+
+[
+    {
+        "address": {
+            "Enum": [
+                {
+                    "Account": [
+                        ACCOUNT_ADDRESS
+                    ]
+                },
+                {
+                    "Contract": [
+                        {
+                            "index": INDEX,
+                            "subindex": SUBINDEX
+                        }
+                    ]
+                }
+            ]
+        },
+        "owner": {
+            "Enum": [
+                {
+                    "Account": [
+                        ACCOUNT_ADDRESS
+                    ]
+                },
+                {
+                    "Contract": [
+                        {
+                            "index": INDEX,
+                            "subindex": SUBINDEX
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
+
+```
+<Callout
+  body={<>
+You can query several sets of addresses in the above array.
+  </>}
+  variant="info"
+/>
+If you insert everything correctly, the JSON array should look similar to
+the below JSON array.
+
+```json
+
+[
+    {
+        "address": {
+            "Account": [
+                "4DH219BXocxeVByKpZAGKNAJx7s2w1HFpwaNu1Ljd1mXFXig22"
+            ]
+        },
+        "owner": {
+            "Account": [
+                "4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j"
+            ]
+        }
+    }
+]
+```
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+You are ready now to invoke the `operatorOf` function with the following command.
+
+```console
 $ concordium-client contract invoke WCCD_CONTRACT_INDEX --entrypoint operatorOf --parameter-json operatorOf.json --grpc-port 20001
 ```
 
-![](/../images/wCCD_tutorial_7.png)console
+![](./images/wCCD_tutorial_7.png)json
+
+[""]
+
+```
+<Callout
+  body={<>
+  This empty string is required because of the CIS-2 token standard.
+  The `tokenId` of the wCCD token is the smallest unit possible (an empty string).
+</>}
+image=""
+fullWidth={true}
+  </>}
+  variant="info"
+/>
+/>
+
+You are ready now to invoke the `tokenMetadata` function with the following command.
+
+```console
 $ concordium-client contract invoke WCCD_CONTRACT_INDEX --entrypoint tokenMetadata --parameter-json tokenMetadata.json --grpc-port 20001
 ```
 
-![](/../images/wCCD_tutorial_8.png)console
+![](./images/wCCD_tutorial_8.png)json
+
+["CIS-0","CIS-2"]
+
+```
+<Callout
+  body={<>
+  You can find more information about the [CIS-0 standard](https://proposals.concordium.software/CIS/cis-0.html)
+  and the [CIS-2 standard](https://proposals.concordium.software/CIS/cis-2.html).
+</>}
+image=""
+fullWidth={true}
+  </>}
+  variant="info"
+/>
+/>
+
+You are ready now to invoke the `supports` function with the following command.
+
+```console
 $ concordium-client contract invoke WCCD_CONTRACT_INDEX --entrypoint supports --parameter-json supports.json --grpc-port 20001
 ```
 
@@ -187,31 +306,389 @@ token contract supports the following standards
 `["12345","CIS-0","CIS-2"]`. Its response is that it does
 not support the standard `12345` but it supports the `CIS-0` and the `CIS-1` standards.
 
-![](/../images/wCCD_tutorial_9.png)console
+![](./images/wCCD_tutorial_9.png)
+The ``DATA_STRING`` is only relevant if wCCD is sent to a smart contract as described in option 2.
+You can use your account address if you want to credit the wCCD to your own account.
+If you insert your account address correctly, the JSON object should look similar to the below JSON object.
+
+```json
+
+{
+    "data": "",
+    "to": {
+        "Account": [
+            "4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j"
+        ]
+    }
+}
+```
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+<accordion
+  heading="Option 2 (Receiver is a smart contract) (click here)"
+  docText={<>
+```json
+
+{
+    "data": DATA_STRING,
+    "to": {
+        "Contract": [
+            {
+                "index": INDEX,
+                "subindex": SUBINDEX
+            },
+            ENTRYPOINT_NAME
+        ]
+    }
+}
+
+```
+Some additional bytes (encoded as a lowercase hex string called ``DATA_STRING``)
+are used in the ``OnReceivingCis2`` hook. This hook is executed only if the ``to`` address is a
+contract and the ``to`` address is not the invoker of the ``wrap`` function.
+The ``OnReceivingCis2`` hook invokes the ``ENTRYPOINT_NAME`` on the smart contract ``INDEX`` with
+the ``OnReceivingCis2Params`` parameters which include the above ``DATA_STRING``.
+This action allows the receiving smart contract to
+react to the credited wCCD amount. You can keep the data field empty
+if you don't want to send any additional data to the receiving smart contract.
+
+<Callout
+  body={<>
+In programming, a ``hook`` is an interface provided in packaged code
+that allows a programmer to insert customized programming code to either
+provide a different behavior or to react when something happens.
+The ``OnReceivingCis2`` hook allows a smart contract developer to code a
+smart contract A that taps into the ``transfer`` or ``wrap`` functions of the wCCD smart
+contract. Smart contract A can insert some custom logic/behavior if the ``transfer`` or ``wrap`` functions
+are invoked and would result in the smart contract A getting credited some wCCD.
+
+The ``ENTRYPOINT_NAME`` is an attribute that is added above each function
+in the smart contract code as shown below using the example entrypoint name ``receiveToken``.
+
+```rust
+
+#[receive(contract = "contractName", name = "receiveToken")]
+fn contract_receive_token( ... ) ... { ... }
+
+```
+  </>}
+  variant="info"
+/>
+You can use the smart contract deployed at index 844 on testnet and
+its function entry point name ``receiveToken`` for testing.
+
+```json
+
+{
+    "data": "",
+    "to": {
+        "Contract": [
+            {
+                "index": 844,
+                "subindex": 0
+            },
+            "receiveToken"
+        ]
+    }
+}
+```
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+Before you execute the `wrap` function, check
+the CCD balance of your `SENDER_ACCOUNT` (the account that initiates the transaction) and the wCCD smart contract as described [here](/docs/mainnet/tutorials/wCCD/wCCD-interacting#balanceCCD).
+The `wrap` function will send some CCD from your `SENDER_ACCOUNT` account to the wCCD smart contract contract.
+
+<Callout
+  body={<>
+This tutorial is also used by other people and they might at the same
+time interact with the smart contracts and change their CCD or wCCD balances.
+  </>}
+  variant="info"
+/>
+
+
+Before you execute the `wrap` function, check
+the wCCD balance of the `to` address with the [balanceOf](/docs/mainnet/tutorials/wCCD/wCCD-interacting#balanceOf) function.
+The `to` address will receive some wCCD
+because the `wrap` function will credit some wCCD to the `to` address.
+
+You are ready now to wrap your CCD into wCCD with the following command.
+The `--energy` flag specifies the maximum amount of NRG to be spent on the transaction
+and can be used to set an upper limit of the transaction fee that you are
+willing to spend when interacting with the blockchain.
+
+```console
 $ concordium-client contract update WCCD_CONTRACT_INDEX --entrypoint wrap --parameter-json wrap.json --amount AMOUNT --sender SENDER_ACCOUNT --energy 25000 --grpc-port 20001
 ```
 
 The below screenshot shows the wrapping of 1 CCD (1,000,000 micro CCDs) into 1,000,000 micro wCCD.
 
-![](/../images/wCCD_tutorial_2.png)console
+![](./images/wCCD_tutorial_2.png)json
+
+{
+    "amount": AMOUNT,
+    "data": DATA_STRING,
+    "owner": {
+        "Enum": [
+            {
+                "Account": [
+                    ACCOUNT_ADDRESS
+                ]
+            },
+            {
+                "Contract": [
+                    {
+                        "index": INDEX,
+                        "subindex": SUBINDEX
+                    }
+                ]
+            }
+        ]
+    },
+    "receiver": {
+        "Enum": [
+            {
+                "Account": [
+                    ACCOUNT_ADDRESS
+                ]
+            },
+            {
+                "Contract": [
+                    {
+                        "index": INDEX,
+                        "subindex": SUBINDEX
+                    },
+                    ENTRYPOINT_NAME
+                ]
+            }
+        ]
+    }
+}
+
+```
+If you insert everything correctly, the JSON object should look similar to
+the below JSON object that will unwrap 1,000,000 micro wCDD from an account
+and send the received CCDs back to the same account.
+
+```json
+
+{
+    "amount": "1000000",
+    "data": "",
+    "owner": {
+        "Account": [
+            "4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j"
+        ]
+    },
+    "receiver": {
+        "Account": [
+            "4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j"
+        ]
+    }
+}
+```
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+Before you execute the `unwrap` function, check
+the CCD balance of the `receiver` address and the wCCD smart contract as described [here](/docs/mainnet/tutorials/wCCD/wCCD-interacting#balanceCCD).
+The `unwrap` function will send some CCD from the wCCD smart contract to the `receiver` address.
+
+Before you execute the `unwrap` function, check
+the wCCD balance of the `owner` address with the [balanceOf](/docs/mainnet/tutorials/wCCD/wCCD-interacting#balanceOf) function.
+The `owner` address will get its wCCD balance reduced
+because the `unwrap` function will burn some wCCD from the `owner` address.
+
+The `owner` has to have at least a balance of `AMOUNT` in wCCD tokens
+and the `SENDER_ACCOUNT` has to be the `owner` address or be an `operator` of the `owner` address.
+You are ready now to unwrap your wCCD into CCD with the following command.
+
+```console
 $ concordium-client contract update WCCD_CONTRACT_INDEX --entrypoint unwrap --parameter-json unwrap.json --sender SENDER_ACCOUNT --energy 25000 --grpc-port 20001
 ```
 
 The below screenshot shows the execution of the `unwrap` function.
 
-![](/../images/wCCD_tutorial_11.png)console
+![](./images/wCCD_tutorial_11.png)json
+
+[
+    {
+        "amount": AMOUNT,
+        "data": DATA_STRING,
+        "from": {
+            "Enum": [
+                {
+                    "Account": [
+                        ACCOUNT_ADDRESS
+                    ]
+                },
+                {
+                    "Contract": [
+                        {
+                            "index": INDEX,
+                            "subindex": SUBINDEX
+                        }
+                    ]
+                }
+            ]
+        },
+        "to": {
+            "Enum": [
+                {
+                    "Account": [
+                        ACCOUNT_ADDRESS
+                    ]
+                },
+                {
+                    "Contract": [
+                        {
+                            "index": INDEX,
+                            "subindex": SUBINDEX
+                        },
+                        ENTRYPOINT_NAME
+                    ]
+                }
+            ]
+        },
+        "token_id": TOKEN_ID
+    }
+]
+
+```
+<Callout
+  body={<>
+You can execute several transfers in the above array.
+  </>}
+  variant="info"
+/>
+If you insert everything correctly, the JSON array should look similar to
+the below JSON array that will transfer 1 micro wCCD from an account address to another account address.
+
+```json
+
+[
+    {
+        "amount": "1",
+        "data": "",
+        "from": {
+            "Account": [
+                "4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j"
+            ]
+        },
+        "to": {
+            "Account": [
+                "4DH219BXocxeVByKpZAGKNAJx7s2w1HFpwaNu1Ljd1mXFXig22"
+            ]
+        },
+        "token_id": ""
+    }
+]
+```
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+Before you execute the `transfer` function, check
+the wCCD balance of the `from` address and the `to` address with the [balanceOf](/docs/mainnet/tutorials/wCCD/wCCD-interacting#balanceOf) function.
+The `transfer` function will send some wCCD from the `from` address to the `to` address.
+
+The `from` address has to have at least a balance of `AMOUNT` in wCCD tokens
+and the `SENDER_ACCOUNT` has to be the `from` address or be an `operator` of the `from` address.
+You are ready now to transfer your wCCD to another address with the following command.
+
+```console
 $ concordium-client contract update WCCD_CONTRACT_INDEX --entrypoint transfer --parameter-json transfer.json --sender SENDER_ACCOUNT --energy 25000 --grpc-port 20001
 ```
 
 The below screenshot shows the execution of the `transfer` function.
 
-![](/../images/wCCD_tutorial_5.png)console
+![](./images/wCCD_tutorial_5.png)json
+
+[
+    {
+        "operator": {
+            "Enum": [
+                {
+                    "Account": [
+                        ACCOUNT_ADDRESS
+                    ]
+                },
+                {
+                    "Contract": [
+                        {
+                            "index": INDEX,
+                            "subindex": SUBINDEX
+                        }
+                    ]
+                }
+            ]
+        },
+        "update": {
+            "Enum": [
+                {
+                    "Remove": []
+                },
+                {
+                    "Add": []
+                }
+            ]
+        }
+    }
+]
+
+```
+<Callout
+  body={<>
+You can add/remove several operator addresses in the above array.
+  </>}
+  variant="info"
+/>
+If you insert everything correctly, the JSON array should look similar to
+the below JSON array that will add the account address 4DH219B... as
+an operator to the ``SENDER_ACCOUNT``.
+
+```json
+
+[
+    {
+        "operator": {
+            "Account": [
+                "4DH219BXocxeVByKpZAGKNAJx7s2w1HFpwaNu1Ljd1mXFXig22"
+            ]
+        },
+        "update":
+        {
+            "Add": []
+        }
+    }
+]
+```
+  </>}
+  image=""
+  fullWidth={true}
+/>
+
+Before you execute the `updateOperator` function, check
+the state of the smart contract with the [operatorOf](/docs/mainnet/tutorials/wCCD/wCCD-interacting#operatorOf) function.
+
+You are ready now to update the operator on your `SENDER_ACCOUNT` address with the following command.
+
+```console
 $ concordium-client contract update WCCD_CONTRACT_INDEX --entrypoint updateOperator --parameter-json updateOperator.json --sender SENDER_ACCOUNT --energy 25000 --grpc-port 20001
 ```
 
 The below screenshot shows the execution of the `updateOperator` function.
 
-![](/../images/wCCD_tutorial_6.png)
+![](./images/wCCD_tutorial_6.png)
 
 Confirm that the `updateOperator` function has added/removed operator addresses by checking
 with the `operatorOf` function the state of the smart contract again.

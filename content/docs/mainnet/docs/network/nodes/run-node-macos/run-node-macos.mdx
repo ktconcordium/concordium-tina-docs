@@ -43,17 +43,23 @@ You will be able to choose the desired network(s) during the installation proces
 
 4. The next step is to configure the Node Service. On the *Configuration* page you have the following options:
 
-   ![](/../images/Node-setup-mac-1.png){eval-rst}
-   .. dropdown:: Node Runner Service configuration
+   ![](/images/Node-setup-mac-1.png){eval-rst}
+   <accordion
+     heading="Node Runner Service configuration"
+     docText={<>
 
-      - **Run a [mainnet/testnet] node at start-up**: When selected, the node runs when the system starts. Choose this option when you plan to use the node frequently and need it to be up-to-date at short notice. If you don’t select this option, you’ll have to start the node manually when required, for example, when you want to use the Desktop Wallet or Concordium Client. If you choose to start the node manually, it might take longer for the node to get up-to-date with the blockchain depending on when the node was last up-to-date.
-      - **Start the node after installation is complete**: The node will automatically start running after the installation is complete. Do not choose this option if you want to make further configuration changes before starting the node.
-      - **Report to the network dashboard**: Select this option if you want to publish your node statistics to the relevant dashboard when the node is running. Go to the mainnet or testnet dashboard to view the statistics:
+- **Run a [mainnet/testnet] node at start-up**: When selected, the node runs when the system starts. Choose this option when you plan to use the node frequently and need it to be up-to-date at short notice. If you don’t select this option, you’ll have to start the node manually when required, for example, when you want to use the Desktop Wallet or Concordium Client. If you choose to start the node manually, it might take longer for the node to get up-to-date with the blockchain depending on when the node was last up-to-date.
+- **Start the node after installation is complete**: The node will automatically start running after the installation is complete. Do not choose this option if you want to make further configuration changes before starting the node.
+- **Report to the network dashboard**: Select this option if you want to publish your node statistics to the relevant dashboard when the node is running. Go to the mainnet or testnet dashboard to view the statistics:
 
-        - https://ccdscan.io/
-        - https://testnet.ccdscan.io/
+  - https://ccdscan.io/
+  - https://testnet.ccdscan.io/
 
-      - **Public node name**: Specify the name of your node as you want it to appear on the network dashboard if the node reports to the network dashboard. You must enter a name for at least one of the nodes.
+- **Public node name**: Specify the name of your node as you want it to appear on the network dashboard if the node reports to the network dashboard. You must enter a name for at least one of the nodes.
+     </>}
+     image=""
+     fullWidth={true}
+   />
    ```
 
    :::{Note}

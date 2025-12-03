@@ -46,10 +46,10 @@ For Concordium Wallet for Web users: Disconnecting and connecting will reconnect
 
 2. Under the account that is currently connected to the voting dApp, click **See list** next to *Connected sites*.
 
-![account connected to a dApp](/../images/voting/connected_account_new.png)
+![account connected to a dApp](/images/voting/connected_account_new.png)
 3. This opens the **Connected sites** page, showing which sites are connected to this account.
 
-![account connected to a dApp](/../images/voting/connected_files.png)
+![account connected to a dApp](/images/voting/connected_files.png)
 4. Click **disconnect** next to the address of the voting dApp.
 5. Return to the account list by clicking **To Accounts list**
 6. Return to the main wallet window by clicking **To main page**.
@@ -76,10 +76,10 @@ Users need to create a new account in Concordium Wallet for Web or Concordium Wa
 
 2. Enter any amount of CCD (1 micro-CCD is enough). The target account in Concordium Wallet for Web or Concordium Wallet is the recipient (in the image below the recipient account has been added to the address book and named My vote delegation). Add a transaction memo that says **delegatevote2025**.
 
-![send CCD window in desktop wallet showing how to delegate vote](/../images/voting/dw-vote-delegation.png)
+![send CCD window in desktop wallet showing how to delegate vote](/images/voting/dw-vote-delegation.png)
 3. Continue with the transaction by signing it using your LEDGER device as with all other transactions.
 
-![send CCD window in desktop wallet showing how to delegate vote](/../images/voting/dw-transaction-submitted.png)
+![send CCD window in desktop wallet showing how to delegate vote](/images/voting/dw-transaction-submitted.png)
 4. It is possible to check from the Voting DApp that the delegation worked. The window for delegating votes is the same as voting with the DApp.
   </>}
   image=""
@@ -93,10 +93,11 @@ Users need to create a new account in Concordium Wallet for Web or Concordium Wa
 
 **To delegate your vote:**
 
-.. code-block:: console
+```console
 
-    $concordium-client --secure --grpc-ip grpc.mainnet.concordium.software transaction send --amount AMOUNT --receiver A --sender B --memo delegatevote2025
+$concordium-client --secure --grpc-ip grpc.mainnet.concordium.software transaction send --amount AMOUNT --receiver A --sender B --memo delegatevote2025
 
+```
 1. Enter the command above in the Concordium Client, where AMOUNT is the number of CCD to be sent (1 micro-CCD is enough), A is the name/address of the account to which the vote is delegated, and B is the sender name/address. Note the memo *delegatevote2025* for the delegation to be valid. Furthermore, there is no service license agreement for the grpc endpoint.
 
 2. Vote from the account that has received the delegation.
@@ -111,4 +112,4 @@ It is possible to see delegations to an account in the voting dApp. Anyone can c
 
 To see delegations, click **Delegations**. Enter or paste the Concordium account number for which you want to see all delegations.
 
-![example voting dapp site](/../images/voting/voting-dapp.png)
+![example voting dapp site](/images/voting/voting-dapp.png)

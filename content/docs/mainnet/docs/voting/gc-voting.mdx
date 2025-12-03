@@ -27,9 +27,9 @@ The diagrams and descriptions below describe the process during each phase of th
 
 The period of time before the election is the setup phase. Several roles are involved in the setup of the election.
 
-![diagram showing steps below](/../images/voting/pre-election.png)
+![diagram showing steps below](/images/voting/pre-election.png)
 
-![diagram showing steps below](/../images/voting/election.png)
+![diagram showing steps below](/images/voting/election.png)
 
 1. Voters using the Concordium Wallet for Web, or Concordium Wallet, open the dApp and cast their votes. The voter must connect their wallet and sign and submit the transaction to register it on the blockchain. For voters preferring to delegate their vote to another account (e.g., from a non-dApp enabled account in Desktop Wallet or from the Concordium Client to one with dApp connectivity), it doesn't matter when voting power is delegated, as long as it happens within the voting "window", i.e., between election start and end time. The latest delegation registration counts and voting power that has been delegated cannot be redelegated; only initial weight can be delegated.
 2. The votes are registered in the smart contract and the server reads the votes from the contract.
@@ -38,7 +38,7 @@ The period of time before the election is the setup phase. Several roles are inv
 
 The period after the election is the [tally phase](/docs/mainnet/docs/resources/glossary#tally-phase).
 
-![diagram showing steps below](/../images/voting/post-election.png)
+![diagram showing steps below](/images/voting/post-election.png)
 
 1. Once the election closes, the Election Coordinator uses the coordinator tool to get the [final weights](/docs/mainnet/docs/resources/glossary#accumulated-weight) (the initial weights plus weights after taking vote delegation into account) and compute the encrypted tally which is registered in the smart contract.
 2. The guardians use the Guardian App to generate their [decryption share](/docs/mainnet/docs/resources/glossary#decryption-share) of the tally and post that before the specified deadline. They then generate and register proof of correct decryption.

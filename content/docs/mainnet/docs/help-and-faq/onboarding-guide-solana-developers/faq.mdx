@@ -61,14 +61,17 @@ You can find examples of smart contracts in the
 You can find examples and standard implementations in the
 [Concordium Rust smart contract repo](https://github.com/Concordium/concordium-rust-smart-contracts/tree/main/examples).
 
-.. note::
-
-    These contracts are not meant for production.
-    They are used to illustrate how to use the standard library and the tooling Concordium provides.
-    There is no claim that the logic of the contract is reasonable or safe.
+<Callout
+  body={<>
+  These contracts are not meant for production.
+  They are used to illustrate how to use the standard library and the tooling Concordium provides.
+  There is no claim that the logic of the contract is reasonable or safe.
+</>}
+image=""
+fullWidth={true}
   </>}
-  image=""
-  fullWidth={true}
+  variant="info"
+/>
 />
 
 <accordion
@@ -141,25 +144,27 @@ Separating these functionalities to host functions instead of having them as spe
   docText={<>
 Yes. You can use a similar pattern as shown below:
 
-.. code-block:: rust
+```rust
 
-    #[cfg(test)]
-    mod tests {
-        mod func_a {
-            #[test]
-            fn correct_params_correct_result(){...}
-            #[test]
-            fn invalid_params_invalid_result(){...}
-        }
+#[cfg(test)]
+mod tests {
+    mod func_a {
+        #[test]
+        fn correct_params_correct_result(){...}
+        #[test]
+        fn invalid_params_invalid_result(){...}
     }
+}
 
+```
 The test cases are printed as follows:
 
-.. code-block:: rust
+```rust
 
-    running 2 tests
-    test tests::func_a::correct_params_correct_result ... ok
-    test tests::func_a::invalid_params_invalid_result ... ok
+running 2 tests
+test tests::func_a::correct_params_correct_result ... ok
+test tests::func_a::invalid_params_invalid_result ... ok
+```
   </>}
   image=""
   fullWidth={true}
@@ -181,12 +186,13 @@ The subindex is currently not in use and is always 0. There are plans to give th
 
 You cannot send CCD to a contract address (or account address) before they have been deployed/initialized on the Concordium chain.
 
-.. code-block:: rust
+```rust
 
-    ContractAddress {
-        index:    1234,
-        subindex: 0,
-    };
+ContractAddress {
+    index:    1234,
+    subindex: 0,
+};
+```
   </>}
   image=""
   fullWidth={true}
@@ -221,13 +227,14 @@ in smart contracts on the Concordium chain.
 [Addresses](https://docs.rs/concordium-std/latest/concordium_std/enum.Address.html)
 are represented as an enum with two variants.
 
-.. code-block:: rust
+```rust
 
-    pub enum Address {
-        Account(AccountAddress),
-        Contract(ContractAddress),
-    }
+pub enum Address {
+    Account(AccountAddress),
+    Contract(ContractAddress),
+}
 
+```
 Rust has a pattern matching that determines at runtime which
 variant of the enum Address is applicable, and then the appropriate code
 is executed. You can read more about [pattern matching](https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html) in the
@@ -236,20 +243,22 @@ Rust language book.
 For example, the below code prints out a different message depending on if the `sender`
 that invoked this smart contract function is a contract or an account.
 
-.. code-block:: rust
+```rust
 
-    match ctx.sender() {
-        Address::Contract(contract_address) => { println!("This contract invoked the function: {:?}", contract_address) },
-        Address::Account(account_address) => { println!("This account invoked the function: {:?}", account_address) },
-    };
+match ctx.sender() {
+    Address::Contract(contract_address) => { println!("This contract invoked the function: {:?}", contract_address) },
+    Address::Account(account_address) => { println!("This account invoked the function: {:?}", account_address) },
+};
 
+```
 Add the above pattern matching snippet to one of your Rust smart contract functions and write
 a test case that invokes that function. You can see the printout of the snippet
 by running the tests with the below command.
 
-.. code-block:: console
+```console
 
-    $cargo test -- --nocapture
+$cargo test -- --nocapture
+```
   </>}
   image=""
   fullWidth={true}
@@ -296,37 +305,43 @@ Additional documentation can be found in the [self_address description](https://
   docText={<>
 Yes. You can use
 
-.. code-block:: rust
+```rust
 
-    println!("Printing output of f: {}, and g: {}", f(1,2,3), g("hi"));
+println!("Printing output of f: {}, and g: {}", f(1,2,3), g("hi"));
 
+```
 or
 
-.. code-block:: rust
+```rust
 
-    println!("Printing debug value: {:?}", 12345);
+println!("Printing debug value: {:?}", 12345);
 
+```
 for printing to stdout and
 
-.. code-block:: rust
+```rust
 
-    eprintln!("Printing output of f: {}, and g: {}", f(1,2,3), g("hi"));
+eprintln!("Printing output of f: {}, and g: {}", f(1,2,3), g("hi"));
 
+```
 or
 
-.. code-block:: rust
+```rust
 
-    eprintln!("Printing debug value: {:?}", 12345);
+eprintln!("Printing debug value: {:?}", 12345);
 
+```
 for printing to stderr.
 
 Add one of the above lines of code to a Rust smart contract function or one of your test cases (Write
 a test case that invokes your Rust smart contract function if the printing statement is in the smart contract code).
 You can see the printout by running the tests with the below command.
 
-.. code-block:: console
+```console
 
-    $cargo test -- --nocapture
+$cargo test -- --nocapture
+
+```
   </>}
   image=""
   fullWidth={true}
@@ -341,12 +356,13 @@ Error codes come from the ``concordium-std`` crate or are thrown by the smart co
 
 An example of a ``concordium-std`` crate error is shown below:
 
-.. code-block:: console
+```console
 
-    Error: Updating contract instance failed:
-    'smash' in 'PiggyBank' at {"index":12345,"subindex":0} failed with code -2147483636.
+Error: Updating contract instance failed:
+'smash' in 'PiggyBank' at {"index":12345,"subindex":0} failed with code -2147483636.
 
-![](/../tutorials/piggy-bank/images/pb_tutorial_21.png)
+```
+![](../../../tutorials/piggy-bank/images/pb_tutorial_21.png)
 You can find the meaning of common error codes in this [list](https://docs.rs/concordium-std/latest/concordium_std/#signalling-errors).
 This error was thrown by the ``concordium-std`` crate. The error codes start from ``i32::MIN`` and go upwards.
 ``-2147483636`` corresponds to ``NotPayableError``. In contrast, error types of smart contracts start from ``-1`` and go downwards.
@@ -355,12 +371,13 @@ This error was thrown by the ``concordium-std`` crate. The error codes start fro
 
 An example of a smart contract error is shown below:
 
-.. code-block:: console
+```console
 
-    Error: Updating contract instance failed:
-    'smash' in 'PiggyBank' at {"index":12345,"subindex":0} failed with code -1.
+Error: Updating contract instance failed:
+'smash' in 'PiggyBank' at {"index":12345,"subindex":0} failed with code -1.
 
-![](/../tutorials/piggy-bank/images/pb_tutorial_27.png)
+```
+![](../../../tutorials/piggy-bank/images/pb_tutorial_27.png)
 You can find the meaning of the piggy bank error codes in this [section](/docs/mainnet/tutorials/piggy-bank/testing#piggy-bank-smash-error).
 This error was thrown by the smart contract. The error codes start from ``-1`` and go downwards.
 ``-1`` is the first error code and corresponds to ``NotOwner``.
@@ -384,19 +401,22 @@ Yes. You can use the ``fmt`` and the ``cargo clippy`` linter tools as described 
   docText={<>
 Tests run in parallel by default with the following two commands
 
-.. code-block:: console
+```console
 
-    $cargo concordium test
+$cargo concordium test
 
-.. code-block:: console
+```
+```console
 
-    $cargo test
+$cargo test
 
+```
 You can use the below command for consecutive execution of the tests.
 
-.. code-block:: console
+```console
 
-    $cargo test -- --test-threads=1
+$cargo test -- --test-threads=1
+```
   </>}
   image=""
   fullWidth={true}
@@ -414,44 +434,47 @@ function using a structured representation, such as JSON.
 The smart contract function needs to define a ``parameter`` and a ``return_value``
 so that a schema can be generated for the input parameters and the output parameters, respectively.
 
-.. code-block:: rust
-    :emphasize-lines: 4, 5
+```rust
 
-    #[receive(
-        contract = "CIS2-wCCD",
-        name = "balanceOf",
-        parameter = "ContractBalanceOfQueryParams",
-        return_value = "ContractBalanceOfQueryResponse"
-    )]
-    fn contract_balance_of(
-        ctx: &ReceiveContext,
-        host: &Host<StateImplementation>,
-    ) -> ContractResult<ContractBalanceOfQueryResponse> { ... }
+#[receive(
+    contract = "CIS2-wCCD",
+    name = "balanceOf",
+    parameter = "ContractBalanceOfQueryParams",
+    return_value = "ContractBalanceOfQueryResponse"
+)]
+fn contract_balance_of(
+    ctx: &ReceiveContext,
+    host: &Host<StateImplementation>,
+) -> ContractResult<ContractBalanceOfQueryResponse> { ... }
 
 
+```
 The schema can either be embedded into the smart contract or generated
 as a separate file.
 
 **Option 1 (Schema embedded into a smart contract)**
 
-.. code-block:: console
+```console
 
-    $cargo concordium build
+$cargo concordium build
 
-![](/../images/onboarding_ethereum_developers_5.png)
+```
+![](./images/onboarding_ethereum_developers_5.png)
 **Option 2 (Schema as a separate file)**
 
-.. code-block:: console
+```console
 
-    $cargo concordium build --schema-out ./schema.bin
+$cargo concordium build --schema-out ./schema.bin
 
+```
 The shorter version of the above command is as follows:
 
-.. code-block:: console
+```console
 
-    $cargo concordium build -s ./schema.bin
+$cargo concordium build -s ./schema.bin
 
-![](/../images/onboarding_ethereum_developers_6.png)
+```
+![](./images/onboarding_ethereum_developers_6.png)
 If the schema is a separate file, it needs to be provided with the ``--schema`` flag to the ``concordium-client``.
 
 When using the ``concordium-client`` to interact with smart contracts the input and output parameters
@@ -464,22 +487,22 @@ If your JSON object that was provided with the ``--parameter-json`` flag is in t
 get an error message with additional information on what JSON object format is expected.
 This information can help you to create the correct JSON object.
 
-![](/../images/onboarding_ethereum_developers_7.png)
+![](./images/onboarding_ethereum_developers_7.png)
 **Example 2 (Schema is embedded into the smart contract and the `parameter-json`
 flag provides the input parameters as a JSON object; the return value is displayed
 in a human-readable format due to the provided additional information in the schema)**
 
-![](/../images/onboarding_ethereum_developers_8.png)
+![](./images/onboarding_ethereum_developers_8.png)
 **Example 3 (Schema is provided as a separate file and the `parameter-json` flag
 provides the input parameters as a JSON object; the return value is displayed in a
 human-readable format due to the provided additional information in the schema)**
 
-![](/../images/onboarding_ethereum_developers_9.png)
+![](./images/onboarding_ethereum_developers_9.png)
 **Example 4 (No schema is provided and the `parameter-binary` flag provides the input
 parameters as a raw bytes string; the return value is displayed in raw bytes because no additional
 information is available on how to represent the bytes in a human-readable format)**
 
-![](/../images/onboarding_ethereum_developers_10.png)
+![](./images/onboarding_ethereum_developers_10.png)
   </>}
   image=""
   fullWidth={true}
@@ -492,26 +515,29 @@ When using the ``concordium-client`` to interact with smart contracts the input 
 can be either in human-readable format (with a schema) or in raw bytes (binary format).
 If you want to use the binary format, the below command shows that a `myInputParameters.bin` file is required.
 
-.. code-block:: console
+```console
 
-    $concordium-client contract update <ContractIndex> --entrypoint <ContractEntryPoint> --parameter-binary myInputParameters.bin --sender <Account> --energy 12345678
+$concordium-client contract update <ContractIndex> --entrypoint <ContractEntryPoint> --parameter-binary myInputParameters.bin --sender <Account> --energy 12345678
 
+```
 You can create such a `myInputParameters.bin` file by adding the below lines to your test cases replacing the `ExampleParams` struct with your input parameter struct for that function.
 
-.. code-block:: rust
+```rust
 
-    let parameter = ExampleParams {
-        example_key1: value1,
-        example_key1: value2,
-    }
-    let parameter_bytes = to_bytes(&parameter);
-    std::fs::write("myInputParameters.bin", &parameter_bytes).expect("Failed to write parameter file");
+let parameter = ExampleParams {
+    example_key1: value1,
+    example_key1: value2,
+}
+let parameter_bytes = to_bytes(&parameter);
+std::fs::write("myInputParameters.bin", &parameter_bytes).expect("Failed to write parameter file");
 
+```
 When running the tests with the below command the `myInputParameters.bin` file is created in the current folder.
 
-.. code-block:: console
+```console
 
-    $cargo test
+$cargo test
+```
   </>}
   image=""
   fullWidth={true}
@@ -533,12 +559,12 @@ the CCD amount that was sent to the function, and events that were logged by thi
 
 The image below shows that one event was logged by the contract `<783,0>` and no event was logged by the contract `<782,0>`.
 
-![](/../images/onboarding_ethereum_developers_1.png)
+![](./images/onboarding_ethereum_developers_1.png)
 If several events are logged by one function entry point, the different events can be distinguished by their array index.
 The image below shows that four events were logged by an entry point in
 [this execution chain](https://dashboard.testnet.concordium.com/lookup/7fcad417384d8e36fd2264d16d0ce1385860cdad711d17f7d6c12137c9cbab2e).
 
-![](/../images/onboarding_ethereum_developers_2.png)
+![](./images/onboarding_ethereum_developers_2.png)
   </>}
   image=""
   fullWidth={true}
@@ -553,75 +579,83 @@ interpreting event log data when writing their own smart contracts.
 The official Concordium smart contracts use the following standard:
 Each event has a number tag and then the rest of the event data.
 
-![](/../images/onboarding_ethereum_developers_11.png)
+![](./images/onboarding_ethereum_developers_11.png)
 For example, the above image has an event number tag of ``fd`` (hex encoding) which is ``15*16+13 = 253`` in decimal.
 This number tag corresponds to a [burn event](https://github.com/Concordium/concordium-rust-smart-contracts/blob/main/concordium-cis2/src/lib.rs#L53)
 of a `Cis2` token.
 ``u8::MAX`` is ``255`` in decimal and ``u8::MAX-2`` is ``253`` in decimal (the same value as in the image above).
 
-.. code-block:: rust
+```rust
 
-    pub const BURN_EVENT_TAG: u8 = u8::MAX - 2;
+pub const BURN_EVENT_TAG: u8 = u8::MAX - 2;
 
+```
 This number tag is used to distinguish between the different types of events.
 
 **Option 1:**
 You can compare the rest of the event data by adding the below lines of code to your test cases
 and adjusting the `MyEventParams` to the event object that you are using.
 
-.. code-block:: rust
+```rust
 
-    let parameter = MyEventParams {
-        example_key1: value1,
-        example_key1: value2,
-    }
-    let parameter_bytes = to_bytes(&parameter);
-    println!("{:02x?}", parameter_bytes);
+let parameter = MyEventParams {
+    example_key1: value1,
+    example_key1: value2,
+}
+let parameter_bytes = to_bytes(&parameter);
+println!("{:02x?}", parameter_bytes);
 
+```
 When running the test cases with the below command, the event data is printed to your standard output.
 
-.. code-block:: console
+```console
 
-    $cargo test -- --nocapture
+$cargo test -- --nocapture
 
+```
 For example, the following output would be shown on
 [the dashboard](https://dashboard.testnet.concordium.com/lookup) as  0: fe0003532a04.
 
-.. code-block:: console
+```console
 
-    [fe, 00, 03, 53, 2a, 04]
+[fe, 00, 03, 53, 2a, 04]
 
+```
 **Option 2:**
 You can compare the rest of the event data by adding the below line to your ``Cargo.toml`` file
 
-.. code-block:: rust
+```rust
 
-    [dependencies]
-    hex = "0.4"
+[dependencies]
+hex = "0.4"
 
+```
 as well as adding the below lines of code to your test cases
 and adjusting the `MyEventParams` to the event object that you are using.
 
-.. code-block:: rust
+```rust
 
-    let parameter = MyEventParams {
-        example_key1: value1,
-        example_key1: value2,
-    }
-    let parameter_bytes = to_bytes(&parameter);
-    println!("{}", hex::encode(&parameter_bytes));
+let parameter = MyEventParams {
+    example_key1: value1,
+    example_key1: value2,
+}
+let parameter_bytes = to_bytes(&parameter);
+println!("{}", hex::encode(&parameter_bytes));
 
+```
 When running the test cases with the below command, the event data is printed to your standard output.
 
-.. code-block:: console
+```console
 
-    $cargo test -- --nocapture
+$cargo test -- --nocapture
 
+```
 For example, the following output would be shown:
 
-.. code-block:: console
+```console
 
-    fe0003532a04
+fe0003532a04
+```
   </>}
   image=""
   fullWidth={true}
@@ -632,19 +666,21 @@ For example, the following output would be shown:
   docText={<>
 Every time when a transfer occurs by the below code, the |Chain|_ records the `address` and the `amount`.
 
-.. code-block:: rust
+```rust
 
-    host.invoke_transfer(address, amount);
+host.invoke_transfer(address, amount);
 
+```
 The recorded event data can be used in the test cases to confirm that the CCD was
 transferred as shown in the below [example code](https://github.com/Concordium/concordium-rust-smart-contracts/blob/main/examples/recorder/tests/tests.rs#L102).
 
-.. code-block:: rust
+```rust
 
-    assert_eq!(update_transfer.account_transfers().collect::<Vec<_>>()[..], [
-        (contract_address, Amount::zero(), ACC_0),
-        (contract_address, Amount::zero(), ACC_1)
-    ]);
+assert_eq!(update_transfer.account_transfers().collect::<Vec<_>>()[..], [
+    (contract_address, Amount::zero(), ACC_0),
+    (contract_address, Amount::zero(), ACC_1)
+]);
+```
   </>}
   image=""
   fullWidth={true}
@@ -744,12 +780,13 @@ The subindex is currently not in use and is always 0. There are plans to give th
 
 In contrast to Solana, you cannot send CCD to a contract address (or account address) before they have been deployed/initialized.
 
-.. code-block:: rust
+```rust
 
-    ContractAddress {
-        index:    1234,
-        subindex: 0,
-    };
+ContractAddress {
+    index:    1234,
+    subindex: 0,
+};
+```
   </>}
   image=""
   fullWidth={true}
@@ -814,59 +851,66 @@ find a button to request 2000 testnet CCD to get started with your new account.
 **Option 2:** If you have the curl package installed on your Unix-like operating systems,
 you can request CCD in the terminal directly from the wallet proxy via the below command.
 
-.. code-block:: console
+```console
 
-    $curl -X PUT https://wallet-proxy.testnet.concordium.com/v0/testnetGTUDrop/<YourAccountAddress>
+$curl -X PUT https://wallet-proxy.testnet.concordium.com/v0/testnetGTUDrop/<YourAccountAddress>
 
+```
 If you insert your account address correctly, the command should look similar to the below line.
 
-.. code-block:: console
+```console
 
-    $curl -X PUT https://wallet-proxy.testnet.concordium.com/v0/testnetGTUDrop/4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JXBDAz9WdEy
+$curl -X PUT https://wallet-proxy.testnet.concordium.com/v0/testnetGTUDrop/4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JXBDAz9WdEy
 
+```
 The above request will return a transaction hash which you can look up on the block explorer.
 You can only request CCD a single time for each account address via this API endpoint.
 If you already submitted a request before, it will be an old transaction hash that is returned.
 
-![](/../images/onboarding_ethereum_developers_3.png)
+![](./images/onboarding_ethereum_developers_3.png)
 **Option 3:**
 Alternatively, you can use [Postman](https://www.postman.com/) and insert the following data before clicking the `Send` button.
 
-![](/../images/onboarding_ethereum_developers_4.png)
+![](./images/onboarding_ethereum_developers_4.png)
 **Option 4:**
 If you have the curl package and the ``concordium-client`` tool installed on your Unix-like operating systems, you can request CCD to any of your alias account addresses.
 If you already sent a previous request to the wallet proxy, you can not request any more CCD to the same account address.
 Look up one of your alias account addresses instead and use it for your request.
 The CCD will be credited to your canonical account address.
 
-.. code-block:: console
+```console
 
-    $concordium-client account show-alias <YourAccountAddress> --alias <number>
+$concordium-client account show-alias <YourAccountAddress> --alias <number>
 
+```
 If you insert your account address and a number correctly, the command should look similar to the below line.
 
-.. code-block:: console
+```console
 
-    $concordium-client account show-alias 4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j --alias 17
+$concordium-client account show-alias 4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j --alias 17
 
+```
 This generates the output:
 
-.. code-block:: console
+```console
 
-    The requested alias for address 4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j is 4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JXBDCpCaUT6
+The requested alias for address 4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JaqovViXS4j is 4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JXBDCpCaUT6
 
+```
 Copy your alias address to the below command.
 
-.. code-block:: console
+```console
 
-    $curl -X PUT https://wallet-proxy.testnet.concordium.com/v0/testnetGTUDrop/<YourAliasAccountAddress>
+$curl -X PUT https://wallet-proxy.testnet.concordium.com/v0/testnetGTUDrop/<YourAliasAccountAddress>
 
+```
 If you insert your alias account address correctly, the command should look similar to the below line.
 
-.. code-block:: console
+```console
 
-    $curl -X PUT https://wallet-proxy.testnet.concordium.com/v0/testnetGTUDrop/4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JXBDCpCaUT6
+$curl -X PUT https://wallet-proxy.testnet.concordium.com/v0/testnetGTUDrop/4phD1qaS3U1nLrzJcgYyiPq1k8aV1wAjTjYVPE3JXBDCpCaUT6
 
+```
 **Option 5:** If you need plenty of CCD for large-scale testing,
 please contact Concordium’s technical support via support@concordium.software.
   </>}
@@ -904,19 +948,24 @@ Yes. You can create a [multiSig wallet](https://developer.concordium.software/en
 Each account has 1+ credentials, and each credential has 1+ keys.
 You can set a threshold for the number of signers needed on an account (for example 2/3 signers).
 
-.. note::
-
-    The desktop wallet supports all transaction types, except smart contract transactions.
-
-.. note::
-
-    You cannot import the keys from the desktop wallet to the ``concordium-client``.
-    Hence, the desktop wallet does not support smart contract transactions.
-    If you need the multiSig wallet to manage a smart contract,
-    you need to deploy a smart contract multiSig wallet.
+<Callout
+  body={<>
+The desktop wallet supports all transaction types, except smart contract transactions.
   </>}
-  image=""
-  fullWidth={true}
+  variant="info"
+/>
+<Callout
+  body={<>
+  You cannot import the keys from the desktop wallet to the ``concordium-client``.
+  Hence, the desktop wallet does not support smart contract transactions.
+  If you need the multiSig wallet to manage a smart contract,
+  you need to deploy a smart contract multiSig wallet.
+</>}
+image=""
+fullWidth={true}
+  </>}
+  variant="info"
+/>
 />
 
 <accordion

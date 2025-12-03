@@ -473,15 +473,15 @@ You can embed the schema file in the module, which means you don’t have to cal
 cargo concordium build --out dist/embedded/module.wasm.v1
 ```
 
-![dark console screen with result of running the command above](/../images/build-sc.png)console
+![dark console screen with result of running the command above](/images/build-sc.png)console
 concordium-client module deploy dist/fungible/module.wasm.v1 --sender <YOUR-ACCOUNT> --name <YOUR-CONTRACT-NAME> --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
 ```
 
-![dark console screen with result of running the command above](/../images/deploy-sc.png)console
+![dark console screen with result of running the command above](/images/deploy-sc.png)console
 concordium-client contract init <MODULE-HASH> --sender <YOUR-ACCOUNT> --energy 30000 --contract <YOUR-CONTRACT-NAME> --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
 ```
 
-![dark console screen with result of running the command above](/../images/initialize-sc.png)
+![dark console screen with result of running the command above](/images/initialize-sc.png)
 
 [Click here](/docs/mainnet/tutorials/fungible-tokens/mint-xfer#mint-xfer-ft) to continue to the second part of the tutorial.
 

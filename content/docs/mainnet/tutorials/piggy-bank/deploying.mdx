@@ -51,7 +51,7 @@ You are now set up to deploy the piggy bank module to the testnet chain. Give th
 
 <Callout
   body={<>
-Remember to adjust the following commands when you are running your `concordium-client` tool locally and want to connect to your node on the server. You can look up the different options on how to connect the `concordium-client` tool to your testnet node [here](#interact-with-your-contract).
+Remember to adjust the following commands when you are running your `concordium-client` tool locally and want to connect to your node on the server. You can look up the different options on how to connect the `concordium-client` tool to your testnet node [here](/docs/shared/setup-env#interact-with-your-contract).
   </>}
   variant="info"
 />
@@ -94,7 +94,7 @@ Error: Module deployment failed:
 Module <module-reference> already exists.
 ```
 
-![](/../images/pb_tutorial_20.png)console
+![](./images/pb_tutorial_20.png)console
 $./concordium-client contract init piggy_bank_part2_module --sender <account-name> --contract PiggyBank --name piggy_bank_part2_instance --energy 1500 --grpc-port 20001
 ```
 
@@ -115,7 +115,7 @@ Contract successfully initialized with address: {"index":<smart-contract-instanc
 Contract address {"index":<smart-contract-instance-index>,"subindex":0} was successfully named 'piggy_bank_part2_instance'.
 ```
 
-![](/../images/pb_tutorial_22.png)console
+![](./images/pb_tutorial_22.png)console
 $./concordium-client contract update piggy_bank_part2_instance --entrypoint insert --energy 1000 --sender <account-name> --amount 1 --grpc-port 20001
 ```
 
@@ -125,7 +125,7 @@ If everything works correctly the output has a green line as follows:
 Successfully updated contract instance {"index":<smart-contract-instance-index>,"subindex":0} ('piggy_bank_part2_instance') using the function 'insert'.
 ```
 
-![](/../images/pb_tutorial_23.png)console
+![](./images/pb_tutorial_23.png)console
 $./concordium-client contract invoke piggy_bank_part2_instance --entrypoint view --energy 1000 --grpc-port 20001
 ```
 
@@ -139,7 +139,7 @@ Invocation resulted in success:
 .
 ```
 
-![](/../images/pb_tutorial_24.png)console
+![](./images/pb_tutorial_24.png)console
 $./concordium-client contract update piggy_bank_part2_instance --entrypoint smash --sender <account-name> --energy 2000 --grpc-port 20001
 ```
 
@@ -149,17 +149,17 @@ If everything works correctly the output has a green line as follows:
 Successfully updated contract instance {"index":<smart-contract-instance-index>,"subindex":0} ('piggy_bank_part2_instance') using the function 'smash'.
 ```
 
-![](/../images/pb_tutorial_25.png)console
+![](./images/pb_tutorial_25.png)console
 Error: Updating contract instance failed:
 'smash' in 'PiggyBank' at {"index":<smart-contract-instance-index>,"subindex":0} failed with code -2147483636.
 ```
 
-![](/../images/pb_tutorial_21.png)console
+![](./images/pb_tutorial_21.png)console
 Error: Updating contract instance failed:
 'smash' in 'PiggyBank' at {"index":<smart-contract-instance-index>,"subindex":0} failed with code -1.
 ```
 
-![](/../images/pb_tutorial_27.png)
+![](./images/pb_tutorial_27.png)
 
 <Callout
   body={<>

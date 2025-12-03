@@ -40,13 +40,13 @@ If you no longer wish to produce blocks on this account, you can stop validation
 
 2. On the next screen, click **Stop**.
 
-![screen showing validator update options](/../images/browser-wallet/new/update_validation1.png)
+![screen showing validator update options](/images/browser-wallet/new/update_validation1.png)
 3. Review the transaction details for removing your validator. Note that the validator stake is released after 7 days. Click **Send** to confirm and send your transaction to the blockchain.
 
-![screen showing send stop validator transaction](/../images/browser-wallet/new/stop_validator_send.png)
+![screen showing send stop validator transaction](/images/browser-wallet/new/stop_validator_send.png)
 4. The wallet displays a confirmation screen with a green checkmark, indicating your validator has successfully removed. You can click **Transaction details** to view more information about the transaction, or **Return to account** to go back to your account overview.
 
-![success screen for stopping validator](/../images/browser-wallet/new/stop_validator2.png)
+![success screen for stopping validator](/images/browser-wallet/new/stop_validator2.png)
   </>}
   image=""
   fullWidth={true}
@@ -55,18 +55,23 @@ If you no longer wish to produce blocks on this account, you can stop validation
 <accordion
   heading="Desktop Wallet"
   docText={<>
-.. dropdown:: Single signature account
+<accordion
+  heading="Single signature account"
+  docText={<>
 
-    #. Go to **Accounts**, select the account that you no longer want to be a validator account then click **More options**.
+1. Go to **Accounts**, select the account that you no longer want to be a validator account then click **More options**.
 
-    #. Select **Validation**.
+2. Select **Validation**.
 
-    #. Click **Stop validation**.
-
-![screen showing all validator options](/../images/desktop-wallet/dw-baker-menu.png)
+3. Click **Stop validation**.
+  </>}
+  image=""
+  fullWidth={true}
+/>
+![screen showing all validator options](/images/desktop-wallet/dw-baker-menu.png)
     #. The cool-down period is displayed. Select **Continue**.
 
-![screen showing that validator will be removed](/../images/desktop-wallet/dw-remove-baker.png)
+![screen showing that validator will be removed](/images/desktop-wallet/dw-remove-baker.png)
     #. A message says **Waiting for device. Please connect your Ledger**. Connect the LEDGER device to the computer and enter your PIN on the LEDGER device.
 
     #. Press the right button to navigate to the **Concordium** app, and then press both buttons to open the app. The LEDGER device says **Concordium is ready**. Wait for the message **Ledger device is ready**in the Desktop Wallet and select **Submit**.
@@ -77,86 +82,94 @@ If you no longer wish to produce blocks on this account, you can stop validation
 
     #. In the Desktop Wallet, you can see that the transaction has been submitted to the chain. Select **Finish**.
 
-.. dropdown:: Multi signature account
+<accordion
+  heading="Multi signature account"
+  docText={<>
 
-    #. Go to **Multi Signature Transactions**, select **Make new proposal**, and then select **Stop validation**.
+  #. Go to **Multi Signature Transactions**, select **Make new proposal**, and then select **Stop validation**.
 
-    #. Select the **Account** that you no longer want to be a validator account, and then select **Continue**.
+  #. Select the **Account** that you no longer want to be a validator account, and then select **Continue**.
 
-    #. Set an expiry date and time for your proposal. You must set the expiry time so that the co-signers can return their signatures in time. Select **Continue**.
+  #. Set an expiry date and time for your proposal. You must set the expiry time so that the co-signers can return their signatures in time. Select **Continue**.
 
-    **Generate the transaction**
+  **Generate the transaction**
 
-    There are two ways that you can generate the transaction:
+  There are two ways that you can generate the transaction:
 
-    -  Generate the transaction without signing. This option enables you to export the transaction proposal without signing it. You don’t need a LEDGER device but you do need an internet connection.
+  -  Generate the transaction without signing. This option enables you to export the transaction proposal without signing it. You don’t need a LEDGER device but you do need an internet connection.
 
-    -  Generate and sign the transaction This option requires a LEDGER device and an internet connection.
+  -  Generate and sign the transaction This option requires a LEDGER device and an internet connection.
 
-    In combination, these two options enable you to distribute the responsibility of creating and signing transfers among more people. You can, for example, have one person create the proposal and another one sign the proposal. It also makes it possible for you to sign the transaction on the Ledger in a different location than where the proposal was created.
+  In combination, these two options enable you to distribute the responsibility of creating and signing transfers among more people. You can, for example, have one person create the proposal and another one sign the proposal. It also makes it possible for you to sign the transaction on the Ledger in a different location than where the proposal was created.
 
-    *Generate the transaction without signing*
+  *Generate the transaction without signing*
 
-    #. Verify that the **Transaction details** are as you intended, and then select **I am sure that the proposed changes are correct**.
+  #. Verify that the **Transaction details** are as you intended, and then select **I am sure that the proposed changes are correct**.
 
-    #. Select **Generate without signing**. You can now export the proposal.
+  #. Select **Generate without signing**. You can now export the proposal.
 
-    *Generate and sign the transaction on the LEDGER device*
+  *Generate and sign the transaction on the LEDGER device*
 
-    #. If you haven't connected the LEDGER device, there's a message in the Desktop Wallet saying **Waiting for connection** until you connect the LEDGER device. Enter your PIN code on the LEDGER device. Press the buttons above the up and down arrows to choose a digit, and then press both buttons to select the digit.
+  #. If you haven't connected the LEDGER device, there's a message in the Desktop Wallet saying **Waiting for connection** until you connect the LEDGER device. Enter your PIN code on the LEDGER device. Press the buttons above the up and down arrows to choose a digit, and then press both buttons to select the digit.
 
-    #. Wait for the message in the Desktop Wallet saying **Open the Concordium application on your Ledger device**. On the LEDGER device, press the right button to navigate to the Concordium app, and then press both buttons to open the app. The LEDGER device says **Concordium is ready**. Wait for the message in the Desktop Wallet saying LEDGER device is ready.
+  #. Wait for the message in the Desktop Wallet saying **Open the Concordium application on your Ledger device**. On the LEDGER device, press the right button to navigate to the Concordium app, and then press both buttons to open the app. The LEDGER device says **Concordium is ready**. Wait for the message in the Desktop Wallet saying LEDGER device is ready.
 
-    #. In the Desktop Wallet, Verify that the **Transaction details** are as you intended, select **I am sure that the proposed changes are correct**, and then select **Generate and Sign**.
+  #. In the Desktop Wallet, Verify that the **Transaction details** are as you intended, select **I am sure that the proposed changes are correct**, and then select **Generate and Sign**.
 
-    #. On the LEDGER device, there's a message saying **Review transaction**. Verify that the sender account is correct, and navigate to the right. The LEDGER device says **Remove baker from pool**. Navigate to the right.
+  #. On the LEDGER device, there's a message saying **Review transaction**. Verify that the sender account is correct, and navigate to the right. The LEDGER device says **Remove baker from pool**. Navigate to the right.
 
-    #. The LEDGER device says **Sign transaction**. Press both buttons to sign the transaction. The LEDGER device says **Concordium is ready**.
+  #. The LEDGER device says **Sign transaction**. Press both buttons to sign the transaction. The LEDGER device says **Concordium is ready**.
 
-    .. Note::
+  <Callout
+    body={<>
+If you want to decline the transaction, press the right button on the LEDGER device. The hardware wallet now says **Decline to sign transaction**. Press both buttons to decline. In the Desktop Wallet, there's a message saying **The action was declined on the Ledger device. Please try again.**
+    </>}
+    variant="info"
+  />
+  In the Desktop Wallet, you can now see **Transaction details**, **Signatures**, and **Security & Submission Details**, which include the status of the transaction, the identicon, and the transaction hash. If you have all the required signatures, you can [submit the transaction to the chain](#submit-remove-baker), otherwise, you'll have to export the proposal and receive signatures from the co-signers.
 
-        If you want to decline the transaction, press the right button on the LEDGER device. The hardware wallet now says **Decline to sign transaction**. Press both buttons to decline. In the Desktop Wallet, there's a message saying **The action was declined on the Ledger device. Please try again.**
+  **Export proposal**
 
-    In the Desktop Wallet, you can now see **Transaction details**, **Signatures**, and **Security & Submission Details**, which include the status of the transaction, the identicon, and the transaction hash. If you have all the required signatures, you can [submit the transaction to the chain](#submit-remove-baker), otherwise, you'll have to export the proposal and receive signatures from the co-signers.
+  If more than one signature is needed to sign off on the proposal, you have to share a file of the type JSON, which contains the transaction information,  with the co-signers.
 
-    **Export proposal**
+  #. In the Desktop Wallet, select **Export transaction proposal**.
 
-    If more than one signature is needed to sign off on the proposal, you have to share a file of the type JSON, which contains the transaction information,  with the co-signers.
+  #. Navigate to the location on your computer where you want to save the file. If you're on Windows make sure that **All Files** is selected in **Save as type**. Give the file a name and the extension .json, and then click **Save**.
 
-    #. In the Desktop Wallet, select **Export transaction proposal**.
+  #. You have to export the transaction proposal and send it to the co-signer through a secure channel. Optionally, you can also send the Identicon to the co-signers through a different secure channel.
 
-    #. Navigate to the location on your computer where you want to save the file. If you're on Windows make sure that **All Files** is selected in **Save as type**. Give the file a name and the extension .json, and then click **Save**.
+  **Receive signatures from co-signers**
 
-    #. You have to export the transaction proposal and send it to the co-signer through a secure channel. Optionally, you can also send the Identicon to the co-signers through a different secure channel.
+  When the co-signers have signed the transaction, they return the signed transaction proposal to you, and you have to import the files into the Desktop Wallet before you can submit the transaction to the chain.
 
-    **Receive signatures from co-signers**
+  #. If you’re still on the same page, go to step 3. If you left the page with the account transaction, go to **Multi-signature Transactions**, and then select Your proposed transactions.
 
-    When the co-signers have signed the transaction, they return the signed transaction proposal to you, and you have to import the files into the Desktop Wallet before you can submit the transaction to the chain.
+  #. Select the transaction that you want to submit to the chain. You can see an overview of the transaction details and an overview of the signatures. You can also see that the status of the transaction is Unsubmitted, and you can see the identicon and the transaction hash.
 
-    #. If you’re still on the same page, go to step 3. If you left the page with the account transaction, go to **Multi-signature Transactions**, and then select Your proposed transactions.
+  #. Select **Browse to file** and then navigate to the location on your computer where you saved the signed transaction files. Select the relevant files, and then select **OK**. The files are uploaded to the Desktop Wallet and added to the list of signatures. Alternatively, you can drag and drop the signature files from their location on the computer and onto the Desktop Wallet.
 
-    #. Select the transaction that you want to submit to the chain. You can see an overview of the transaction details and an overview of the signatures. You can also see that the status of the transaction is Unsubmitted, and you can see the identicon and the transaction hash.
+  .. _submit-remove-baker:
 
-    #. Select **Browse to file** and then navigate to the location on your computer where you saved the signed transaction files. Select the relevant files, and then select **OK**. The files are uploaded to the Desktop Wallet and added to the list of signatures. Alternatively, you can drag and drop the signature files from their location on the computer and onto the Desktop Wallet.
+  **Submit the transaction to the blockchain**
 
-    .. _submit-remove-baker:
+  When you have received and added all the required signatures, you can submit the transaction to the blockchain.
 
-    **Submit the transaction to the blockchain**
+  #. Review the transaction details carefully to ensure that all information is correct.
 
-    When you have received and added all the required signatures, you can submit the transaction to the blockchain.
+  #. Select **I understand this is the final submission, and that it cannot be reverted**.
 
-    #. Review the transaction details carefully to ensure that all information is correct.
+      If you don’t want to submit the transaction to the chain, you can select **Cancel**. The proposal is no longer active. However, it is still visible in the list of proposals.
 
-    #. Select **I understand this is the final submission, and that it cannot be reverted**.
+  #. Select **Submit transaction to chain**. The transaction is submitted to the chain and finalized on the ledger.
 
-        If you don’t want to submit the transaction to the chain, you can select **Cancel**. The proposal is no longer active. However, it is still visible in the list of proposals.
-
-    #. Select **Submit transaction to chain**. The transaction is submitted to the chain and finalized on the ledger.
-
-    #. Select **Finish** to leave the page.
+  #. Select **Finish** to leave the page.
+</>}
+image=""
+fullWidth={true}
   </>}
   image=""
   fullWidth={true}
+/>
 />
 
 <Callout
@@ -165,4 +178,3 @@ If you stop as a validator, remember that this does not shut down your node. You
   </>}
   variant="info"
 />
-

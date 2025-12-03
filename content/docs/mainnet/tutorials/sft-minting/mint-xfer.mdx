@@ -47,13 +47,13 @@ Now check the state of your contract. Remember this is a state-keeping machine. 
 concordium-client contract invoke <YOUR-CONTRACT-INSTANCE> --entrypoint view --schema  dist/smart-contract-multi/schema.bin
 ```
 
-![](/../images/contract-state.png)console
+![](/images/contract-state.png)console
 concordium-client contract invoke <YOUR-INDEX> --entrypoint tokenMetadata --parameter-json nft-artifacts/ids.json --schema dist/smart-contract-multi/schema.bin --grpc-port 20001
 ```
 
 The metadata URL is stored permanently on Concordium.
 
-![](/../images/metadata-url.png)json
+![](/images/metadata-url.png)json
 [
     {
         "token_id": "<YOUR-TOKEN-ID>",
@@ -73,7 +73,7 @@ concordium-client contract update <YOUR-INDEX> --entrypoint transfer --parameter
 
 The transfer is successful.
 
-![](/../images/transfer-sft-success.png){image} images/transfer-view.png
+![](/images/transfer-sft-success.png){image} images/transfer-view.png
 :width: 100%
 ```
 

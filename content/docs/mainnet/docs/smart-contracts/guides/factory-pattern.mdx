@@ -65,9 +65,9 @@ The factory constructs a new instance of the `product` smart contract, invoking 
 `init_product` constructor.
 Finally, a reference to the new product instance is returned.
 
-![sequence diagram showing the idealized interaction for the factory pattern](/../images/ideal-factory.svg)
+![sequence diagram showing the idealized interaction for the factory pattern](./images/ideal-factory.svg)
 
-![sequence diagram showing how the factory pattern might be realised on Concordium](/../images/concordium-factory.svg)
+![sequence diagram showing how the factory pattern might be realised on Concordium](/images/concordium-factory.svg)
 
 This process is significantly more complex than the original idealized factory pattern.
 In particular, the user is required to sign two separate transactions, with the second one depending
@@ -268,16 +268,16 @@ the process by inserting their own transaction to initialize the product.
 For instance, an adversary could invoke a different factory instance than intended by the user,
 as illustrated in the following sequence diagram:
 
-![sequence diagram showing how a third party might hijack a product](/../images/factory-adversary.svg)Rust
+![sequence diagram showing how a third party might hijack a product](/images/factory-adversary.svg)Rust
 ensure_eq!(ctx.invoker(), ctx.owner(), ProductError::NotAuthorized);
 ```
 
 With this check, the attack described above would result in failure for Adversary (because
 the invoker Adversary does not match the owner User), but success for User:
 
-![sequence diagram showing how a hijacking attempt fails](/../images/factory-adversary2.svg)
+![sequence diagram showing how a hijacking attempt fails](/images/factory-adversary2.svg)
 
-![sequence diagram showing how a hijacking attempt may succeed if the user is deceived](/../images/factory-tricked.svg)
+![sequence diagram showing how a hijacking attempt may succeed if the user is deceived](/images/factory-tricked.svg)
 
 Hopefully, this is unlikely. Moreover, the effect of
 such a hijacking should typically be that the product cannot be used as the

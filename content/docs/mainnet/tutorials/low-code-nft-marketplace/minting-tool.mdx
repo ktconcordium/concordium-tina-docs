@@ -47,65 +47,45 @@ Once you have the above installed, do the following:
 
 It will start the minting screen in the example dApp in `localhost:3000` automatically, starting with the dashboard page.
 
-![minting tool front page](/../images/minting-tool.png)
+![minting tool front page](/images/minting-tool.png)JSON
 
-## Mint
+{
+    "name": "YOUR NFT NAME",
+    "description": "YOUR NFT DESCRIPTION",
+    "display": {
+        "url": "https://ipfs.io/ipfs....paste your url here"
+    },
+    "attributes": [
+        {
+            "name": "some attribute",
+            "type": "string",
+            "value": "999"
+        }
+        {
+            "name": "another attribute",
+            "type": "string",
+            "value": "1"
+        }
+        {
+            "name": "third attribute",
+            "type": "string",
+            "value": "7.2"
+        }
+    ]
+}
 
-Concordium provides a [library of sample images you can download](https://github.com/bogacyigitbasi/sample-images/blob/main/NFTs.zip) and use to practice minting NFTs.
-
-<accordion
-  heading="Mint NFTs with metadata"
-  docText={<>
-In this section you will learn how to mint an NFT with metadata file from a new contract.
-
-When you mint an NFT, in most of the cases you will be storing a URL value that redirects people to a JSON-formatted file. That file should contain a link to the digital asset itself, its name, and description and could potentially include lots of additional attributes to suffice Concordium Interoperability Standard 2(CIS-2). You can host these files and assets anywhere but using a decentralized solution will be our approach.
-
-.. Note::
-
-    CIS-2 token metadata example and details can be found in this link.
-
-To prepare the metadata, you should have a link to your digital asset, preferably from the Interplanetary File System (IPFS). You can check `this tutorial to learn about how you can store data on IPFS<upload-nft>` with running a node.
-
-When you have an IPFS link to the asset, create a JSON file in a text editor, fill it like below and save it.
-
-.. code-block:: JSON
-
-    {
-        "name": "YOUR NFT NAME",
-        "description": "YOUR NFT DESCRIPTION",
-        "display": {
-            "url": "https://ipfs.io/ipfs....paste your url here"
-        },
-        "attributes": [
-            {
-                "name": "some attribute",
-                "type": "string",
-                "value": "999"
-            }
-            {
-                "name": "another attribute",
-                "type": "string",
-                "value": "1"
-            }
-            {
-                "name": "third attribute",
-                "type": "string",
-                "value": "7.2"
-            }
-        ]
-    }
-
+```
 Now, you need to store this page on the IPFS as well; it will generate a URL that you will store on-chain.
 
 1. When your platform is up and running, click **DEPLOY NEW** to mint your brand-new NFTs as shown below.
 
-![minting tool screen with deploy new button](/../images/minting-tool-deploy-new.png)
+![minting tool screen with deploy new button](/images/minting-tool-deploy-new.png)
 2. The wallet pops up and asks for your signature. Click **Sign & Submit**.
 
-![minting tool screen with wallet screen pop up](/../images/minting-tool-wallet-sign.png)
+![minting tool screen with wallet screen pop up](/images/minting-tool-wallet-sign.png)
 3. You will see the figure below, since you are going to provide the metadata.json file, you don't need to use the connect Pinata function. Click **SKIP**.
 
-![minting tool screen with connect to pinata shown](/../images/minting-tool-skip-pinata.png)
+![minting tool screen with connect to pinata shown](/images/minting-tool-skip-pinata.png)
 That will lead you to the Prepare Metadata section. Provide the ``metadata.json`` file's URL to the text box and click the "OK" button.
 
 Then you will be asked to specify the token ID and amount in the following screens. Your image will be fetched from IPFS or the server where you stored assets.
@@ -135,15 +115,17 @@ The Concordium NFT Minting Tool has built-in integration with Pinata and IPFS th
 
 If you have a huge collection, creating metadata might be an issue. You need to run an IPFS node or store the data in a server, use the URL in a JSON file that is compliant with CIS-2, and use the JSON to mint your token. Just the node running part might be an issue. Luckily, there are solutions like Pinata emerging every day. Pinata is a pinning solution, meaning it hosts your data and stores that in a decentralized way in multiple locations. It produces the URL that needs to be put in the metadata file.
 
-.. Note::
-
-    Pinata is a commercial, pinning solution that pins your data stored on IPFS. You can find more info about it [in this link](https://app.pinata.cloud/).
-
+<Callout
+  body={<>
+Pinata is a commercial, pinning solution that pins your data stored on IPFS. You can find more info about it [in this link](https://app.pinata.cloud/).
+  </>}
+  variant="info"
+/>
 When you upload data on IPFS, the most important thing that you need to be careful about is making sure that data is stored/hosted on at least one device; this is achievable by running a node all the time somewhere. But that may not be an option for everybody who wants to mint NFTs for various reasons like cost, time, and some technical skills. At that moment, Pinata solves that issue;  they run a node on your behalf and give you an API key. You can access your IPFS node via that API key through their gateway.
 
 Since IPFS and Pinata are widely used in the space, the Concordium NFT Minting Tool has built-in integration with them. To use this functionality create an API key on the platform and copy it.
 
-![pinata screen shown](/../images/pinata.png)
+![pinata screen shown](/images/pinata.png)
 **NFT minting**
 
 Now you will create a brand new contract instance for your NFT collection.
@@ -152,25 +134,25 @@ Now you will create a brand new contract instance for your NFT collection.
 
 2. In the Connect Pinata screen paste your API key and click **CONNECT**.
 
-![nft marketplace connection screen after clicking mint](/../images/connect-pinata.png)
+![nft marketplace connection screen after clicking mint](/images/connect-pinata.png)
 3. Once connected, upload images either by selecting them from a folder or just dragging and dropping them. You are not limited to uploading 1-2 images, and thanks to the template, the metadata generator is easier than creating for one metadata file for every item.
 
-![screen showing multiple image selection](/../images/upload-images.png)
+![screen showing multiple image selection](/images/upload-images.png)
  **Mint NFT collection**
 
 4. Set your token IDs and click **Upload** for each.
 
-![images uploaded and need id before creation](/../images/upload-set-token-id.png)
+![images uploaded and need id before creation](/images/upload-set-token-id.png)
     The template's backend will use your API key to upload the data, and retrieves the IPFS link of it and then you will just complete the details about your tokens as described in the next step.
 
-![images after data fetched](/../images/fetch-pinata-metadata.png)
+![images after data fetched](/images/fetch-pinata-metadata.png)
 5. Add data to them and the marketplace will create metadata for you when you click **CREATE** for each of the tokens. Specify the quantity as **1** and click **DONE**.
 
-![editing metadata and create option for each image](/../images/edit-metadata-create.png)
-![editing metadata](/../images/metadata-nearly-complete.png)
+![editing metadata and create option for each image](/images/edit-metadata-create.png)
+![editing metadata](/images/metadata-nearly-complete.png)
 6. Click **MINT**. Your Concordium Wallet for Web prompts you to click **Sign and Submit** to approve the transaction and mint your NFTs.
 
-![mint option shown in background dimmed with wallet popup visible](/../images/mint-w-wallet-popup.png)
+![mint option shown in background dimmed with wallet popup visible](/images/mint-w-wallet-popup.png)
   </>}
   image=""
   fullWidth={true}
@@ -189,10 +171,10 @@ Assume that you are an artist and have a collection of two pieces. You deployed 
 
 Minting is the same as the previous sections: you need to specify your contract instance address as shown below and click **FIND**.
 
-![prepare to mint tokens from an existing contract by entering contract address](/../images/mint-from-contract-index.png)
+![prepare to mint tokens from an existing contract by entering contract address](/images/mint-from-contract-index.png)
 It will check if the contract has some unique CIS-2 methods, like the ``supports()`` function which means the contract is compliant with CIS-2. Basically, you are checking whether the contract is a token contract or not. If you are the owner, you will be able to mint your new tokens exactly [as in the previous sections](/docs/mainnet/tutorials/low-code-nft-marketplace/marketplace#mint-w-metadata). If you are not the owner of the contract, then you will end up with the error shown below.
 
-![error shown if you are not the owner of the contract you are executing](/../images/mint-error.png)
+![error shown if you are not the owner of the contract you are executing](/images/mint-error.png)
   </>}
   image=""
   fullWidth={true}

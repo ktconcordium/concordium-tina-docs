@@ -33,55 +33,62 @@ Once you have the above installed, do the following:
 
 1. Clone the repository with the following command:
 
-    .. code-block:: console
+    ```console
 
-        git clone https://github.com/Concordium/concordium-dapp-examples/tree/main/low-code-nft-marketplace
+    git clone https://github.com/Concordium/concordium-dapp-examples/tree/main/low-code-nft-marketplace
 
+    ```
 2. Install the repository's dependencies with the following command:
 
-    .. code-block:: console
+    ```console
 
-        cd Low-Code-NFT-Framework/market-ui && yarn install
+    cd Low-Code-NFT-Framework/market-ui && yarn install
 
+    ```
 3. Run the application with the following command. It starts the marketplace example dApp automatically in ``localhost:3000`` starting with the example page.
 
-    .. code-block:: console
+    ```console
 
-        yarn start
+    yarn start
 
+    ```
 **Initialize the marketplace**
 
 In this step, you will create an instance of the deployed marketplace with the connected wallet address. You can specify the commission and run your own marketplace.
 
-.. Note::
-
-    You can also build and deploy a new marketplace contract by following these steps.
-
+<Callout
+  body={<>
+You can also build and deploy a new marketplace contract by following these steps.
+  </>}
+  variant="info"
+/>
 4. Connect to the application with your Concordium Wallet for Web.
 
-![marketplace web page with wallet popup](/../images/mp-connect-wallet.png)
-    .. Note::
-
-        Before continue, make sure that you have some CCDs in your wallet to be able to initialize the Marketplace. Since this is testnet you can ask for testnet CCDs when you set up your account.
-
+![marketplace web page with wallet popup](/images/mp-connect-wallet.png)
+    <Callout
+      body={<>
+Before continue, make sure that you have some CCDs in your wallet to be able to initialize the Marketplace. Since this is testnet you can ask for testnet CCDs when you set up your account.
+      </>}
+      variant="info"
+    />
 5. Click **Create My Marketplace**.
 
-![marketplace web page with create marketplace highlighted](/../images/mp-create-mp.png)
+![marketplace web page with create marketplace highlighted](/images/mp-create-mp.png)
 6. A form appears that allows you to create a marketplace instance with two options. First, you can either create a marketplace instance from the one which is already deployed by you. Second, you can create your marketplace contract instance from the smart contract deployed by Concordium. Specify the commission and click **Deploy New**. This calls the initialize function of the marketplace contract and that instance will be your account's.
 
-![marketplace web page with deploy new highlighted](/../images/mp-deploy-new.png)
+![marketplace web page with deploy new highlighted](/images/mp-deploy-new.png)
 7. The Concordium Wallet for Web presents a pop up and asks for your approval. To approve the traansaction click **Sign & submit**.
 
-![marketplace web page with wallet popup shown](/../images/mp-new-mp-wallet.png)
+![marketplace web page with wallet popup shown](/images/mp-new-mp-wallet.png)
 When the transaction is finalized, you have your own, empty marketplace. You see the contract instance address in the address bar of the browser or you can check it from your Concordium Wallet for Web as described in the following.
 
-![empty marketplace with contract address highlighted in address bar](/../images/mp-new-mp-contract-index.png)
+![empty marketplace with contract address highlighted in address bar](/images/mp-new-mp-contract-index.png)
 To check the contract instance and find the address in the Concordium Wallet for Web:
 
 8. Click on an account so that you see the account details and transaction log.
 
-![concordium wallet for web showing account details](/../images/mp-bw-account-details.png)
-![concordium wallet for web showing transaction details](/../images/mp-bw-transaction-details.png)
+![concordium wallet for web showing account details](/images/mp-bw-account-details.png)
+![concordium wallet for web showing transaction details](/images/mp-bw-transaction-details.png)
     As you can see there is a contract initialization transaction in the log, and when you click it, the **Events** section tells you that you have initialized smart contract Market-NFT at address 2258,0. In your case this number will be different and you will need it in the next section.
 
 **Configure the application**
@@ -90,13 +97,13 @@ The following describes the necessary steps to run your own marketplace that is 
 
 Now you have to configure your code base accordingly. Go to your project's folder/market-ui and open the **Constants.ts** file in a code editor. Update the ``MARKETPLACE_CONTRACT_ADDRESS`` with your contract instance address value generated in the previous section. In this file in general you will find all constant files, such as address, schema, and module references. You can find more details about these constant variables in this section.
 
-![constants.ts file open in code editor with address highlighted](/../images/mp-configure-index.png)
+![constants.ts file open in code editor with address highlighted](/images/mp-configure-index.png)
 When you specify the contract instance address value, the template will be interacting with your instance, meaning it will have a clean marketplace like below to remove new instance creation from your marketplace and change the ``CREATE_NEW__MARKETPLACE`` flag to false.
 
-![constants.ts file open in code editor with create new marketplace flag highlighted](/../images/mp-configure-mp-flag.png)
+![constants.ts file open in code editor with create new marketplace flag highlighted](/images/mp-configure-mp-flag.png)
 You now have your own marketplace with the commission rate you specified.
 
-![marketplace home page](/../images/mp-home-page.png)
+![marketplace home page](/images/mp-home-page.png)
   </>}
   image=""
   fullWidth={true}
@@ -109,11 +116,11 @@ Within your custom marketplace you can mint your NFTs. After creating your marke
 
 Click **MINT** in the top navigation bar. You have two options in this step. First, if you already know an NFT contract instance's address and you are the owner, you can specify it in the **Find** section or click to deploy a new button to create a new instance of an already deployed NFT contract.
 
-![marketplace home page](/../images/mp-mint-nft.png)
+![marketplace home page](/images/mp-mint-nft.png)
 This opens the Concordium Wallet for Web where you click **Sign & submit** to approve the request. After the transaction is finalized you can check your wallet to find out what your token contract instance address is. It is under the **Transaction Log** section and see the details by clicking it.
 
-![concordium wallet for web showing account details](/../images/mp-bw-account-details.png)
-![concordium wallet for web showing transaction details](/../images/mp-bw-transaction-details.png)
+![concordium wallet for web showing account details](/images/mp-bw-account-details.png)
+![concordium wallet for web showing transaction details](/images/mp-bw-transaction-details.png)
 In the image above the you can see in the **Events** section that the CIS2-Multi smart contract instance is initialized at address <2258,0>.
 
 When you have your NFT contract instance, the application redirects you to the storage options. With this template you have two different options while minting an NFT: mint NFTs providing metadata or mint NFTs with Pinata.
@@ -127,43 +134,41 @@ You are going to store all digital assets on Interplanetary File System (IPFS) w
 (mint-w-metadata)=
 
 > <!-- malformed dropdown eval-rst block -->{eval-rst}
-.. dropdown:: Mint Semi-fungible tokens
+<accordion
+  heading="Mint Semi-fungible tokens"
+  docText={<>
 
-    The process to mint semi-fungible tokens is more or less the same as regular minting; you are expected to provide metadata for your token. Follow the exact instructions with minting, such as clicking the "MINT" button on the top navigation bar.
+The process to mint semi-fungible tokens is more or less the same as regular minting; you are expected to provide metadata for your token. Follow the exact instructions with minting, such as clicking the "MINT" button on the top navigation bar.
 
-    .. Note::
+<Callout
+  body={<>
+Remember CIS-2 covers all tokens with one standard.
+  </>}
+  variant="info"
+/>
+The app asks you either to create your own NFT contract instance or provide the contract instance address that you own. Specify your contract address, such as 2319,0.
 
-           Remember CIS-2 covers all tokens with one standard.
+![contract lookup screen in marketplace](/images/mint-sft-sc.png)
+<Callout
+  body={<>
+As an example, the metadata providing option is selected. You can mint your tokens with Pinata or any other URL that contains metadata that has CIS-2 standard configuration.
+  </>}
+  variant="info"
+/>
+Click **Find**. When prompted to ontinue with Pinata or metadata option, click **SKIP** and then click **ADD USING METADATA URL**. Paste your metadata JSON file URL in the text box and specify a token ID for your token. Specify the **QUANTITY** of your token which is the amount of this semi-fungible token you will be minting.
 
-    The app asks you either to create your own NFT contract instance or provide the contract instance address that you own. Specify your contract address, such as 2319,0.
+![enter quantity to mint screen](/images/prepare-sft-metadata-qty.png)
+Click **Metadata URL** in the preview tocheck the created metadata. Click **DONE**.
 
-    .. image:: images/mint-sft-sc.png
-        :width: 100%
-        :alt: contract lookup screen in marketplace
+![add metadata url to sft screen](/images/add-sft-metadata-url.png)
+Click **MINT**. Your Concordium Wallet for Web prompts you for your signature. Click **Sign & submit** to start the transaction. You can control the information you've provided until this step such as tokenID, owner account, quantity, and URL before minting them.
 
-    .. Note::
-
-        As an example, the metadata providing option is selected. You can mint your tokens with Pinata or any other URL that contains metadata that has CIS-2 standard configuration.
-
-    Click **Find**. When prompted to ontinue with Pinata or metadata option, click **SKIP** and then click **ADD USING METADATA URL**. Paste your metadata JSON file URL in the text box and specify a token ID for your token. Specify the **QUANTITY** of your token which is the amount of this semi-fungible token you will be minting.
-
-    .. image:: images/prepare-sft-metadata-qty.png
-        :width: 100%
-        :alt: enter quantity to mint screen
-
-    Click **Metadata URL** in the preview tocheck the created metadata. Click **DONE**.
-
-    .. image:: images/add-sft-metadata-url.png
-        :width: 100%
-        :alt: add metadata url to sft screen
-
-    Click **MINT**. Your Concordium Wallet for Web prompts you for your signature. Click **Sign & submit** to start the transaction. You can control the information you've provided until this step such as tokenID, owner account, quantity, and URL before minting them.
-
-    .. image:: images/mint-sft-wallet-conf.png
-        :width: 100%
-        :alt: sft minting in marketplace in background with wallet confirmation popup visible
-
-    When the transaction is finalized a pop-up notifies you that minting is done.
+![sft minting in marketplace in background with wallet confirmation popup visible](/images/mint-sft-wallet-conf.png)
+When the transaction is finalized a pop-up notifies you that minting is done.
+  </>}
+  image=""
+  fullWidth={true}
+/>
 ```
 
 <accordion
@@ -171,13 +176,13 @@ You are going to store all digital assets on Interplanetary File System (IPFS) w
   docText={<>
 1. Navigate to the **BUY** page and you will see the listed NFTs for sale.
 
-![marketplace with buy page open](/../images/mp-buy-nft.png)
+![marketplace with buy page open](/images/mp-buy-nft.png)
 2. Click the shopping basket on the NFT you wish to buy. If you are the owner of this asset, instead of a basket you will see a checkmark. It will show you how many available amounts are on sale in this marketplace. Since this is a semi-fungible token you can see below that there are 999 available items with a cost of 10000 CCDs. Specify the amount that you'd like to buy and click **BUY**.
 
-![marketplace with buy page open and specify quantity popup visible](/../images/mp-buy-nft-quantity.png)
+![marketplace with buy page open and specify quantity popup visible](/images/mp-buy-nft-quantity.png)
 3. In the Concordium Wallet for Web pop-up it shows the amount of CCDs required to pay. Click **Sign & submit** to approve the transaction.
 
-![marketplace with buy page open and concordium wallet for web popup shown](/../images/mp-buy-nft-wallet.png)
+![marketplace with buy page open and concordium wallet for web popup shown](/images/mp-buy-nft-wallet.png)
 When the transfer is completed a pop-up appears to inform you that the process is complete.
   </>}
   image=""
@@ -193,22 +198,22 @@ With Concordium Low-Code NFT Marketplace you are able to sell your tokens with f
 
 2. Specify the token contract instance address. The token smart contract will have all the tokens minted with their owners and other relevant data. After you specify the token contract instance address click **FIND**.
 
-![marketplace with sell page open and fields to enter contract instance address](/../images/mp-sell-nft.png)
+![marketplace with sell page open and fields to enter contract instance address](/images/mp-sell-nft.png)
 3. When the Concordium Wallet for Web pop-up prompts you, click **Sign & submit**. It will check if there is an asset on that particular contract, and then you will give permission to the marketplace contract to act on your behalf when someone wants to buy your asset. The tokens will still be owned by your account.
 
-![marketplace with sell page open and wallet popup shown](/../images/mp-sell-nft-wallet.png)
+![marketplace with sell page open and wallet popup shown](/images/mp-sell-nft-wallet.png)
 4. Enter the token ID to verify that you have some amount of that asset. Click **OK**.
 
-![marketplace with sell page open and verification dialog shown](/../images/mp-sell-nft-verify.png)
+![marketplace with sell page open and verification dialog shown](/images/mp-sell-nft-verify.png)
 5. If you have a balance then the **Add Token** window appears. In this screen, you can specify the CCD amount, royalty percentage (creator commission from all secondary sales on this marketplace), and how many of your assets will be put on sale. For example, if you have minted 10000 Semi-Fungible tokens with this ID you might only have 999 be available to sell. Click **ADD**.
 
-![marketplace with sell page open and token details for the sale](/../images/mp-sell-nft-details.png)
+![marketplace with sell page open and token details for the sale](/images/mp-sell-nft-details.png)
 6. In the Concordium Wallet for Web pop-up click **Sign & submit** to allow the marketplace to sell your assets on your behalf.
 
-![marketplace with sell page open and concordium wallet for web confirmation popup](/../images/mp-sell-nft-wallet-confirm.png)
+![marketplace with sell page open and concordium wallet for web confirmation popup](/images/mp-sell-nft-wallet-confirm.png)
 Once finalized, if everything is configured correctly, then you see the digital asset listed in the **Buy** section.
 
-![marketplace with buy page open and nft shown](/../images/mp-sell-nft-success.png)
+![marketplace with buy page open and nft shown](/images/mp-sell-nft-success.png)
   </>}
   image=""
   fullWidth={true}

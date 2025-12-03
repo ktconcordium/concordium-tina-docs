@@ -98,7 +98,7 @@ For example, this `supportsPermit.json` file results in the below screenshot.
 {"queries":["aaaa","transfer","updateOperator"]}
 ```
 
-![Output of supportsPermit function](/../images/supportsPermit.png)rust
+![Output of supportsPermit function](./images/supportsPermit.png)rust
 // Check the nonce to prevent replay attacks.
 ensure_eq!(message.nonce, nonce, CustomContractError::NonceMismatch.into());
 ```
@@ -124,7 +124,7 @@ or
 $ cargo concordium test
 ```
 
-![Running the test cases](/../images/testCases.png)rust
+![Running the test cases](./images/testCases.png)rust
 println!("Message hash: {}", HashSha2256(message_hash));
 ```
 
@@ -136,7 +136,7 @@ $ cargo test -- --nocapture
 
 To learn more about the `nocapture` flag you can follow [this link](https://doc.rust-lang.org/cargo/commands/cargo-test.html#display-options)
 
-![Printing the message hash](/../images/messageHash.png){image} ./images/Ed25519SignatureGeneration.png
+![Printing the message hash](./images/messageHash.png){image} ./images/Ed25519SignatureGeneration.png
 :align: center
 :alt: Generate an Ed25519 signature
 ```

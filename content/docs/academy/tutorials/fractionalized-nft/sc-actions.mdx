@@ -15,11 +15,11 @@ First, build the smart contract into Wasm format. Use the following command to d
 cargo concordium build --out dist/module.wasm.v1 --schema-out dist/schema.bin
 ```
 
-![](/../images/mid-fractnft-scactions1.png)console
+![](/images/mid-fractnft-scactions1.png)console
 concordium-client module deploy dist/module.wasm.v1 --sender <YOUR-ADDRESS> --name CIS2-Fractionalizer --grpc-port 20000 --grpc-ip node.testnet.concordium.com
 ```
 
-![](/../images/mid-fractnft-scactions2.png)console
+![](/images/mid-fractnft-scactions2.png)console
 concordium-client contract init <YOUR-MODULE-HASH> --sender <YOUR-ADDRESS> --energy 30000 --contract CIS2-Fractionalizer --grpc-port 20000 --grpc-ip node.testnet.concordium.com
 ```
 

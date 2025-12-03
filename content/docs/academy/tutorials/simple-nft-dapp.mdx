@@ -9,7 +9,7 @@ title: "Simple minting dApp"
 
 In this tutorial, you are going to implement a very basic NFT Minting dApp that can connect to the Concordium. The application will include three buttons: one to connect it to the web wallet, one to initialize the contract, and the third to mint the NFT. You will learn how to connect your dApp to the Concordium blockchain and how you can invoke a function from an already deployed smart contract.
 
-You will start from scratch with an empty React application that is bootstrapped from a React template and will be using *material-ui*. Within this very basic application, there will be three components for minting, initializing, and connecting the wallet. It is assumed you already set up your development environment and wallet so there will be no explanation about those steps. For that, you can check [the other tutorials](#sc-tutorials).
+You will start from scratch with an empty React application that is bootstrapped from a React template and will be using *material-ui*. Within this very basic application, there will be three components for minting, initializing, and connecting the wallet. It is assumed you already set up your development environment and wallet so there will be no explanation about those steps. For that, you can check [the other tutorials](/docs/mainnet/tutorials/index#sc-tutorials).
 
 ## React project
 
@@ -21,9 +21,9 @@ npx create-react-app <YOUR-DAPP-NAME> --template typescript
 
 It will take some time to fetch and install all packages and dependencies, and when it’s all done you will have something simliar to below.
 
-![visual studio code window in dark mode after creating project](/../images/beg-minting-dapp1.png)
+![visual studio code window in dark mode after creating project](/images/beg-minting-dapp1.png)
 
-![web browser tab with application interface](/../images/beg-minting-dapp2.png)
+![web browser tab with application interface](/images/beg-minting-dapp2.png)
 
 Then you will add the dependencies for some React components from *material-ui* and necessary libraries from *concordium-web-sdk* and *concordium-web-wallet-helper*. To do that, run the command below and *yarn* will install all specified packages.
 
@@ -33,7 +33,7 @@ yarn add @mui/material @emotion/react @mui/icons-material @emotion/styled @conco
 
 Once you complete that, it will create a **package.json** file that includes all dependencies in it.
 
-![visual studio code window in dark mode with package.json file open](/../images/beg-minting-dapp3.png)console
+![visual studio code window in dark mode with package.json file open](/images/beg-minting-dapp3.png)console
 import {
 detectConcordiumProvider,
 WalletApi,
@@ -96,15 +96,15 @@ return (
 }
 ```
 
-Call the **Header.tsx** component from the **App.tsx** instead of its default values. If you don't already have the Concordium Wallet for Web installed you can [download and set it up](#setup-browser-wallet). You are almost ready to test your **Connect** button!
+Call the **Header.tsx** component from the **App.tsx** instead of its default values. If you don't already have the Concordium Wallet for Web installed you can [download and set it up](/docs/mainnet/docs/browser-wallet/setup-browser-wallet#setup-browser-wallet). You are almost ready to test your **Connect** button!
 
-![web browser tab with application interface waiting to connect](/../images/beg-minting-dapp4.png)
+![web browser tab with application interface waiting to connect](/images/beg-minting-dapp4.png)
 
-![web browser tab with application interface with web wallet extension pop up to](/../images/beg-minting-dapp5.png)
+![web browser tab with application interface with web wallet extension pop up to](/images/beg-minting-dapp5.png)
 
 See how easy it is to connect an application with Concordium!
 
-Now, add more to your dApp. Minting functionality! Remember that in order to call a contract you should have the contract implemented in Rust and deployed on the chain using `concordium-client`. For information about how to do this, see the [tutorials](#sc-tutorials). When you deploy a contract, Concordium gives you a module reference which is a unique hash value. You need that because you are going to invoke that contract from your brand new dApp!
+Now, add more to your dApp. Minting functionality! Remember that in order to call a contract you should have the contract implemented in Rust and deployed on the chain using `concordium-client`. For information about how to do this, see the [tutorials](/docs/mainnet/tutorials/index#sc-tutorials). When you deploy a contract, Concordium gives you a module reference which is a unique hash value. You need that because you are going to invoke that contract from your brand new dApp!
 
 ### Initialize Component
 
@@ -200,7 +200,7 @@ return (
 
 After these changes, the application will look similar to below. Click **INITIALIZE CONTRACT**. A pop up appears in the Concordium Wallet for Web to create a new instance.
 
-![web browser tab with application interface waiting to initialize contract](/../images/beg-minting-dapp6.png)console
+![web browser tab with application interface waiting to initialize contract](/images/beg-minting-dapp6.png)console
 import { detectConcordiumProvider } from "@concordium/browser-wallet-api-helpers";
 import {
 AccountTransactionType,
@@ -465,6 +465,6 @@ Don't forget to add your `Mint` component to the **App.tsx**.
 
 If everything goes well, you will have something similar to below.
 
-![web browser tab with application interface waiting to mint nft](/../images/beg-minting-dapp7.png)
+![web browser tab with application interface waiting to mint nft](/images/beg-minting-dapp7.png)
 
-Now try it! First, initialize your contract, and fill out the form with the necessary inputs. If you need some help with Metadata you can check [this tutorial](#upload-nft).
+Now try it! First, initialize your contract, and fill out the form with the necessary inputs. If you need some help with Metadata you can check [this tutorial](/docs/mainnet/tutorials/nft-minting/upload-nft#upload-nft).

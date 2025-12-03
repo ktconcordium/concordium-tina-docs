@@ -179,11 +179,11 @@ Compile the smart contract to a Wasm module which you will deploy to testnet in 
 $cargo concordium build --out smart_contract_upgrade.wasm.v1
 ```
 
-![Compile contract version 1](/../images/compile_contract_version1.png)console
+![Compile contract version 1](./images/compile_contract_version1.png)console
 $concordium-client module deploy ./smart_contract_upgrade.wasm.v1 --sender <YourAccountAddress> --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
 ```
 
-![Deploy contract version 1](/../images/deploy_contract_version1.png)console
+![Deploy contract version 1](./images/deploy_contract_version1.png)console
 $concordium-client contract init <ModuleReference> --contract smart_contract_upgrade --energy 30000 --sender <YourAccountAddress> --grpc-port 20000  --grpc-ip grpc.testnet.concordium.com --secure
 ```
 
@@ -193,7 +193,7 @@ For example, when using the module reference from the image above, the command w
 $concordium-client contract init 8fc09d2519f516cfbb3d139b1e567753780fbb52854ecbf9a12c447756d18eb0 --contract smart_contract_upgrade --energy 30000 --sender <YourAccountAddress> --grpc-port 20000  --grpc-ip grpc.testnet.concordium.com --secure
 ```
 
-![Initialize contract version 1](/../images/initialize_contract.png)console
+![Initialize contract version 1](./images/initialize_contract.png)console
 $concordium-client contract invoke <YourContractVersion1Index> --entrypoint view --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
 ```
 
@@ -205,7 +205,7 @@ $concordium-client contract invoke 4462 --entrypoint view --grpc-port 20000 --gr
 
 You should see the following output.
 
-![View contract version 1](/../images/view_contract_version1.png)console
+![View contract version 1](./images/view_contract_version1.png)console
 $cd ./examples/smart-contract-upgrade/contract-version2
 ```
 
@@ -215,11 +215,11 @@ Compile the smart contract to a Wasm module which you will deploy to testnet in 
 $cargo concordium build --out smart_contract_upgrade.wasm.v1
 ```
 
-![Compile contract version 2](/../images/compile_contract_version2.png)console
+![Compile contract version 2](./images/compile_contract_version2.png)console
 $concordium-client module deploy ./smart_contract_upgrade.wasm.v1 --sender <YourAccountAddress> --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
 ```
 
-![Deploy contract version 2](/../images/deploy_contract_version2.png)json
+![Deploy contract version 2](./images/deploy_contract_version2.png)json
 {
    "migrate": {
       "Some": [
@@ -268,11 +268,11 @@ $concordium-client contract update 4462 --entrypoint upgrade --parameter-json up
 
 You should see the following output.
 
-![Upgrade contract version 1](/../images/upgrade.png)console
+![Upgrade contract version 1](./images/upgrade.png)console
 $concordium-client contract invoke <YourContractVersion1Index> --entrypoint view --grpc-port 20000 --grpc-ip grpc.testnet.concordium.com --secure
 ```
 
-![View contract version 2](/../images/view_contract_version2.png){image} ./images/corrupted_state.png
+![View contract version 2](./images/view_contract_version2.png){image} ./images/corrupted_state.png
 :align: center
 :alt: Corrupted state
 ```

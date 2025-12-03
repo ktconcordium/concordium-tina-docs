@@ -29,25 +29,28 @@ For more detailed information, see [Install tools for development](/docs/mainnet
   docText={<>
 You can choose to start a smart contract project from a [template](https://github.com/Concordium/concordium-rust-smart-contracts/tree/main/templates) or from scratch.
 
-.. tip::
-
-   Building a DApp as well? Have a look at the [DApp starter template](https://github.com/Concordium/concordium-dapp-starter)!
-
-
+<Callout
+  body={<>
+Building a DApp as well? Have a look at the [DApp starter template](https://github.com/Concordium/concordium-dapp-starter)!
+  </>}
+  variant="idea"
+/>
 **From a template**
 
 To generate smart contracts from the templates, the ``cargo-generate`` library is required. To install ``cargo-generate`` run the following command:
 
-.. code-block:: console
+```console
 
-    $cargo install --locked cargo-generate
+$cargo install --locked cargo-generate
 
+```
 To start a new Concordium smart contract project from a template, run the command:
 
-.. code-block:: console
+```console
 
-    $cargo concordium init
+$cargo concordium init
 
+```
 The path where the project should be created can be provided with the ``--path`` option.
 
 You can use the `concordium-std`_ library to help you build smart contracts or build without Rust's ``std``. To add the library, open ``Cargo.toml`` and add the line
@@ -62,10 +65,11 @@ For information about building contracts from scratch, see [Setting up a smart c
 
 If you're using the ``concordium-std`` library bring everything from the `concordium-std`_ library into scope by adding the line:
 
-.. code-block:: rust
+```rust
 
-    use concordium_std::*;
+use concordium_std::*;
 
+```
 For information about developing and editing your smart contracts, see [Developing smart contracts](/docs/mainnet/docs/smart-contracts/develop-contracts#writing-smart-contracts).
   </>}
   image=""
@@ -94,26 +98,31 @@ Use the testnet faucet in your wallet to get some CCDs for testing. The testnet 
   docText={<>
  In order to build a smart contract, run:
 
- .. code-block:: console
+ ```console
 
-     $cargo concordium build
+ $cargo concordium build
 
+ ```
  This uses Cargo_ for building, but runs further optimizations on the result. Running the ``cargo concordium build`` command will produce a smart contract module which can be found relative to your project root folder in ``./target/concordium/wasm32-unknown-unknown/release/my_module.wasm.v1``. Alternatively, you can supply the location where to store the smart contract module using the ``--out`` option. For example running the following command will output your smart contract module into the root folder of your project in a file name ``my_module.wasm.v1``.
 
- .. code-block:: console
+ ```console
 
-     $cargo concordium build --out ./my_module.wasm.v1
+ $cargo concordium build --out ./my_module.wasm.v1
 
- .. Note::
-
-     For building the schema for a smart contract module, some [further preparation is required](/docs/mainnet/docs/smart-contracts/guides/build-schema#build-schema).
-
+ ```
+ <Callout
+   body={<>
+For building the schema for a smart contract module, some [further preparation is required](/docs/mainnet/docs/smart-contracts/guides/build-schema#build-schema).
+   </>}
+   variant="info"
+ />
 It is also possible to compile using Cargo_ directly by running:
 
-.. code-block:: console
+```console
 
-   $cargo build --target=wasm32-unknown-unknown [--release]
+$cargo build --target=wasm32-unknown-unknown [--release]
 
+```
 Note that even with ``--release`` set, the produced Wasm module includes
 debug information.
   </>}
@@ -124,16 +133,19 @@ debug information.
 <accordion
   heading="Step 5 - Deploy your smart contract"
   docText={<>
- .. note::
-
-     To ease deployment and initialization, you can use the [Smart contract deploy and initialize tool](https://sctools.mainnet.concordium.software/) instead of the process below. It works with the Concordium Wallet for Web to deploy and initialize smart contracts to Mainnet and Testnet.
-
+ <Callout
+   body={<>
+To ease deployment and initialization, you can use the [Smart contract deploy and initialize tool](https://sctools.mainnet.concordium.software/) instead of the process below. It works with the Concordium Wallet for Web to deploy and initialize smart contracts to Mainnet and Testnet.
+   </>}
+   variant="info"
+ />
  To deploy a smart contract module ``my_module.wasm.v1`` using the account with name account-name, run the following command:
 
- .. code-block:: console
+ ```console
 
-    $concordium-client module deploy my_module.wasm.v1 --sender account_name
+ $concordium-client module deploy my_module.wasm.v1 --sender account_name
 
+ ```
 The ``--sender`` option can be omitted if the account "default" is to be used.
 
 Modules built with ``cargo-concordium`` get a suffix corresponding to
@@ -147,24 +159,27 @@ option. These module files will not have the version suffix, e.g.
 
  If successful, the output should be similar to the following:
 
- .. code-block:: console
+ ```console
 
-    Module successfully deployed with reference: 'd121f262f3d34b9737faa5ded2135cf0b994c9c32fe90d7f11fae7cd31441e86'.
+ Module successfully deployed with reference: 'd121f262f3d34b9737faa5ded2135cf0b994c9c32fe90d7f11fae7cd31441e86'.
 
+ ```
  Make note of the module reference as it is used when creating smart contract instances.
 
  A module can be given a local alias, or *name*, which makes referencing it easier. The name is only stored locally by ``concordium-client``, and is not visible on-chain. To add a name during deployment, the ``--name`` parameter is used.
 
- .. code-block:: console
+ ```console
 
-    $concordium-client module deploy my_module.wasm.v1 --name my_deployed_module
+ $concordium-client module deploy my_module.wasm.v1 --name my_deployed_module
 
+ ```
  If successful, the output will be similar to the following:
 
- .. code-block:: console
+ ```console
 
-    Module successfully deployed with reference: '9eb82a01d96453dbf793acebca0ce25c617f6176bf7a564846240c9a68b15fd2' (my_deployed_module).
+ Module successfully deployed with reference: '9eb82a01d96453dbf793acebca0ce25c617f6176bf7a564846240c9a68b15fd2' (my_deployed_module).
 
+ ```
  For more detailed information about how to deploy a smart contract module, see [deploy-module](/docs/mainnet/docs/smart-contracts/guides/deploy-module#deploy-module), and for information about how to create an instance, see [initialize-contract](/docs/mainnet/docs/smart-contracts/guides/initialize-contract#initialize-contract).
   </>}
   image=""
@@ -178,16 +193,18 @@ Since interactions with a smart contract are transactions, make sure to have ``c
 
 As an example, to update an instance with address index ``0`` using the parameterless receive function ``my_receive`` while allowing up to 10000 energy to be used, run the following command:
 
-.. code-block:: console
+```console
 
-   $concordium-client contract update 0 --entrypoint my_receive --energy 10000 --sender MyAccount
+$concordium-client contract update 0 --entrypoint my_receive --energy 10000 --sender MyAccount
 
+```
 If successful, the output will be similar to the following:
 
-.. code-block:: console
+```console
 
-   Successfully updated contract instance {"index":0,"subindex":0} using the entrypoint 'my_receive'.
+Successfully updated contract instance {"index":0,"subindex":0} using the entrypoint 'my_receive'.
 
+```
 As you can see, the subindex defaults to ``0``.
 
 You can also pass parameters, either in JSON or binary format. For more information, see [Interact with a smart contract instance](/docs/mainnet/docs/smart-contracts/guides/interact-instance#interact-instance).

@@ -38,13 +38,13 @@ concordium-client contract update <YOUR-CONTRACT-INSTANCE> --entrypoint mint --p
 
 Minting is successful.
 
-![](/../images/mint-success.png)console
+![](/images/mint-success.png)console
 concordium-client contract invoke <YOUR-INDEX> --entrypoint view --grpc-port 20001
 ```
 
 Your result will be similar to what is shown below where the user is the owner of the token with ID **00000111**.
 
-![](/../images/view-fn.png)json
+![](/images/view-fn.png)json
 ["00000111"]
 ```
 
@@ -56,7 +56,7 @@ concordium-client contract invoke <YOUR-INDEX> --entrypoint tokenMetadata --para
 
 This returns the metadata URL combined with your tokenID.
 
-![](/../images/metadata-query.png){image} images/transfer-values.png
+![](/images/metadata-query.png){image} images/transfer-values.png
 :width: 100%
 ```
 
@@ -68,7 +68,7 @@ concordium-client  contract update <YOUR-INDEX> --entrypoint transfer --paramete
 
 The transfer is successfully completed.
 
-![](/../images/transfer-success.png){image} images/transfer-view.png
+![](/images/transfer-success.png){image} images/transfer-view.png
 :width: 100%
 ```
 

@@ -107,10 +107,11 @@ A space is added between `$` and the command through CSS. This solution makes on
 Example:
 
 ```
-.. code-block:: console
+```console
 
-   $echo Hello, world!
-   Hello, world!
+$echo Hello, world!
+Hello, world!
+```
 ```
 
 Use `code-block:: rust` for Rust content
@@ -150,9 +151,12 @@ Add an empty line between a directive and its content.
 Example that follows both rules:
 
 ```
-.. note::
-
-   This line has three spaces in front of it and it has an empty line above it.
+<Callout
+  body={<>
+This line has three spaces in front of it and it has an empty line above it.
+  </>}
+  variant="info"
+/>
 ```
 
 ### Variables
@@ -173,9 +177,15 @@ Use dropdowns to consolidate information and give a cleaner, more user-friendly 
 Example:
 
 ```
-.. dropdown:: The text the reader sees on the clickable dropdown
+<accordion
+  heading="The text the reader sees on the clickable dropdown"
+  docText={<>
 
-   This text appears when the reader clicks on the dropdown element.
+This text appears when the reader clicks on the dropdown element.
+  </>}
+  image=""
+  fullWidth={true}
+/>
 ```
 
 ### Glossary terms

@@ -17,13 +17,13 @@ You have deployed fractionalizer and are ready to mint some NFTs as a fraction o
 
 ## Mint a regular NFT (to be collateralized)
 
-Remember that your fractionalization logic starts with collateralizing the CIS-2 NFT. In order to mint a CIS-2 NFT you can follow the [Mint a Semi-fungible token tutorial](#sft-index). As previously mentioned in this tutorial, you will use cis2-multi smart contract for minting our token and you can find the full code here. The screenshot below shows only the `mint()` function. You can find build/deploy processes in the tutorial.
+Remember that your fractionalization logic starts with collateralizing the CIS-2 NFT. In order to mint a CIS-2 NFT you can follow the [Mint a Semi-fungible token tutorial](/docs/mainnet/tutorials/sft-minting/index#sft-index). As previously mentioned in this tutorial, you will use cis2-multi smart contract for minting our token and you can find the full code here. The screenshot below shows only the `mint()` function. You can find build/deploy processes in the tutorial.
 
-![](/../images/mid-fractnft-mint1.png)console
+![](/images/mid-fractnft-mint1.png)console
 concordium-client contract invoke <YOUR-TOKEN-CONTRACT-INDEX>--entrypoint view --schema ../cis2-multi/dist/schema.bin --grpc-port 20000 --grpc-ip node.testnet.concordium.com
 ```
 
-![](/../images/mid-fractnft-mint2.png)console
+![](/images/mid-fractnft-mint2.png)console
 [
 {
 "token_id": "<YOUR-TOKEN-ID>",
@@ -55,14 +55,14 @@ Run the command below to transfer the token to the fractionalizer.
 concordium-client contract update <YOUR-TOKEN-CONTRACT-INSTANCE> --entrypoint transfer --parameter-json cis2-fractionalizer/cis2-multi-transfer.json --schema multi/dist/schema.bin --sender <YOUR-ADDRESS> --energy 6000 --grpc-port 20000 --grpc-ip node.testnet.concordium.com
 ```
 
-![](/../images/mid-fractnft-mint3.png){image} ../../images/mid-fractnft-mint4.png
+![](/images/mid-fractnft-mint3.png){image} ../../images/mid-fractnft-mint4.png
 ```
 
 Super cool! As you can see, the fractionalizer contract has one token and your account has the rest.
 
 Now, check the fractionalizer’s state.
 
-![](/../images/mid-fractnft-mint5.png)console
+![](/images/mid-fractnft-mint5.png)console
 {
 "owner": {
 "Account": ["<YOUR-ACCOUNT>"]
@@ -90,7 +90,7 @@ Then run the following command to mint the fractions.
 concordium-client contract update <YOUR-CONTRACT-INSTANCE> --entrypoint mint --parameter-json ../sample-artifacts/cis2-fractionalizer/mint.json --schema ../cis2-fractionalizer/schema.bin --sender $ACCOUNT --energy 6000 --grpc-port 20000 --grpc-ip node.testnet.concordium.com
 ```
 
-![](/../images/mid-fractnft-mint6.png)console
+![](/images/mid-fractnft-mint6.png)console
 concordium-client contract invoke <YOUR-FRACTIONALIZER-CONTRACT-INDEX> --entrypoint view --schema dist/schema.bin  --grpc-port 20000 --grpc-ip node.testnet.concordium.com
 ```
 

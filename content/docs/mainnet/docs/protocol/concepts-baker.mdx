@@ -27,7 +27,7 @@ The process continues throughout the epoch, with each subsequent leader on the l
 
 Below you see a diagram of a validation round:
 
-![diagram of one validation round](/../protocol/images/validation-round.png)
+![diagram of one validation round](../protocol/images/validation-round.png)
 
 In the case of a faulty leader who does not produce a block or produces an invalid block, a timeout mechanism handles the process. If the leader does not produce a block within a certain time, a [Timeout Certificate (TC)](/docs/mainnet/docs/resources/glossary#timeout-certificate) is issued to move the process forward. The next leader can now use the TC to skip the previous round and extend an older block for which they have a QC.
 

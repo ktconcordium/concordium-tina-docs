@@ -45,7 +45,7 @@ concordium-client contract update <YOUR-CONTRACT-INSTANCE> --entrypoint transfer
 
 As usual, after a change, check the state.
 
-![](/../images/mid-fractnft-burn1.png)console
+![](/images/mid-fractnft-burn1.png)console
 [
     {
         "token_id": "<FRACTION-ID>",
@@ -71,14 +71,14 @@ Run the transfer command below.
 concordium-client contract update <YOUR-CONTRACT-INSTANCE> --entrypoint transfer --parameter-json cis2-fractionalizer/transfer-account.json --schema dist/schema.bin --sender <YOUR-ADDRESS>  --energy 6000 --grpc-port 20000 --grpc-ip node.testnet.concordium.com
 ```
 
-![](/../images/mid-fractnft-burn2.png){image} ../../images/mid-fractnft-burn3.png
+![](/images/mid-fractnft-burn2.png){image} ../../images/mid-fractnft-burn3.png
 ```
 
 Nice. Both of the accounts have some assets now. As a final step, burn all of these from them and check both the fractionalizer’s state and the collateralized token’s state.
 
 First, burn 500 from the first account. View the state if you want to double-check it.
 
-![](/../images/mid-fractnft-burn4.png){image} ../../images/mid-fractnft-burn5.png
+![](/images/mid-fractnft-burn4.png){image} ../../images/mid-fractnft-burn5.png
 ```
 
 As the final step, check the token contract state. In the previous steps, you saw that the account has 999 and the fractionalizer contract has 1. But the smart contract is designed to transfer the token back when all of them are burned. So there should be 1000 in the primary account intact.

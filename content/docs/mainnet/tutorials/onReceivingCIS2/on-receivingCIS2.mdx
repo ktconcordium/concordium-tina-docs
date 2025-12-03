@@ -239,85 +239,87 @@ contract update <wCCD-contract-index> \
   docText={<>
 Create a ``transfer.json`` file and insert the below JSON array.
 
-.. code-block:: json
-    :force:
+```json
 
-    [
-        {
-            "amount": AMOUNT,
-            "data": DATA_STRING,
-            "from": {
-                "Enum": [
-                    {
-                        "Account": [
-                            ACCOUNT_ADDRESS
-                        ]
-                    },
-                    {
-                        "Contract": [
-                            {
-                                "index": INDEX,
-                                "subindex": SUBINDEX
-                            }
-                        ]
-                    }
-                ]
-            },
-            "to": {
-                "Enum": [
-                    {
-                        "Account": [
-                            ACCOUNT_ADDRESS
-                        ]
-                    },
-                    {
-                        "Contract": [
-                            {
-                                "index": INDEX,
-                                "subindex": SUBINDEX
-                            },
-                            ENTRYPOINT_NAME
-                        ]
-                    }
-                ]
-            },
-            "token_id": TOKEN_ID
-        }
-    ]
+[
+    {
+        "amount": AMOUNT,
+        "data": DATA_STRING,
+        "from": {
+            "Enum": [
+                {
+                    "Account": [
+                        ACCOUNT_ADDRESS
+                    ]
+                },
+                {
+                    "Contract": [
+                        {
+                            "index": INDEX,
+                            "subindex": SUBINDEX
+                        }
+                    ]
+                }
+            ]
+        },
+        "to": {
+            "Enum": [
+                {
+                    "Account": [
+                        ACCOUNT_ADDRESS
+                    ]
+                },
+                {
+                    "Contract": [
+                        {
+                            "index": INDEX,
+                            "subindex": SUBINDEX
+                        },
+                        ENTRYPOINT_NAME
+                    ]
+                }
+            ]
+        },
+        "token_id": TOKEN_ID
+    }
+]
 
-.. note::
-
-    You can execute several transfers in the above array.
-
+```
+<Callout
+  body={<>
+You can execute several transfers in the above array.
+  </>}
+  variant="info"
+/>
 If you insert everything correctly, the JSON array should look similar to
 the below JSON array that will transfer 1000 wCCD from an account address(your account in this case) to a contract.
 
 Replace **<token-forwarder-index>** with the index of the received in the previous section.
 
-.. code-block:: json
-    :force:
+```json
 
-    [
-        {
-        "amount": "1000",
-        "data": "",
-        "from": {
-            "Account": [
-                "2xUeDsSS8fRfdXuPeDiFTsrJyxsAQhCw2xw9GYARnJpCM3iaeL"
-            ]
-        },
-        "to": {
-            "Contract": [
-                {
-                    "index": <token-forwarder-index>,
-                    "subindex": 0
-                },
-                "onReceivingCIS2"
-            ]
-        },
-        "token_id": ""
-        }
-    ]
+[
+    {
+    "amount": "1000",
+    "data": "",
+    "from": {
+        "Account": [
+            "2xUeDsSS8fRfdXuPeDiFTsrJyxsAQhCw2xw9GYARnJpCM3iaeL"
+        ]
+    },
+    "to": {
+        "Contract": [
+            {
+                "index": <token-forwarder-index>,
+                "subindex": 0
+            },
+            "onReceivingCIS2"
+        ]
+    },
+    "token_id": ""
+    }
+]
+```
   </>}
   image=""
   fullWidth={true}

@@ -189,13 +189,13 @@ let tx = match app.action {
         }
 ```
 
-![](/../images/mid-nft-scactions1.png)console
+![](/images/mid-nft-scactions1.png)console
 cargo build
 cd target/debug
 ./cis2-rust-sdk-minting --account ../../nft-params/wallet.export deploy --module ../../nft-params/module.wasm.v1
 ```
 
-![](/../images/mid-nft-scactions2.png)console
+![](/images/mid-nft-scactions2.png)console
 Action::Init {
             module_ref: mod_ref,
         } => {
@@ -224,7 +224,7 @@ Action::Init {
 ./cis2-rust-sdk-minting --account ../../nft-params/wallet.export init --module-ref <YOUR-MODULE-REFERENCE>
 ```
 
-![](/../images/mid-nft-scactions3.png)console
+![](/images/mid-nft-scactions3.png)console
 Action::WithSchema {
             parameter,
             schema,
@@ -415,7 +415,7 @@ match tx {
 
 ## Mint function
 
-Now you can call the `mint()` function from your new instance. For the complete minting tutorial you can follow [the NFT minting tutorial from Concordium's developer portal](#nft-index). Create a file called **nft-params.json** (similar to the tutorial) in the **nft-params** folder to mint your token and add your address and token ID to the file. And copy the schema file from the **concordium-out** folder to the **nft-params** folder.
+Now you can call the `mint()` function from your new instance. For the complete minting tutorial you can follow [the NFT minting tutorial from Concordium's developer portal](/docs/mainnet/tutorials/nft-minting/index#nft-index). Create a file called **nft-params.json** (similar to the tutorial) in the **nft-params** folder to mint your token and add your address and token ID to the file. And copy the schema file from the **concordium-out** folder to the **nft-params** folder.
 
 ```json
 {
@@ -428,7 +428,7 @@ Now you can call the `mint()` function from your new instance. For the complete 
 
 If you want to check the parameters you can always use `— help` keyword.
 
-![](/../images/mid-nft-scactions4.png){image} ../../images/mid-nft-scactions5.png
+![](/images/mid-nft-scactions4.png){image} ../../images/mid-nft-scactions5.png
 ```
 
 Use the command below to invoke the `mint()` function.
@@ -437,7 +437,7 @@ Use the command below to invoke the `mint()` function.
 ./cis2-rust-sdk-minting --account ../../nft-params/wallet.export with-schema --address "<INDEX,SUBINDEX>" --parameter ../../nft-params/nft-params.json --schema ../../nft-params/module-schema.bs64 --transaction-type Mint
 ```
 
-![](/../images/mid-nft-scactions6.png)json
+![](/images/mid-nft-scactions6.png)json
 [
     "TOKEN-ID",
     "TOKEN-ID"
@@ -448,7 +448,7 @@ Use the command below to invoke the `mint()` function.
 ./cis2-rust-sdk-minting --account ../../nft-params/wallet.export with-schema --address "<INDEX,SUBINDEX>" --parameter ../../nft-params/token-id.json --schema ../../nft-params/module-schema.bs64 --transaction-type TokenMetadata
 ```
 
-![](/../images/mid-nft-scactions7.png)console
+![](/images/mid-nft-scactions7.png)console
 ./cis2-rust-sdk-minting --account ../../nft-params/wallet.export with-schema --address "<INDEX,SUBINDEX>" --parameter ../../nft-params/token-id.json --schema ../../nft-params/module-schema.bs64 --transaction-type View
 ```
 

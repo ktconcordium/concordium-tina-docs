@@ -70,107 +70,115 @@ additional key pair.
 
 For production purposes, we recommend using the following command to generate a safe additional key pair:
 
-.. code-block:: console
+```console
 
-   $openssl genpkey -algorithm ed25519 -out private.pem
+$openssl genpkey -algorithm ed25519 -out private.pem
 
+```
 The keys can be output in a hex format in the console as follows:
 
-.. code-block:: console
+```console
 
-   $openssl pkey -inform pem -in private.pem -noout -text
+$openssl pkey -inform pem -in private.pem -noout -text
 
+```
 This will output your public and private key pairs in a hex format in the console as follows:
 
-.. code-block:: console
+```console
 
-   ED25519 Private-Key:
-   priv:
-      0f:6e:.................................4e:a3:
-      98:f6:.................................61:39:
-      0b:2a
-   pub:
-      aa:bb:79:18:3d:af:e2:6e:fc:5b:81:74:f1:16:37:
-      51:f2:25:d4:64:f7:72:8a:de:48:c0:28:d3:e6:aa:
-      1b:09
+ED25519 Private-Key:
+priv:
+   0f:6e:.................................4e:a3:
+   98:f6:.................................61:39:
+   0b:2a
+pub:
+   aa:bb:79:18:3d:af:e2:6e:fc:5b:81:74:f1:16:37:
+   51:f2:25:d4:64:f7:72:8a:de:48:c0:28:d3:e6:aa:
+   1b:09
 
+```
 - Step 2: Find the credential registration ID of your account that we are updating keys for.
 
 Run the following command where you replace ``<account-name-or-account-address>`` with your account.
 
-.. code-block:: console
+```console
 
-   $concordium-client account show <account-name-or-account-address> \
-      --grpc-port <grpc-port-of-server> \
-      --grpc-ip <grpc-ip-url-to-node>
+$concordium-client account show <account-name-or-account-address> \
+   --grpc-port <grpc-port-of-server> \
+   --grpc-ip <grpc-ip-url-to-node>
 
+```
 Using the node connection to the hosted testnet node as an example:
 
-.. code-block:: console
+```console
 
-   $concordium-client account show <account-name-or-account-address> \
-      --grpc-port 20000 \
-      --grpc-ip grpc.testnet.concordium.com \
-      --secure
+$concordium-client account show <account-name-or-account-address> \
+   --grpc-port 20000 \
+   --grpc-ip grpc.testnet.concordium.com \
+   --secure
 
+```
 This will output something like:
 
-.. code-block:: console
+```console
 
-   Address:                3G5srtaeRvy2uzyaiheY3ZZ6nqTkDg1kRm59xWVnFo8CoEiZ6Y
-   Balance:                1001736.135182 CCD
-   Nonce:                  16
-   Encryption public key:  b14cbfe44a02c6b1f78711176d5f437295367aa4f2a8c2551ee10d25a03adc69d61a332a058971919dad7312e1fc94c5a411f21ab3b0962c6fb664212e41769e83c82288515f16ca72c86f8a03e87531cae46394bffc63ab6168432903d79fb0
+Address:                3G5srtaeRvy2uzyaiheY3ZZ6nqTkDg1kRm59xWVnFo8CoEiZ6Y
+Balance:                1001736.135182 CCD
+Nonce:                  16
+Encryption public key:  b14cbfe44a02c6b1f78711176d5f437295367aa4f2a8c2551ee10d25a03adc69d61a332a058971919dad7312e1fc94c5a411f21ab3b0962c6fb664212e41769e83c82288515f16ca72c86f8a03e87531cae46394bffc63ab6168432903d79fb0
 
-   Baking or delegating stake: no
+Baking or delegating stake: no
 
-   Credentials:
-   * <credential-registration-id>:
-      - Index: 0
-      - Expiration: Jun 2023
-      - Type: normal
-      - Revealed attributes: none
+Credentials:
+* <credential-registration-id>:
+   - Index: 0
+   - Expiration: Jun 2023
+   - Type: normal
+   - Revealed attributes: none
 
+```
 We require the ``<credential-registration-id>`` output for the next step.
 
 - Step 3: Send a transaction to update the keys of your account on-chain.
 
-.. code-block:: console
+```console
 
-   $concordium-client account update-keys ./update-keys.json \
-      --credId <credential-registration-id> \
-      --sender <account-name-or-address> \
-      --grpc-port <grpc-port-of-server> \
-      --grpc-ip <grpc-ip-url-to-node>
+$concordium-client account update-keys ./update-keys.json \
+   --credId <credential-registration-id> \
+   --sender <account-name-or-address> \
+   --grpc-port <grpc-port-of-server> \
+   --grpc-ip <grpc-ip-url-to-node>
 
+```
 Using the node connection to the hosted testnet node as an example:
 
-.. code-block:: console
+```console
 
-   $concordium-client account update-keys ./update-keys.json \
-      --credId <credential-registration-id> \
-      --sender <account-name-or-address> \
-      --grpc-port 20000 \
-      --grpc-ip grpc.testnet.concordium.com \
-      --secure
+$concordium-client account update-keys ./update-keys.json \
+   --credId <credential-registration-id> \
+   --sender <account-name-or-address> \
+   --grpc-port 20000 \
+   --grpc-ip grpc.testnet.concordium.com \
+   --secure
 
+```
 where ``update-keys.json`` is a file of the following format:
 
-.. code-block:: json
-   :force:
+```json
 
-   {
-      "keys": {
-         "0": {
-            "verifyKey": "<Hex encoding without '0x' of the public key already on-chain>"
-         },
-         "1": {
-            "verifyKey": "<Hex encoding without '0x' of the public key from your newly generated key pair>"
-         }
+{
+   "keys": {
+      "0": {
+         "verifyKey": "<Hex encoding without '0x' of the public key already on-chain>"
       },
-      "threshold": 2
-   }
+      "1": {
+         "verifyKey": "<Hex encoding without '0x' of the public key from your newly generated key pair>"
+      }
+   },
+   "threshold": 2
+}
 
+```
 This command sends a transaction on-chain to replace the current key tied to the account with the keys
 in the ``update-keys.json`` file. The above example file adds two keys to your credential 0 of your account and
 sets the ``threshold`` (the minimum number of keys you specify to sign a transaction) to 2 for this credential.
@@ -195,27 +203,29 @@ and run its command locally to generate a credential file.
 
 - Step 2: Send a transaction to add a credential to your account on-chain.
 
-.. code-block:: console
+```console
 
-   $concordium-client account update-credentials \
-      --new-credentials new-credential.json \
-      --new-threshold <number-of-credential-to-sign> \
-      --sender <account-name-or-address> \
-      --grpc-port <grpc-port-of-server> \
-      --grpc-ip <grpc-ip-url-to-node>
+$concordium-client account update-credentials \
+   --new-credentials new-credential.json \
+   --new-threshold <number-of-credential-to-sign> \
+   --sender <account-name-or-address> \
+   --grpc-port <grpc-port-of-server> \
+   --grpc-ip <grpc-ip-url-to-node>
 
+```
 Using the node connection to the hosted testnet node as an example:
 
-.. code-block:: console
+```console
 
-   $concordium-client account update-credentials \
-      --new-credentials new-credential.json \
-      --new-threshold <number-of-credential-to-sign> \
-      --sender <account-name-or-address> \
-      --grpc-port 20000 \
-      --grpc-ip grpc.testnet.concordium.com \
-      --secure
+$concordium-client account update-credentials \
+   --new-credentials new-credential.json \
+   --new-threshold <number-of-credential-to-sign> \
+   --sender <account-name-or-address> \
+   --grpc-port 20000 \
+   --grpc-ip grpc.testnet.concordium.com \
+   --secure
 
+```
 where ``new-credential.json`` is the file from the previous step.
 
 This command sends a transaction on-chain to add an additional credential to your account.
@@ -251,62 +261,65 @@ tool in this section (Option 2). The guide for the first option is in the
 We recommend that you export a key file from a random account on the browser wallet and use this
 JSON file as a template to generate a corresponding JSON file for the keys of the account you want to update.
 
-.. note::
-
-   You can read up on how to export a key file from the browser wallet [here](/docs/mainnet/docs/guides/export-account-private-key#export-key).
-
+<Callout
+  body={<>
+You can read up on how to export a key file from the browser wallet [here](/docs/mainnet/docs/guides/export-account-private-key#export-key).
+  </>}
+  variant="info"
+/>
 Your adapted ``browser_wallet.export`` file should look similar to the following browser wallet export template which has
 two keys for its credential 0 and a threshold of 2 for this credential:
 
-.. code-block:: json
-   :force:
+```json
 
-   {
-      "type": "concordium-browser-wallet-account",
-      "v": 0,
-      "environment": "testnet",
-      "value": {
-         "accountKeys": {
-            "keys": {
-               "0": {
-                  "keys": {
+{
+   "type": "concordium-browser-wallet-account",
+   "v": 0,
+   "environment": "testnet",
+   "value": {
+      "accountKeys": {
+         "keys": {
+            "0": {
+               "keys": {
 
-                     // "E.g. Add your key already on-chain at keyIndex 0."
+                  // "E.g. Add your key already on-chain at keyIndex 0."
 
-                     "0": {
-                        "signKey": "<Key_0_Private_Key_Without_0x_Prefix>",
-                        "verifyKey": "<Key_0_Public_Key_Without_0x_Prefix>"
-                     },
-
-                     // "E.g. Add your newly generated key at keyIndex 1."
-
-                     "1": {
-                        "signKey": "<Key_1_Private_Key_Without_0x_Prefix>",
-                        "verifyKey": "<Key_1_Public_Key_Without_0x_Prefix>"
-                     }
+                  "0": {
+                     "signKey": "<Key_0_Private_Key_Without_0x_Prefix>",
+                     "verifyKey": "<Key_0_Public_Key_Without_0x_Prefix>"
                   },
 
-                  // "E.g. Update the threshold to 2."
+                  // "E.g. Add your newly generated key at keyIndex 1."
 
-                  "threshold": 2
-               }
-            },
-            "threshold": 1
+                  "1": {
+                     "signKey": "<Key_1_Private_Key_Without_0x_Prefix>",
+                     "verifyKey": "<Key_1_Public_Key_Without_0x_Prefix>"
+                  }
+               },
+
+               // "E.g. Update the threshold to 2."
+
+               "threshold": 2
+            }
          },
-         "credentials": {
-            "0": "97f325c9f86066ab0c80ff879c21629eb67818841940869308d6a72886d18f8668e62e43ad228fdcbda245d0722454df"
-         },
-         "address": "4jxvYasaPncfmCFCLZCvuL5cZuvR5HAQezCHZH7ZA7AGsRYpix"
-      }
+         "threshold": 1
+      },
+      "credentials": {
+         "0": "97f325c9f86066ab0c80ff879c21629eb67818841940869308d6a72886d18f8668e62e43ad228fdcbda245d0722454df"
+      },
+      "address": "4jxvYasaPncfmCFCLZCvuL5cZuvR5HAQezCHZH7ZA7AGsRYpix"
    }
+}
 
+```
 You can import the keys of this ``browser_wallet.export`` file and associate it to your account as follows:
 
-.. code-block:: console
+```console
 
-   $concordium-client config account import browser_wallet.export \
-      --name <choose-a-name-for-your-account>
+$concordium-client config account import browser_wallet.export \
+   --name <choose-a-name-for-your-account>
 
+```
 A summary of the achievements from this section:
 
 - We exported a key file from the browser wallet.
@@ -328,77 +341,82 @@ to ``concordium-client`` and this key pair was re-used in your multi-sig account
 you can look up the key in the local key directory of the ``concordium-client`` tool and associate
 the file's content to your multi-sig account.
 
-.. note::
-
-   You can read up on how to view the key directory of the
-   ``concordium-client`` tool [here](/docs/mainnet/tools/multi-sig#key_directory).
-
-.. note::
-
-   We do not recommend to re-use keys on different accounts in production.
-   Instead, use a newly generated key pair when adding additional keys to an account.
-
+<Callout
+  body={<>
+You can read up on how to view the key directory of the
+``concordium-client`` tool [here](/docs/mainnet/tools/multi-sig#key_directory).
+  </>}
+  variant="info"
+/>
+<Callout
+  body={<>
+We do not recommend to re-use keys on different accounts in production.
+Instead, use a newly generated key pair when adding additional keys to an account.
+  </>}
+  variant="info"
+/>
 You can update the keys of your account by running the following command:
 
-.. code-block:: console
+```console
 
-   $concordium-client config account update-keys \
-      --keys new-keys.json \
-      --account <account-name-or-address>
+$concordium-client config account update-keys \
+   --keys new-keys.json \
+   --account <account-name-or-address>
 
+```
 where ``new-keys.json`` contains the content of one of the key files in the stored local key directory of the
 ``concordium-client`` tool that you want to reuse. The ``new-keys.json`` file has the following format:
 
-.. code-block:: json
-   :force:
+```json
 
-   {
-      "cidx": {
-         "kidx": {
-            "encryptedSignKey": {
-               "metadata": {
-                  "encryptionMethod": "AES-256",
-                  "iterations": ...,
-                  "salt": ...,
-                  "initializationVector": ...,
-                  "keyDerivationMethod": "PBKDF2WithHmacSHA256"
-               },
-               "cipherText": ...
+{
+   "cidx": {
+      "kidx": {
+         "encryptedSignKey": {
+            "metadata": {
+               "encryptionMethod": "AES-256",
+               "iterations": ...,
+               "salt": ...,
+               "initializationVector": ...,
+               "keyDerivationMethod": "PBKDF2WithHmacSHA256"
             },
-            "verifyKey": ...,
-            "schemeId": "Ed25519"
+            "cipherText": ...
          },
-         ...
+         "verifyKey": ...,
+         "schemeId": "Ed25519"
       },
       ...
-   }
+   },
+   ...
+}
 
+```
 For example, when you want to add a key for your ``credentialIndex`` 0 and the ``keyIndex`` 1
 of your account, use the following ``new-keys.json`` file format:
 
-.. code-block:: json
-   :force:
+```json
 
-   {
-      "0": {
-         "1": {
-            "encryptedSignKey": {
-               "metadata": {
-                  "encryptionMethod": "AES-256",
-                  "iterations": ...,
-                  "salt": ...,
-                  "initializationVector": ...,
-                  "keyDerivationMethod": "PBKDF2WithHmacSHA256"
-               },
-               "cipherText": ...
+{
+   "0": {
+      "1": {
+         "encryptedSignKey": {
+            "metadata": {
+               "encryptionMethod": "AES-256",
+               "iterations": ...,
+               "salt": ...,
+               "initializationVector": ...,
+               "keyDerivationMethod": "PBKDF2WithHmacSHA256"
             },
-            "verifyKey": ...,
-            "schemeId": "Ed25519"
+            "cipherText": ...
          },
-         ...
-      }
+         "verifyKey": ...,
+         "schemeId": "Ed25519"
+      },
+      ...
    }
+}
 
+```
 A summary of the achievements from this section:
 
 - We looked up a key file from the local key directory of the ``concordium-client`` tool.
@@ -651,4 +669,3 @@ The node will reject the transaction if the threshold of signatures is not met.
   </>}
   variant="info"
 />
-

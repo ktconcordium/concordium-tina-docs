@@ -13,7 +13,7 @@ This tutorial guides you through creating a smart contract using the Concordium 
 - Restricting updating the value to only the owner of the contract.
 
 :::{Attention}
-Before starting the next steps, make sure that you have [setup the developer environment](#setup-env) with the tools needed.
+Before starting the next steps, make sure that you have [setup the developer environment](/docs/shared/setup-env#setup-env) with the tools needed.
 :::
 
 Once you have setup your development environment, you are ready to create your smart contract project. Run the initialization command below to create a new working directory for your smart contract. It will set up the initial project for you, including any necessary Rust dependencies.
@@ -139,7 +139,7 @@ $concordium-client module deploy dist/module.wasm.v1 \
     --secure
 ```
 
-The client may also ask you for the password you specified when you [imported your key into the Concordium client](#import-client-key). If successful, the command should respond with `Module successfully deployed with reference: <MODULE-HASH>`, where the module hash is a long hex string. Note down this hash, we'll need it when we initialize a new contract instance below.
+The client may also ask you for the password you specified when you [imported your key into the Concordium client](/docs/shared/setup-env#import-client-key). If successful, the command should respond with `Module successfully deployed with reference: <MODULE-HASH>`, where the module hash is a long hex string. Note down this hash, we'll need it when we initialize a new contract instance below.
 
 Note that you will also pay a small fee from your account to pay for the deployment. If you followed the environment setup to create a testnet account, you should already have some CCD for testing purposes in that account.
 

@@ -19,9 +19,9 @@ yarn create react-app register-data-dapp --template typescript
 
 It will take some time to fetch and install all packages and dependencies, and when it’s all done you will have something similar to the below.
 
-![visual studio code window in dark mode after creating project](/../images/beg-reg-data1.png)
+![visual studio code window in dark mode after creating project](/images/beg-reg-data1.png)
 
-![web browser tab with application interface](/../images/beg-reg-data2.png)
+![web browser tab with application interface](/images/beg-reg-data2.png)
 
 You will start from scratch with an empty React application that is bootstrapped from a React template and will be using *material-ui*. You will add the dependencies for some React components from *material-ui* and necessary libraries from concordium-web-sdk and concordium-web-wallet-helper. To do that, run the command below and yarn will install all specified packages.
 
@@ -31,7 +31,7 @@ yarn add @mui/material @emotion/react @mui/icons-material @emotion/styled @conco
 
 Once complete, it creates a **package.json** file that includes all dependencies in it.
 
-![visual studio code window in dark mode with package.json file open](/../images/beg-reg-data3.png)console
+![visual studio code window in dark mode with package.json file open](/images/beg-reg-data3.png)console
 import {
 detectConcordiumProvider,
 WalletApi,
@@ -245,20 +245,20 @@ return (
 
 If everything is correct, you should see something similar to below.
 
-![web browser tab with dApp running](/../images/beg-reg-data4.png)
+![web browser tab with dApp running](/images/beg-reg-data4.png)
 
-![web browser tab with dApp running](/../images/beg-reg-data5.png)
+![web browser tab with dApp running](/images/beg-reg-data5.png)
 
 Fill it in with the string `concordium` and click **REGISTER DATA**.
 
-![web browser tab with dApp running and web wallet extension open](/../images/beg-reg-data6.png)
+![web browser tab with dApp running and web wallet extension open](/images/beg-reg-data6.png)
 
-![web browser tab with CCDScan running showing transaction lookup](/../images/beg-reg-data7.png)
+![web browser tab with CCDScan running showing transaction lookup](/images/beg-reg-data7.png)
 
 It redirects you to that partciular block in CCDScan.
 
-![web browser tab with dApp running](/../images/beg-reg-data8.png)
+![web browser tab with dApp running](/images/beg-reg-data8.png)
 
-![web browser tab with sha256 tool running](/../images/beg-reg-data9.png)
+![web browser tab with sha256 tool running](/images/beg-reg-data9.png)
 
 As expected, those two values are matched! Step back for one second and think about what you implemented with this dApp. What you have done is store proof of data on-chain and allow everybody who wants to check that your data’s integrity is preserved or not can go and verify it by looking at this brilliant decentralized network. It is stored on-chain now and no one can change it. Full code can be found [here](https://github.com/bogacyigitbasi/registerdata).

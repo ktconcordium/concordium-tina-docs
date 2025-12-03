@@ -38,28 +38,34 @@ You will be able to choose the desired network(s) during the installation proces
    - In **Install Concordium Node to**, specify where to store the executable code.
    - In **Install Concordium Node configuration and data to**, specify where to store the node configuration and the blockchain databases and logs. Choose a drive that has sufficient space to accommodate the database and is sufficiently fast.
 
-   ![](/../images/Node-setup-win-2.png){image} ../images/Node-setup-win-1.png
+   ![](/images/Node-setup-win-2.png){image} ../images/Node-setup-win-1.png
    :width: 60%
    ```
 
    If you agree with the default settings, click **Next** to continue. For manual configuration, expand the drop-down below:
 
    ```{eval-rst}
-   .. dropdown:: Node Runner Service configuration
+   <accordion
+     heading="Node Runner Service configuration"
+     docText={<>
 
-      - **Automatically start nodes at system startup**:  When selected, the node runs when the system starts. Choose this option when you plan to use the node frequently and need it to be up-to-date at short notice. If you don’t select this option, you’ll have to start the node manually when required, for example, when you want to use the Desktop Wallet or Concordium Client. If you choose to start the node manually, it might take longer for the node to get up-to-date with the blockchain depending on when the node was last up-to-date.
+- **Automatically start nodes at system startup**:  When selected, the node runs when the system starts. Choose this option when you plan to use the node frequently and need it to be up-to-date at short notice. If you don’t select this option, you’ll have to start the node manually when required, for example, when you want to use the Desktop Wallet or Concordium Client. If you choose to start the node manually, it might take longer for the node to get up-to-date with the blockchain depending on when the node was last up-to-date.
 
-      - **Start nodes after installation is complete**: The node will automatically start running after the installation is complete. Do not choose this option if you want to make further configuration changes before starting the node.
+- **Start nodes after installation is complete**: The node will automatically start running after the installation is complete. Do not choose this option if you want to make further configuration changes before starting the node.
 
-      - **Mainnet** or **Testnet**: Mainnet is the Concordium production blockchain where actual transactions occur, whereas testnet is for test and development. Select your preferred network for running the node: **Run a mainnet node** or **Run a testnet node**. You can run a node on just the mainnet or the testnet, or run nodes on both at the same time.
+- **Mainnet** or **Testnet**: Mainnet is the Concordium production blockchain where actual transactions occur, whereas testnet is for test and development. Select your preferred network for running the node: **Run a mainnet node** or **Run a testnet node**. You can run a node on just the mainnet or the testnet, or run nodes on both at the same time.
 
-      - **Report to the network dashboard**: Select this option if you want to publish your node statistics to the relevant dashboard when the node is running. Go to the mainnet or testnet dashboard to view the statistics:
+- **Report to the network dashboard**: Select this option if you want to publish your node statistics to the relevant dashboard when the node is running. Go to the mainnet or testnet dashboard to view the statistics:
 
-        - https://ccdscan.io/
+  - https://ccdscan.io/
 
-        - https://testnet.ccdscan.io/
+  - https://testnet.ccdscan.io/
 
-      - **Public node name**: Specify the name of your node as you want it to appear on the network dashboard if the node reports to the network dashboard.
+- **Public node name**: Specify the name of your node as you want it to appear on the network dashboard if the node reports to the network dashboard.
+     </>}
+     image=""
+     fullWidth={true}
+   />
    ```
 
 4) Select **Next**, and then select **Install** to begin the installation. The Concordium Node is installed. If you see a message saying *Do you want this app from an unknown publisher to make changes to your device?*, select **Yes**. This message appears because the installation requires administrative permissions. If you’re not logged in with an administrative account, you’ll have to provide credentials for an administrator account to continue the installation.
@@ -71,7 +77,7 @@ You will be able to choose the desired network(s) during the installation proces
    - **Configure Concordium Node Service**: Opens the configuration file.
    - **Third Party Licenses**: Shows the licenses the third party components are distributed under.
 
-   ![](/../images/Node-setup-win-3.png)
+   ![](/images/Node-setup-win-3.png)
 
 ### Upgrading Concordium node version on Windows
 

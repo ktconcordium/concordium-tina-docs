@@ -11,11 +11,11 @@ In this first part, you will implement a verifier backend server that signs a cl
 
 ## Zero-knowledge proofs (ZKP) and ID proofs
 
-The Concordium Wallet for Web allows dApps or services to request proof that the user meets some requirement, such as proof the user is over a certain age or resides in a specific set of countries or areas. For more information about such proofs, see [Create proofs](#create-proofs). But basically, when you have a Concordium account you have an ID object and the identity credential in your wallet. On-chain (in your account) there is a (list of) commitment(s) to your attributes. No one can know who you are other than being able to see your public address. But with zero-knowledge proof (ZK proof) technology (proving a claim without revealing any information but the claim itself), any dApp that wants to make sure that its users meet some criteria can create a query which uses a ZK proof to show correctness. Here these criteria are called **statements**. These statements can be located in the dApp itself or stored in the verifier which is a backend HTTP server. For this particular tutorial’s scenario, the dApp statement is whether the user is older than 18.
+The Concordium Wallet for Web allows dApps or services to request proof that the user meets some requirement, such as proof the user is over a certain age or resides in a specific set of countries or areas. For more information about such proofs, see [Create proofs](/docs/mainnet/docs/network/guides/create-proofs#create-proofs). But basically, when you have a Concordium account you have an ID object and the identity credential in your wallet. On-chain (in your account) there is a (list of) commitment(s) to your attributes. No one can know who you are other than being able to see your public address. But with zero-knowledge proof (ZK proof) technology (proving a claim without revealing any information but the claim itself), any dApp that wants to make sure that its users meet some criteria can create a query which uses a ZK proof to show correctness. Here these criteria are called **statements**. These statements can be located in the dApp itself or stored in the verifier which is a backend HTTP server. For this particular tutorial’s scenario, the dApp statement is whether the user is older than 18.
 
 When the dApp wants to prove someone meets the criteria, it first communicates with the verifier. The verifier is one of the key elements of this architecture. The dApp uses the verifier to verify the claims but it has a key function above all else. The verifier makes sure that a ZK proof query can't be reused by someone else, for example, if it's stolen somehow. When the dApp communicates with the verifier, it asks for a **challenge**, a one-time or time-bound random string, that will be used while creating the proofs. The verifier, when doing verification checks whether the proof is created with the particular challenge issued for the query. If the proof is not created with the particular challenge, it will not be verified.
 
-When you have your Concordium account, meaning your ID object is created, there is a set of **attributes** that is inside of your encrypted data structure. A full list of the attributes can be [found here](#create-proofs), but some of them are listed below.
+When you have your Concordium account, meaning your ID object is created, there is a set of **attributes** that is inside of your encrypted data structure. A full list of the attributes can be [found here](/docs/mainnet/docs/network/guides/create-proofs#create-proofs), but some of them are listed below.
 
 - First name, Last name
 - Sex
@@ -52,7 +52,7 @@ First, create an empty project called **backend** using the command below.
 cargo new backend
 ```
 
-![visual studio code window in dark mode with terminal window open showing command](/../images/adv-verifier-backend1.png)toml
+![visual studio code window in dark mode with terminal window open showing command](/images/adv-verifier-backend1.png)toml
 [dependencies]
 tokio = { version = "1", features = ["full"] }
 warp = "0.3"
@@ -78,7 +78,7 @@ Now you can build it with the `cargo build` command in the **concordium-rust-sdk
 brew install protobuf
 ```
 
-![visual studio code window in dark mode with terminal window open showing error](/../images/adv-verifier-backend3.png)console
+![visual studio code window in dark mode with terminal window open showing error](/images/adv-verifier-backend3.png)console
 use concordium_rust_sdk::{
     common::{
         self as crypto_common,

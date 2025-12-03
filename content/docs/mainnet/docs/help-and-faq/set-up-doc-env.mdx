@@ -12,172 +12,223 @@ title: "Set up Concordium documentation environment"
   docText={<>
     Ensure Python 3 and pip are installed. Check with:
 
-    .. code-block:: console
+    ```console
 
-       $python3 --version
+    $python3 --version
 
+    ```
     If not installed, run:
 
-    .. code-block:: console
+    ```console
 
-      $brew install python
+    $brew install python
+    ```
   ```
 
   ```{eval-rst}
-  .. dropdown:: Windows
+  <accordion
+    heading="Windows"
+    docText={<>
 
-    Download and install **Python 3** from [python.org](https://www.python.org/downloads/windows/). During installation, make sure to check **Add Python to PATH**.
+Download and install **Python 3** from [python.org](https://www.python.org/downloads/windows/). During installation, make sure to check **Add Python to PATH**.
 
-    Alternatively, you can install **Python** using the **Windows Store** or **Chocolatey**:
+Alternatively, you can install **Python** using the **Windows Store** or **Chocolatey**:
 
-    .. code-block:: console
+```console
 
-      $choco install python
+$choco install python
 
-    Verify the installation:
+```
+Verify the installation:
 
-    .. code-block:: console
+```console
 
-      $python --version
-      $pip --version
+$python --version
+$pip --version
+```
+    </>}
+    image=""
+    fullWidth={true}
+  />
   ```
 
   ```{eval-rst}
-  .. dropdown:: Linux
+  <accordion
+    heading="Linux"
+    docText={<>
 
-    Most Linux distributions come with **Python 3** pre-installed. Check with:
+Most Linux distributions come with **Python 3** pre-installed. Check with:
 
-    .. code-block:: console
+```console
 
-      $python3 --version
+$python3 --version
 
-    If not installed, use your distribution's package manager:
+```
+If not installed, use your distribution's package manager:
 
-    **Ubuntu/Debian:**
+**Ubuntu/Debian:**
 
-    .. code-block:: console
+```console
 
-      $sudo apt update
-      $sudo apt install python3 python3-pip
+$sudo apt update
+$sudo apt install python3 python3-pip
 
-    **CentOS/RHEL/Fedora:**
+```
+**CentOS/RHEL/Fedora:**
 
-    .. code-block:: console
+```console
 
-      $sudo yum install python3 python3-pip
+$sudo yum install python3 python3-pip
 
-    **Arch Linux:**
+```
+**Arch Linux:**
 
-    .. code-block:: console
+```console
 
-      $sudo pacman -S python python-pip
+$sudo pacman -S python python-pip
+```
+    </>}
+    image=""
+    fullWidth={true}
+  />
   ```
 
 - Step 2: Install **Pipenv**
 
   ```{eval-rst}
-  .. dropdown:: MacOS
+  <accordion
+    heading="MacOS"
+    docText={<>
 
-    You need ``pipenv`` for managing Python dependencies:
+You need ``pipenv`` for managing Python dependencies:
 
-    .. code-block:: console
+```console
 
-      $pip3 install pipenv
+$pip3 install pipenv
 
-    If you get the error ``command not found: pipenv``, it is because the ``PATH`` for pipenv is not set.
-    In order to set it, run the following command to see where the user based bin directory is located:
+```
+If you get the error ``command not found: pipenv``, it is because the ``PATH`` for pipenv is not set.
+In order to set it, run the following command to see where the user based bin directory is located:
 
-    .. code-block:: console
+```console
 
-      $python3 -m site --user-base
+$python3 -m site --user-base
 
-    Then, copy the resulting location, it will be used to set the path.
-    Now, open the .zshrc file with your preferred editor, in this tutorial we shall use nano:
+```
+Then, copy the resulting location, it will be used to set the path.
+Now, open the .zshrc file with your preferred editor, in this tutorial we shall use nano:
 
-    .. code-block:: console
+```console
 
-      $nano ~/.zshrc
+$nano ~/.zshrc
 
-    Next, write the following line, which will include the location you copied previously, followed by /bin in order to export the PATH:
+```
+Next, write the following line, which will include the location you copied previously, followed by /bin in order to export the PATH:
 
-    .. code-block:: console
+```console
 
-      export PATH="$PATH:/Users/<your_user_name>/Library/Python/3.9/bin"
+export PATH="$PATH:/Users/<your_user_name>/Library/Python/3.9/bin"
 
-    Save the file, restart your terminal and run the following command to check if pipenv is installed:
+```
+Save the file, restart your terminal and run the following command to check if pipenv is installed:
 
-    .. code-block:: console
+```console
 
-      $pipenv --version
+$pipenv --version
 
-    You should get the installed version outputted now.
-    Finally, it is also a good idea to install pyenv in order for pipenv to work properly:
+```
+You should get the installed version outputted now.
+Finally, it is also a good idea to install pyenv in order for pipenv to work properly:
 
-    .. code-block:: console
+```console
 
-      $brew install pyenv
+$brew install pyenv
+```
+    </>}
+    image=""
+    fullWidth={true}
+  />
   ```
 
   ```{eval-rst}
-  .. dropdown:: Windows
+  <accordion
+    heading="Windows"
+    docText={<>
 
-    Install ``pipenv`` using pip:
+Install ``pipenv`` using pip:
 
-    .. code-block:: console
+```console
 
-      $pip install pipenv
+$pip install pipenv
 
-    If you get the error "command not found: pipenv", you may need to add the Python Scripts directory to your PATH.
+```
+If you get the error "command not found: pipenv", you may need to add the Python Scripts directory to your PATH.
 
-    To find the Scripts directory location, run:
+To find the Scripts directory location, run:
 
-    .. code-block:: console
+```console
 
-      $python -m site --user-base
+$python -m site --user-base
 
-    Add ``\Scripts`` to the end of the returned path. Then add this path to your system's PATH environment variable:
+```
+Add ``\Scripts`` to the end of the returned path. Then add this path to your system's PATH environment variable:
 
-    1. Press **Win + R**, type ``sysdm.cpl``, and press **Enter**
-    2. Click **Environment Variables**
-    3. Under **User variables**, select **Path** and click **Edit**
-    4. Click **New** and add the Scripts directory path
-    5. Click **OK** to save
+1. Press **Win + R**, type ``sysdm.cpl``, and press **Enter**
+2. Click **Environment Variables**
+3. Under **User variables**, select **Path** and click **Edit**
+4. Click **New** and add the Scripts directory path
+5. Click **OK** to save
 
-    Restart your command prompt and verify the installation:
+Restart your command prompt and verify the installation:
 
-    .. code-block:: console
+```console
 
-      $pipenv --version
+$pipenv --version
+```
+    </>}
+    image=""
+    fullWidth={true}
+  />
   ```
 
   ```{eval-rst}
-  .. dropdown:: Linux
+  <accordion
+    heading="Linux"
+    docText={<>
 
-    Install ``pipenv`` using pip3:
+Install ``pipenv`` using pip3:
 
-    .. code-block:: console
+```console
 
-      $pip3 install --user pipenv
+$pip3 install --user pipenv
 
-    If you get the error "command not found: pipenv", you need to add the local bin directory to your PATH.
+```
+If you get the error "command not found: pipenv", you need to add the local bin directory to your PATH.
 
-    Add the following line to your shell configuration file (``~/.bashrc``, ``~/.zshrc``, or ``~/.profile``):
+Add the following line to your shell configuration file (``~/.bashrc``, ``~/.zshrc``, or ``~/.profile``):
 
-    .. code-block:: console
+```console
 
-      export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
-    Reload your shell configuration:
+```
+Reload your shell configuration:
 
-    .. code-block:: console
+```console
 
-      $source ~/.bashrc
+$source ~/.bashrc
 
-    Verify the installation:
+```
+Verify the installation:
 
-    .. code-block:: console
+```console
 
-      $pipenv --version
+$pipenv --version
+```
+    </>}
+    image=""
+    fullWidth={true}
+  />
   ```
 
 - Step 3: Clone the Concordium Documentation Repository
@@ -199,51 +250,75 @@ title: "Set up Concordium documentation environment"
   **Graphviz** is needed to render diagrams:
 
   ```{eval-rst}
-  .. dropdown:: MacOS
+  <accordion
+    heading="MacOS"
+    docText={<>
 
-    .. code-block:: console
+```console
 
-      $brew install graphviz
+$brew install graphviz
+```
+    </>}
+    image=""
+    fullWidth={true}
+  />
   ```
 
   ```{eval-rst}
-  .. dropdown:: Windows
+  <accordion
+    heading="Windows"
+    docText={<>
 
-    Download and install Graphviz from the [official website](https://graphviz.org/download/).
+Download and install Graphviz from the [official website](https://graphviz.org/download/).
 
-    Alternatively, you can use Chocolatey:
+Alternatively, you can use Chocolatey:
 
-    .. code-block:: console
+```console
 
-      $choco install graphviz
+$choco install graphviz
 
-    Or use winget:
+```
+Or use winget:
 
-    .. code-block:: console
+```console
 
-      $winget install graphviz
+$winget install graphviz
+```
+    </>}
+    image=""
+    fullWidth={true}
+  />
   ```
 
   ```{eval-rst}
-  .. dropdown:: Linux
+  <accordion
+    heading="Linux"
+    docText={<>
 
-    **Ubuntu/Debian:**
+**Ubuntu/Debian:**
 
-    .. code-block:: console
+```console
 
-      $sudo apt install graphviz
+$sudo apt install graphviz
 
-    **CentOS/RHEL/Fedora:**
+```
+**CentOS/RHEL/Fedora:**
 
-    .. code-block:: console
+```console
 
-      $sudo yum install graphviz
+$sudo yum install graphviz
 
-    **Arch Linux:**
+```
+**Arch Linux:**
 
-    .. code-block:: console
+```console
 
-      $sudo pacman -S graphviz
+$sudo pacman -S graphviz
+```
+    </>}
+    image=""
+    fullWidth={true}
+  />
   ```
 
 - Step 6: Build the Documentation (Text Version)
