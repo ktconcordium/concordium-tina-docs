@@ -28,6 +28,15 @@ export const config = defineConfig({
     outputFolder: "admin",  // so we get public/admin/index.html, etc.
     basePath: "",
   },
+
+  search: {
+    tina: {
+      indexerToken: '9953e40ff9b09ac907c76decf924c1a3fea6bb89',
+      stopwordLanguages: ['eng'],
+    },
+    indexBatchSize: 100,
+    maxSearchIndexFieldLength: 100,
+  },
 });
 
 export default config;
